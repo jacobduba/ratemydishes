@@ -1,4 +1,4 @@
-/*package com.example.as1;
+package com.example.as1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,26 +8,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class HelloActivity extends AppCompatActivity {
+public class HelloActivity1 extends AppCompatActivity {
 
-    Button helloBtn;
-    String Hello = "Hello";
-
+    Button homeBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hello);
+        setContentView(R.layout.activity_hello1);
 
-        helloBtn = findViewById(R.id.helloBtn);
+        homeBtn = findViewById(R.id.homeBtn);
 
-        helloBtn.setOnClickListener(new View.OnClickListener() {
+        homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(HelloActivity.this, MainActivity.class);
+                Intent intent2 = new Intent(HelloActivity1.this, MainActivity.class);
                 startActivity(intent2);
             }
         });
 
-    }
 
-}*/
+    }
+}

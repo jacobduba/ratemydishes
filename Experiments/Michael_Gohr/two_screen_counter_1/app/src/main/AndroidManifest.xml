@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AS1">
         <activity
+            android:name=".HelloActivity1"
+            android:exported="false" />
+        <activity
             android:name=".CounterActivity"
             android:exported="true" />
         <activity

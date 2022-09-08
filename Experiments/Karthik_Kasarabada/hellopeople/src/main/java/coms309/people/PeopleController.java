@@ -24,7 +24,6 @@ import java.util.HashMap;
 @Component
 public class PeopleController {
     @Autowired //loads the beans
-
     private PeopleRepository peopleRepository; // variable to call whenever I need to store something to database
     // Note that there is only ONE instance of PeopleController in 
     // Springboot system.
@@ -53,7 +52,7 @@ public class PeopleController {
     @PostMapping("/people")
     public @ResponseBody String createPerson(@RequestBody Person person) {
         System.out.println(person);
-        peopleRepository.save(person);
+        peopleRepository.save(person);  //save new person to repo
         return "New person "+ person.getFirstName() + " Saved";
     }
 

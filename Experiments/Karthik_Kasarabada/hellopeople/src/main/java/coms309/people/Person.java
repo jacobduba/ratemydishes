@@ -1,13 +1,22 @@
 package coms309.people;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Provides the Definition/Structure for the people row
  *
  * @author Vivek Bengre
  */
-
+@Entity
 public class Person {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
 
     private String firstName;
 
@@ -16,6 +25,7 @@ public class Person {
     private String address;
 
     private String telephone;
+    private long id;
 
     public Person(){
         
@@ -66,5 +76,13 @@ public class Person {
                + lastName + " "
                + address + " "
                + telephone;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 }

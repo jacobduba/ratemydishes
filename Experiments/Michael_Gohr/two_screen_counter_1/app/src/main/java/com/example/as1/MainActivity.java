@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button button;
     Button swapBtn;
+    Button toPicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
         button = findViewById(R.id.toCounterBtn);
         swapBtn = findViewById(R.id.toHelloScreen);
+        toPicture = findViewById(R.id.toPictureScreen);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +39,16 @@ public class MainActivity extends AppCompatActivity {
             {
                 Intent intent2 = new Intent(MainActivity.this, HelloActivity1.class);
                 startActivity(intent2);
+            }
+        });
+
+
+        toPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent3 = new Intent(MainActivity.this, PictureActivity.class);
+                startActivity(intent3);
             }
         });
 

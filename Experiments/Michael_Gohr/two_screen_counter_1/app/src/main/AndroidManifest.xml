@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AS1">
         <activity
+            android:name=".PictureActivity"
+            android:exported="false" />
+        <activity
             android:name=".HelloActivity1"
             android:exported="false" />
         <activity

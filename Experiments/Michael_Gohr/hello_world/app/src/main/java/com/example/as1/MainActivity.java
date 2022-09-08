@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button = findViewById(R.id.toCounterBtn);
+        button = findViewById(R.id.toHomePage);
         swapBtn = findViewById(R.id.toHelloScreen);
         toPicture = findViewById(R.id.toPictureScreen);
 

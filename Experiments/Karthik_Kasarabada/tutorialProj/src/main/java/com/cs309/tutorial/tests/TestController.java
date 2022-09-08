@@ -1,5 +1,8 @@
 package com.cs309.tutorial.tests;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,12 +46,15 @@ public class TestController {
 		}
 	}
 	
-	@PostMapping(value = "/postTest2", consumes = "application/json", produces = "application/json") //request Consumes Json Data and Produces Json Data
-	public String postTest2(@RequestBody TestData testData) { //
+	@PostMapping("/postTest2")
+	public String postTest2(@RequestBody TestData testData) { //Changed to String as I will return Json as String
 
-		Json =
+		JSONObject json = new JSONObject(); //Creating Json
 
-		return
+		json.put("name", testData.getName()); //inputting paramter keys and values
+		json.put("racf", testData.getRacf());
+
+		return json.toString(); //returning as a string
 	}
 	
 	@DeleteMapping("/deleteTest")

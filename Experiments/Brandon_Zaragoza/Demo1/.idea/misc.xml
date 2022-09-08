@@ -3,13 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Demo1/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1205" />
-        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Demo1/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1205" />
-        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Demo1/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Demo1/app/src/main/res/layout/content_main.xml" value="0.1" />
-        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Demo1/app/src/main/res/layout/fragment_first.xml" value="0.1" />
-        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Demo1/app/src/main/res/layout/fragment_second.xml" value="0.1" />
-        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Demo1/app/src/main/res/menu/menu_main.xml" value="0.2" />
+        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Brandon_Zaragoza/Demo1/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Brandon_Zaragoza/Demo1/app/src/main/res/layout/finn_and_melon.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/Brandon Zaragoza/Desktop/CS309/project/1_as_6/Experiments/Brandon_Zaragoza/Demo1/app/src/main/res/layout/hello.xml" value="0.2" />
       </map>
     </option>
   </component>

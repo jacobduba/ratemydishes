@@ -46,7 +46,7 @@ public class TestController {
 		}
 	}
 	
-	@PostMapping("/postTest2")
+	@PostMapping("/JDWorker")
 	public String postTest2(@RequestBody TestData testData) { //Changed to String as I will return Json as String
 
 		JSONObject json = new JSONObject(); //Creating Json
@@ -56,14 +56,24 @@ public class TestController {
 
 		return json.toString(); //returning as a string
 	}
-	
+
 	@DeleteMapping("/deleteTest")
-	public void deleteTest() {
-		//TODO
+	public String deleteTest(@RequestParam(value = "name") String name) { //inputted one parameter
+
+		return "Deleting Karthik"; //if name passes for deletion, return with deleting "name"
 	}
+
 	
-	@PutMapping("/putTest")
-	public void putTest() {
-		//TODO
+	@PutMapping("/getName")
+	public String putTest(@RequestBody String Name) {
+		if (Name.isEmpty()) {
+
+			return String.format("You did not state a Name parameter value!");
+		}
+		//simple check to make sure name is inputted
+
+		return String.format("Hello, %s! You sent a put request with a parameter!", Name);
+		//Updating string to new string value
 	}
-}
+	}
+

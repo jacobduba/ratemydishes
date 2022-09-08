@@ -24,11 +24,12 @@ public class TestController {
 		testObjects.add(new TestObject(message));
 		return String.format("Hello, %s! You sent a post request with a parameter!", message);
 	}
-	
+
 	@PostMapping("/postTest2")
-	public String postTest2(@RequestBody TestData testData) {
-		testObjects.add(new TestObject(testData.getMessage()));
-		return String.format("Hello, %s! You sent a post request with a requestbody!", testData.getMessage());
+	public TestObject postTest2(@RequestBody TestData testData) {
+		TestObject obj = new TestObject(testData.getMessage());
+		testObjects.add(obj);
+		return obj; // Return a JSON object
 	}
 	
 	@DeleteMapping("/deleteTest")

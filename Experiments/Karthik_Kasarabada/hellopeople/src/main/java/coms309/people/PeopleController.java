@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Controller used to showcase Create and Read from a LIST
@@ -24,7 +25,8 @@ import java.util.HashMap;
 @Component
 public class PeopleController {
     @Autowired //loads the beans
-    private PeopleRepository peopleRepository; // variable to call whenever I need to store something to database
+    private PeopleRepository peopleRepository;
+    // variable to call whenever I need to store something to database
     // Note that there is only ONE instance of PeopleController in 
     // Springboot system.
     //HashMap<String, Person> peopleList = new  HashMap<>();
@@ -65,8 +67,9 @@ public class PeopleController {
 
     /*@GetMapping("/people/{firstName}")
     public @ResponseBody Person getPerson(@PathVariable String firstName) {
-        p.
-        return p;
+
+        return peopleRepository.getPersonByFirstName(firstName);
+
     }*/
 
     // THIS IS THE UPDATE OPERATION
@@ -91,14 +94,13 @@ public class PeopleController {
     // in this case because of @ResponseBody
     // Note: To DELETE we use delete method
 
-    /*@DeleteMapping("/people/{firstName}")
-    public @ResponseBody PeopleRepository deletePerson(@PathVariable String firstName) {
+    @DeleteMapping("/people/{person}")
+    public @ResponseBody PeopleRepository deletePerson(@PathVariable Person person) { //changed parameter to input person
 
-        for (i = 0; i < peopleRepository.findAll(firstName); i++) {
-        if .getFirstName(); //get person from firstname, then delete
+        peopleRepository.delete(person);
 
         return peopleRepository;
-    }*/
+    }
 }
 
 //PLEASE HELP WITH BEAN

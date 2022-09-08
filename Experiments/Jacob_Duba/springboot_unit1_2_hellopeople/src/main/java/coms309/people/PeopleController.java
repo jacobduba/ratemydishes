@@ -59,8 +59,7 @@ public class PeopleController {
     // in this case because of @ResponseBody
     // Note: To READ we use GET method
     @GetMapping("/people/{firstName}")
-    public @ResponseBody Person getPerson(@    // THIS IS THE DELETE OPERATION
-PathVariable String firstName) {
+    public @ResponseBody Person getPerson(@PathVariable String firstName) {
         Person p = peopleList.get(firstName);
         return p;
     }

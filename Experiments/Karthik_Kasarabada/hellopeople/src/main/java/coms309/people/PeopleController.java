@@ -1,5 +1,7 @@
 package coms309.people;
 
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +21,14 @@ import java.util.HashMap;
  */
 
 @RestController
+@Component
 public class PeopleController {
+    @Autowired //loads the beans
 
+    private PeopleRepository peopleRepository; // variable to call whenever I need to store something to database
     // Note that there is only ONE instance of PeopleController in 
     // Springboot system.
-    HashMap<String, Person> peopleList = new  HashMap<>();
+    //HashMap<String, Person> peopleList = new  HashMap<>();
 
     //CRUDL (create/read/update/delete/list)
     // use POST, GET, PUT, DELETE, GET methods for CRUDL
@@ -36,7 +41,7 @@ public class PeopleController {
     // Note: To LIST, we use the GET method
     @GetMapping("/people")
     public @ResponseBody HashMap<String,Person> getAllPersons() {
-        return peopleList;
+        return (HashMap<String, Person>) peopleRepository.findAll();
     }
 
     // THIS IS THE CREATE OPERATION
@@ -48,7 +53,7 @@ public class PeopleController {
     @PostMapping("/people")
     public @ResponseBody String createPerson(@RequestBody Person person) {
         System.out.println(person);
-        peopleList.put(person.getFirstName(), person);
+        peopleRepository.save(person);
         return "New person "+ person.getFirstName() + " Saved";
     }
 
@@ -58,11 +63,12 @@ public class PeopleController {
     // springboot automatically converts Person to JSON format when we return it
     // in this case because of @ResponseBody
     // Note: To READ we use GET method
-    @GetMapping("/people/{firstName}")
+
+    /*@GetMapping("/people/{firstName}")
     public @ResponseBody Person getPerson(@PathVariable String firstName) {
-        Person p = peopleList.get(firstName);
+        p.
         return p;
-    }
+    }*/
 
     // THIS IS THE UPDATE OPERATION
     // We extract the person from the HashMap and modify it.
@@ -73,8 +79,11 @@ public class PeopleController {
     // Note: To UPDATE we use PUT method
     @PutMapping("/people/{firstName}")
     public @ResponseBody Person updatePerson(@PathVariable String firstName, @RequestBody Person p) {
-        peopleList.replace(firstName, p);
-        return peopleList.get(firstName);
+
+        p.setFirstName(firstName); //set person first name value to new firstname
+        peopleRepository.save(p); //save person parameters into repository
+
+        return p;
     }
 
     // THIS IS THE DELETE OPERATION
@@ -82,11 +91,15 @@ public class PeopleController {
     // We return the entire list -- converted to JSON
     // in this case because of @ResponseBody
     // Note: To DELETE we use delete method
-    
-    @DeleteMapping("/people/{firstName}")
-    public @ResponseBody HashMap<String, Person> deletePerson(@PathVariable String firstName) {
-        peopleList.remove(firstName);
-        return peopleList;
-    }
+
+    /*@DeleteMapping("/people/{firstName}")
+    public @ResponseBody PeopleRepository deletePerson(@PathVariable String firstName) {
+
+        for (i = 0; i < peopleRepository.findAll(firstName); i++) {
+        if .getFirstName(); //get person from firstname, then delete
+
+        return peopleRepository;
+    }*/
 }
 
+//PLEASE HELP WITH BEAN

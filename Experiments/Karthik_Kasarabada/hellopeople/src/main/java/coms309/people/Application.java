@@ -1,4 +1,4 @@
-package coms309;
+package coms309.people;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

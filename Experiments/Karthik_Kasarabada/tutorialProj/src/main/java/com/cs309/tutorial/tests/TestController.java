@@ -12,10 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 	
 	
-	@GetMapping("/getTest")
-	public String getTest(@RequestParam(value = "username", defaultValue = "World") String message) {
-		return String.format("Hello, %s! You sent a get request with a parameter!", message);
+	@GetMapping("/getName")
+	public String getTest(@RequestParam String Name) { //Changed parameter to be a Name I can input. Tested via postman
+		if (Name.isEmpty()) {
+
+			return String.format("You did not state a Name parameter value!");
+		}
+		//simple check to make sure name is inputted
+
+		return String.format("Hello, %s! You sent a get request with a parameter!", Name);
+		//In the case of variables, keys are the parameters, while the value is what I want the key to be.
 	}
+
 	
 	@PostMapping("/postTest1")
 	public String postTest1(@RequestParam(value = "username", defaultValue = "World") String message) {

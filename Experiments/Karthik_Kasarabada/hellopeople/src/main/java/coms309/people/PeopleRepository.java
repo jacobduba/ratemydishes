@@ -1,6 +1,7 @@
 package coms309.people;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 @Repository
-public interface PeopleRepository extends CrudRepository<Person, Integer> {
-    List<Person> findByFirstName (String firstName);
-    Person findById (long id);
+public interface PeopleRepository extends JpaRepository<Person, Integer> {
+    @Query(value="select * from person a where a.first_name= :firstName", nativeQuery=true)
+    List<Person> getPersonByFirstName(String firstName);
 }

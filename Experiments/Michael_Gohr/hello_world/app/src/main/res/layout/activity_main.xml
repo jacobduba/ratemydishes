@@ -47,16 +47,17 @@
 
     <EditText
         android:id="@+id/editTextTextPersonName3"
-        android:layout_width="239dp"
-        android:layout_height="42dp"
+        android:layout_width="270dp"
+        android:layout_height="47dp"
         android:accessibilityLiveRegion="none"
         android:clickable="false"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Welcome to Rate Your Meal"
+        android:text="Welcome to Rate Your Dishes"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="51dp" />
+        tools:layout_editor_absoluteY="40dp" />
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"

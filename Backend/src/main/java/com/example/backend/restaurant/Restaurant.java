@@ -16,6 +16,8 @@ public class Restaurant {
     @Column(name = "name")
     private String name;
 
+    public Restaurant() {}
+
     public Restaurant(String name) {
         this.name = name;
     }

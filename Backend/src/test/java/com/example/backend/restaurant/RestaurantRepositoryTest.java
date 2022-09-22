@@ -1,10 +1,16 @@
 package com.example.backend.restaurant;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class RestaurantTest {
+class RestaurantRepositoryTest {
 
-    // TODO test initial restaurant
+    @Test
+    void findById() {
+    }
 
+    @Test
+    void deleteById() {
+    }
 }

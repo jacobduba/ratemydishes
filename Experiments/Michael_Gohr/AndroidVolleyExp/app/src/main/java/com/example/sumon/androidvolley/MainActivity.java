@@ -19,6 +19,7 @@ public class MainActivity extends Activity implements OnClickListener {
         btnImage = (Button) findViewById(R.id.btnImageRequest);
 
         // button click listeners
+        //Random comment
         btnString.setOnClickListener(this);
         btnJson.setOnClickListener(this);
         btnImage.setOnClickListener(this);

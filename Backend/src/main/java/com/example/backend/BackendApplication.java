@@ -1,24 +1,11 @@
-package com.example.backend;
+count = 0
+        for i in nums:
+            for j in nums:
+                if i == j:
+                    count += 1
+            if count >= 2:
+                return True
+            else:
+                count == 0
 
-import com.example.backend.restaurant.Restaurant;
-import com.example.backend.restaurant.RestaurantRepository;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-@SpringBootApplication
-public class BackendApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(BackendApplication.class, args);
-    }
-
-    @Bean
-    CommandLineRunner initRestaurant(RestaurantRepository rr) {
-        return args -> {
-            Restaurant r = new Restaurant("Windows");
-            rr.save(r);
-        };
-    }
-}
+        return False

@@ -1,10 +1,9 @@
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import java.sql.Connection;
 
 import java.io.*;
 import java.net.*;
+
 
 public class GetLocations {
 
@@ -24,16 +23,28 @@ public class GetLocations {
         JsonArray jsonArray = (JsonArray) jsonParser.parse(result.toString());
         return jsonArray;
     }
-    public void populateTable(JsonArray arr) {  //Stopped here, need to parse JSON Array
+    public static void populateTable(JsonArray arr) {  //Parse JSON Array
         for (int i = 0; i < arr.size(); i++) {
-            JsonObject jsonobj = arr.getAsJsonObject(i);
-            String name = String.valueOf(jsonobj.get("name"));
-            String url = jsonelement.getAsString("url");
+            //Need to type cast array element to obj
+            JsonObject jsonObj = (JsonObject) arr.get(i);
+            //Query table data from each JsonObj
+            String title1 = String.valueOf(jsonObj.get("title"));
+            String slug1 = String.valueOf(jsonObj.get("slug"));
+            String facility1 = String.valueOf(jsonObj.get("facility"));
+            String restaurant_type1 = String.valueOf(jsonObj.get("locationType"));
+            String dietary_type1 = String.valueOf(jsonObj.get("dietaryType"));
+
+
+            INSERT INTO rmd_db.Locations (title, restaurant_type, slug, facility, dietary_type)
+            VALUES (null, null, null, null, null);
+
         }
     }
 
     public static void main(String[] args) throws Exception
     {
-        System.out.println(getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/"));
+        Connection conn = .getConnection();
+
+        populateTable(getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/"));
     }
 }

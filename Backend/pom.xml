@@ -50,6 +50,16 @@
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.clumd.projects</groupId>
+            <artifactId>Java-JSON</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>de.gerdi-project</groupId>
+            <artifactId>GSON</artifactId>
+            <version>6.0.6</version>
+        </dependency>
     </dependencies>
 
     <build>

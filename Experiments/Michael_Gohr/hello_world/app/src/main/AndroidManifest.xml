@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AS1">
         <activity
+            android:name=".AccountCreation"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsPage"
+            android:exported="false"
+            android:label="@string/title_activity_settings_page" />
+        <activity
             android:name=".SeasonsScreen"
             android:exported="false" />
         <activity

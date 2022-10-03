@@ -20,7 +20,7 @@ public class diningCentersList extends AppCompatActivity {
         setContentView(R.layout.activity_dining_centers_list);
 
         backToWelcome = findViewById(R.id.backToWelcome);
-        toMenu = findViewById(R.id.toMenu);
+        toMenu = findViewById(R.id.toSeasonsMenu);
 
         backToWelcome.setOnClickListener(new View.OnClickListener() {
             @Override

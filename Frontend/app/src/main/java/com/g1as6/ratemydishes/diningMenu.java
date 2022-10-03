@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 
 public class diningMenu extends AppCompatActivity {
 
-    ImageButton backToDining;
+    private ImageButton backToDining;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

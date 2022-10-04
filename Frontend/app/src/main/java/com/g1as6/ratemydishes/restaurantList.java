@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class restaurantList extends AppCompatActivity {
 
     Button loginBtn;
     Button diningCenters;
@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.restaurant_list);
 
         diningCenters = findViewById(R.id.toDiningCenters);
 
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(MainActivity.this, diningCentersList.class);
+                Intent intent = new Intent(restaurantList.this, diningCentersList.class);
                 startActivity(intent);
             }
         });

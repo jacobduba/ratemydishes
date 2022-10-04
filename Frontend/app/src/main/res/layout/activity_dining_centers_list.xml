@@ -34,6 +34,7 @@
         android:singleLine="false"
         android:text="Dining Centers"
         android:textAlignment="center"
+        android:gravity="center"
         android:textColor="#000000"
         android:textColorHighlight="#F44336"
         android:textIsSelectable="false"

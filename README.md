@@ -26,6 +26,12 @@ It should automatically recognize that it is a Spring Boot application.
 However you have to run it with the dev profile.
 Edit run configuration -> set active profiles to "dev".
 
+Spring dev tools is installed, but in order for autoreload to be enabled you have to enable some settings.
+Preferences / Advanced Settings.
+Check “Allow auto-make to start even if the developed application is currently running” under the “Compiler” section.
+Preferences and search for “compiler”.
+Select “Build project automatically” and click “Apply”
+
 ## Usage
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 

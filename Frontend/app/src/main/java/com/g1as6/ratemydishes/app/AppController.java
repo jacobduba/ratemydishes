@@ -1,15 +1,17 @@
-package com.example.sumon.androidvolley.app;
+package com.g1as6.ratemydishes.app;
 
-import com.example.sumon.androidvolley.utils.LruBitmapCache;
 import android.app.Application;
 import android.text.TextUtils;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+//import com.g1as6.ratemydishes.app.utils.LruBitmapCache;
 
-public class AppController extends Application {
+public class AppController extends AppCompatActivity {
 
 	public static final String TAG = AppController.class
 			.getSimpleName();

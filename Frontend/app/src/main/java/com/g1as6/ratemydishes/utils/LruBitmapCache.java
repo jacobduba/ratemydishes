@@ -1,4 +1,4 @@
-/*package com.g1as6.ratemydishes.utils;
+package com.g1as6.ratemydishes.utils;
 
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
@@ -35,4 +35,4 @@ public class LruBitmapCache extends LruCache<String, Bitmap> implements ImageCac
 	public void putBitmap(String url, Bitmap bitmap) {
 		put(url, bitmap);
 	}
-}*/
+}

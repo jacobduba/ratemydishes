@@ -1,10 +1,7 @@
 package com.example.backend.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -17,15 +14,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("login")
+    @PostMapping("login")
     public HashMap<String, Object> login(@RequestBody LoginPayload loginDetails) {
         HashMap<String, Object> ret = new HashMap<>();
-
-        if (userService.validateLoginPayload(loginDetails)) {
-            ret.put("user", userService.getUser(loginDetails.netId));
-        }
-
-
+        userService.validateLoginPayload(loginDetails);
+        User user = userService.getUser(loginDetails.netId);
+        ret.put("user", user.getId());
         return ret;
     }
 

@@ -1,3 +1,5 @@
+package com.example.backend;
+
 import com.google.gson.*;
 import java.sql.Connection;
 
@@ -35,15 +37,11 @@ public class GetLocations {
             String dietary_type1 = String.valueOf(jsonObj.get("dietaryType"));
 
 
-            INSERT INTO rmd_db.Locations (title, restaurant_type, slug, facility, dietary_type)
-            VALUES (null, null, null, null, null);
-
         }
     }
 
     public static void main(String[] args) throws Exception
     {
-        Connection conn = .getConnection();
 
         populateTable(getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/"));
     }

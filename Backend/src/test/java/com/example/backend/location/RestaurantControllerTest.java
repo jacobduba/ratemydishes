@@ -1,4 +1,4 @@
-package com.example.backend.restaurant;
+package com.example.backend.location;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

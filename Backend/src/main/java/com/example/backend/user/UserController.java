@@ -10,16 +10,21 @@ import java.util.HashMap;
 
 @RestController @RequestMapping("user")
 public class UserController {
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("login")
     public HashMap<String, Object> login(@RequestBody LoginPayload loginDetails) {
         HashMap<String, Object> ret = new HashMap<>();
+
+        if (userService.validateLoginPayload(loginDetails)) {
+            ret.put("user", userService.getUser(loginDetails.netId));
+        }
+
 
         return ret;
     }

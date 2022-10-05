@@ -1,12 +1,13 @@
 package com.example.backend.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
-    private static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private UserRepository userRepository;
 
     @Autowired
@@ -15,17 +16,22 @@ public class UserService {
     }
 
     public void createNewUser(String netId, String password) {
-        String hashedPassword = passwordEncoder.encode(password);
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         User u = new User(netId, hashedPassword);
         userRepository.save(u);
     }
 
-    public boolean payloadisValid(LoginPayload payload) {
+    public User getUser(String netId) throws NoSuchElementException {
+        User user = userRepository.findByNetId(netId);
+        if (user == null) throw new NoSuchElementException();
+        return user;
+    }
+
+    public boolean validateLoginPayload(LoginPayload payload) {
         if (payload.isNull()) return false;
         User user = userRepository.findByNetId(payload.netId);
         if (user == null) return false;
-        String hashed = passwordEncoder.encode(payload.password);
-        if (!user.getHashedPassword().equals(hashed)) return false;
+        if (!BCrypt.checkpw(payload.password, user.getHashedPassword())) return false;
         return true;
     }
 

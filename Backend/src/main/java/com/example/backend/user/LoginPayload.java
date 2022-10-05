@@ -12,6 +12,6 @@ public class LoginPayload {
     }
 
     public boolean isNull() {
-        return netId != null && password != null;
+        return netId == null || password == null;
     }
 }

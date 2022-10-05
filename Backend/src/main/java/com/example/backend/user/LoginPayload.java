@@ -3,8 +3,8 @@ package com.example.backend.user;
 import org.springframework.stereotype.Component;
 
 public class LoginPayload {
-    protected String netId;
-    protected String password;
+    private String netId;
+    private String password;
 
     public LoginPayload(String netId, String password) {
         this.netId = netId;
@@ -13,5 +13,13 @@ public class LoginPayload {
 
     public boolean isNull() {
         return netId == null || password == null;
+    }
+
+    public String getNetId() {
+        return netId;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

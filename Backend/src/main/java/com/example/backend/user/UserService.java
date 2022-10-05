@@ -11,10 +11,12 @@ import java.util.NoSuchElementException;
 @Service
 public class UserService {
     private UserRepository userRepository;
+    private JwtToken jwtTokenHelper;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtToken jwtTokenHelper) {
         this.userRepository = userRepository;
+        this.jwtTokenHelper = jwtTokenHelper;
     }
 
     public void createNewUser(String netId, String password) {
@@ -31,15 +33,17 @@ public class UserService {
 
     public void validateLoginPayload(LoginPayload payload) {
         if (payload.isNull()) throw new InvalidPayloadException();
-        User user = userRepository.findByNetId(payload.netId);
+        User user = userRepository.findByNetId(payload.getNetId());
 
-        if (user == null || !BCrypt.checkpw(payload.password, user.getHashedPassword())) {
+        if (user == null || !BCrypt.checkpw(payload.getPassword(), user.getHashedPassword())) {
             throw new IncorrectUsernameOrPasswordException();
         }
     }
 
-//    public String jwtToken(LoginPayload payload) {
-//        return
-//    }
+    public String generateJwtToken(LoginPayload payload) {
+        validateLoginPayload(payload);
+        User user = getUser(payload.getNetId());
+        return jwtTokenHelper.generateAccessToken(user);
+    }
 
 }

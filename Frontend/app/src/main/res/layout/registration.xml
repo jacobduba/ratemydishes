@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pass" />
 
-    <TextView
+    <EditText
         android:id="@+id/userName"
         android:layout_width="262dp"
         android:layout_height="48dp"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lastName" />
 
-    <TextView
+    <EditText
         android:id="@+id/email"
         android:layout_width="262dp"
         android:layout_height="48dp"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confPass" />
 
-    <TextView
+    <EditText
         android:id="@+id/confEmail"
         android:layout_width="262dp"
         android:layout_height="48dp"
@@ -88,7 +88,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable" />
 
-    <TextView
+    <EditText
         android:id="@+id/firstName"
         android:layout_width="262dp"
         android:layout_height="48dp"
@@ -100,7 +100,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />
 
-    <TextView
+    <EditText
         android:id="@+id/lastName"
         android:layout_width="262dp"
         android:layout_height="48dp"

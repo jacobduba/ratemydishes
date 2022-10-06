@@ -1,5 +1,7 @@
 package com.example.backend.location;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +27,6 @@ public class Locations {
 
     @Column(name = "dietary_type")
     private String diet_type;
-    public Locations() {}
 
     public Locations(String title, String res_type, String slug, String facility, String diet_type) {
         this.title = title;
@@ -33,8 +34,12 @@ public class Locations {
         this.slug = slug;
         this.facility = facility;
         this.diet_type = diet_type;
+    }
+
+    public Locations() {
 
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -59,7 +64,7 @@ public class Locations {
         this.res_type = res_type;
     }
 
-    public String slug() {
+    public String getSlug() {
         return slug;
     }
 

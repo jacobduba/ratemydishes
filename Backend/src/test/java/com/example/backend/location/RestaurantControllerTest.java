@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RestaurantControllerTest {
+class LocationControllerTest {
 
     @Autowired
-    private RestaurantController restaurantController;
+    private LocationController LocationController;
 
     @Test
     void getAllRestaurants() {
-        assertNotNull(restaurantController);
+        assertNotNull(LocationController);
     }
 }

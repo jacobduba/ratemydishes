@@ -1,11 +1,14 @@
 package com.example.backend;
 
-import com.example.backend.location.Locations;
+import com.example.backend.location.GetLocations;
 import com.example.backend.location.LocationRepository;
+import com.example.backend.location.Locations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
+
 
 @SpringBootApplication
 public class BackendApplication {
@@ -14,11 +17,8 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner initLocation(LocationRepository lr) {
-        return args -> {
-            Locations l = new Locations();
-            lr.save(l);
-        };
-    }
+   /* CommandLineRunner initLocation(LocationRepository lr) {
+        return args ->
+
+    }*/
 }

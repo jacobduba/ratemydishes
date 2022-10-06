@@ -1,15 +1,21 @@
-package com.example.backend;
+package com.example.backend.location;
 
-import com.google.gson.*;
-import java.sql.Connection;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.*;
-
-
+@Service
 public class GetLocations {
+    @Autowired
+    public LocationRepository lr;
 
-    public static JsonArray getHTML(String urlToRead) throws Exception {
+    public ArrayNode getHTML(String urlToRead) throws Exception {
         StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -21,11 +27,12 @@ public class GetLocations {
             }
         }
 
-        JsonParser jsonParser = new JsonParser();
-        JsonArray jsonArray = (JsonArray) jsonParser.parse(result.toString());
+        ObjectMapper mapper= new ObjectMapper();
+        ArrayNode jsonArray = (ArrayNode) mapper.readTree(result.toString());
         return jsonArray;
     }
-    public static void populateTable(JsonArray arr) {  //Parse JSON Array
+
+    /*public void populateTable(JsonArray arr) {  //Parse JSON Array
         for (int i = 0; i < arr.size(); i++) {
             //Need to type cast array element to obj
             JsonObject jsonObj = (JsonObject) arr.get(i);
@@ -36,13 +43,10 @@ public class GetLocations {
             String restaurant_type1 = String.valueOf(jsonObj.get("locationType"));
             String dietary_type1 = String.valueOf(jsonObj.get("dietaryType"));
 
+            Locations l = new Locations(title1, slug1, facility1, restaurant_type1, dietary_type1);
+            lr.save(l);
 
-        }
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-
-        populateTable(getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/"));
-    }
+        }*/
 }
+
+

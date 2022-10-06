@@ -32,10 +32,10 @@ public class LocationController {
         return lr.findAll();
     }
 
-    @GetMapping("/refresh-repo")
-    ArrayNode refreshRepo() throws Exception {
-
-        return getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
+    @GetMapping("/populate-db")
+    ArrayNode populateDB() throws Exception {
+        ArrayNode an = getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
+        return getLocations.populateTable(an);
     }
 }
 

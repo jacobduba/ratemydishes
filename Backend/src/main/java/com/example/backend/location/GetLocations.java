@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -27,15 +26,15 @@ public class GetLocations {
             }
         }
 
-        ObjectMapper mapper= new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         ArrayNode jsonArray = (ArrayNode) mapper.readTree(result.toString());
         return jsonArray;
     }
 
-    /*public void populateTable(JsonArray arr) {  //Parse JSON Array
+    public ArrayNode populateTable(ArrayNode arr) {  //Parse JSON Array
         for (int i = 0; i < arr.size(); i++) {
             //Need to type cast array element to obj
-            JsonObject jsonObj = (JsonObject) arr.get(i);
+            ObjectNode jsonObj = (ObjectNode) arr.get(i);
             //Query table data from each JsonObj
             String title1 = String.valueOf(jsonObj.get("title"));
             String slug1 = String.valueOf(jsonObj.get("slug"));
@@ -44,9 +43,12 @@ public class GetLocations {
             String dietary_type1 = String.valueOf(jsonObj.get("dietaryType"));
 
             Locations l = new Locations(title1, slug1, facility1, restaurant_type1, dietary_type1);
-            lr.save(l);
-
-        }*/
+            if (lr.findByTitle(title1) == null) {
+                lr.save(l);
+            }
+        }
+        return arr;
+    }
 }
 
 

@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 @Repository
 public interface LocationRepository extends JpaRepository<Locations, Long> {
     Locations findById(long id);
+    Locations findByTitle(String title);
 
     @Transactional
     Locations deleteById(long i);

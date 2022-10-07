@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Entity
+@Component
 public class Locations {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,7 +18,7 @@ public class Locations {
     private String title;
 
     @Column(name = "restaurant_type")
-    private String res_type;
+    private String resType;
 
     @Column(name = "slug")
     private String slug;
@@ -26,14 +27,14 @@ public class Locations {
     private String facility;
 
     @Column(name = "dietary_type")
-    private String diet_type;
+    private String dietType;
 
-    public Locations(String title, String res_type, String slug, String facility, String diet_type) {
+    public Locations(String dietType, String facility, String resType, String slug, String title) {
         this.title = title;
-        this.res_type = res_type;
+        this.resType = resType;
         this.slug = slug;
         this.facility = facility;
-        this.diet_type = diet_type;
+        this.dietType = dietType;
     }
 
     public Locations() {
@@ -56,12 +57,12 @@ public class Locations {
         this.title = title;
     }
 
-    public String getRes_type() {
-        return res_type;
+    public String getResType() {
+        return resType;
     }
 
-    public void setRes_type(String res_type) {
-        this.res_type = res_type;
+    public void setResType(String resType) {
+        this.resType = resType;
     }
 
     public String getSlug() {
@@ -72,7 +73,7 @@ public class Locations {
         this.slug = slug;
     }
 
-    public String facility() {
+    public String getFacility() {
         return facility;
     }
 
@@ -80,11 +81,11 @@ public class Locations {
         this.facility = facility;
     }
 
-    public String getDiet_type() {
-        return diet_type;
+    public String getDietType() {
+        return dietType;
     }
 
-    public void setDiet_type(String diet_type) {
-        this.diet_type = diet_type;
+    public void setDietType(String dietType) {
+        this.dietType = dietType;
     }
 }

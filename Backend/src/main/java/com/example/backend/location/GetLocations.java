@@ -42,10 +42,10 @@ public class GetLocations {
             String restaurant_type1 = String.valueOf(jsonObj.get("locationType"));
             String dietary_type1 = String.valueOf(jsonObj.get("dietaryType"));
 
-            Locations l = new Locations(title1, slug1, facility1, restaurant_type1, dietary_type1);
-            if (lr.findByTitle(title1) == null) {
+            //Check to prevent duplicates before input
+            Locations l = new Locations(dietary_type1, facility1, restaurant_type1, slug1, title1);
+            if (lr.existsByTitle(title1) == false)
                 lr.save(l);
-            }
         }
         return arr;
     }

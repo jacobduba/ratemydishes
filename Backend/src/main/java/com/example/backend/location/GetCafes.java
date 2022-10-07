@@ -16,6 +16,7 @@ public class GetCafes {
     public LocationRepository lr;
 
     public ArrayNode getCafes() throws NoSuchFieldException, IllegalAccessException {
+
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode CafeLoc = mapper.createArrayNode();
 
@@ -60,6 +61,13 @@ public class GetCafes {
 
                 CafeLoc.add(locationNode);
             }
+        }
+        if (CafeLoc.isEmpty()) {
+            ObjectNode locationNode = mapper.createObjectNode();
+
+            locationNode.put("Empty-Notice", "No Cafes open at this time.");
+            CafeLoc.add(locationNode);
+            return CafeLoc;
         }
         return CafeLoc;
     }

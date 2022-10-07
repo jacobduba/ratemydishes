@@ -61,6 +61,13 @@ public class GetDiningCenters {
                 DiningLoc.add(locationNode);
             }
         }
+        if (DiningLoc.isEmpty()) {
+        ObjectNode locationNode = mapper.createObjectNode();
+
+        locationNode.put("Empty-Notice", "No Dining Centers open at this time.");
+        DiningLoc.add(locationNode);
+        return DiningLoc;
+    }
         return DiningLoc;
     }
 }

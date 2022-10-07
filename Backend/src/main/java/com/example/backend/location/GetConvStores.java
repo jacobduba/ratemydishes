@@ -49,7 +49,7 @@ public class GetConvStores {
             String titleVal = (String) titleField.get(loc);
 
             //if the row has restype of dining center, I want to add it into the response json array.
-            if (resVal.equals("[\"dining-center\"]")) {
+            if (resVal.equals("[\"convenience-store\"]")) {
                 ObjectNode locationNode = mapper.createObjectNode();
 
                 locationNode.put("Dietary_type", dietVal);
@@ -60,6 +60,13 @@ public class GetConvStores {
 
                 ConvStoresLoc.add(locationNode);
             }
+        }
+        if (ConvStoresLoc.isEmpty()) {
+            ObjectNode locationNode = mapper.createObjectNode();
+
+            locationNode.put("Empty-Notice", "No Convenience Stores open at this time.");
+            ConvStoresLoc.add(locationNode);
+            return ConvStoresLoc;
         }
         return ConvStoresLoc;
     }

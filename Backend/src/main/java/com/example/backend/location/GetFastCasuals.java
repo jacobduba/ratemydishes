@@ -61,6 +61,13 @@ public class GetFastCasuals {
                 FastCasLoc.add(locationNode);
             }
         }
+        if (FastCasLoc.isEmpty()) {
+        ObjectNode locationNode = mapper.createObjectNode();
+
+        locationNode.put("Empty-Notice", "No Fast Casuals open at this time.");
+        FastCasLoc.add(locationNode);
+        return FastCasLoc;
+    }
         return FastCasLoc;
     }
 }

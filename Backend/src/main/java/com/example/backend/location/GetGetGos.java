@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GetCafes {
+public class GetGetGos {
 
     @Autowired
     public LocationRepository lr;
 
-    public ArrayNode getCafes() throws NoSuchFieldException, IllegalAccessException {
+    public ArrayNode getGetGo() throws NoSuchFieldException, IllegalAccessException {
         ObjectMapper mapper = new ObjectMapper();
-        ArrayNode CafeLoc = mapper.createArrayNode();
+        ArrayNode GetGoLoc = mapper.createArrayNode();
 
         //Grabbing list of all Location in database
         List listLoc = lr.findAll();
@@ -49,7 +49,7 @@ public class GetCafes {
             String titleVal = (String) titleField.get(loc);
 
             //if the row has restype of dining center, I want to add it into the response json array.
-            if (resVal.equals("[\"cafe\"]")) {
+            if (resVal.equals("[\"dining-center\"]")) {
                 ObjectNode locationNode = mapper.createObjectNode();
 
                 locationNode.put("Dietary_type", dietVal);
@@ -58,9 +58,9 @@ public class GetCafes {
                 locationNode.put("Slug", slugVal);
                 locationNode.put("Title", titleVal);
 
-                CafeLoc.add(locationNode);
+                GetGoLoc.add(locationNode);
             }
         }
-        return CafeLoc;
+        return GetGoLoc;
     }
 }

@@ -1,15 +1,10 @@
 package com.example.backend.location;
-import java.lang.reflect.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import java.sql.Array;
 import java.util.List;
 
 @RestController
@@ -20,6 +15,14 @@ public class LocationController {
     GetLocations getLocations;
     @Autowired
     GetDiningCenters getDiningCenters;
+    @Autowired
+    GetCafes getCafes;
+    @Autowired
+    GetFastCasuals getFastCasual;
+    @Autowired
+    GetConvStores getConvStores;
+    @Autowired
+    GetGetGos getGetGo;
 
     @Autowired
     Locations l;
@@ -30,19 +33,26 @@ public class LocationController {
         return DiningCenters;
     }
 
-    @GetMapping("/get-cafes")
-    List<Locations> getCafeLocations() {
-        //todo
-        return lr.findAll();
+    @GetMapping("/get-cafe")
+    ArrayNode getCafeLocations() throws NoSuchFieldException, IllegalAccessException {
+        ArrayNode Cafes = getCafes.getCafes();
+        return Cafes;
     }
 
     @GetMapping("/get-fast-casual")
-    List<Locations> getFastCasualLocations() {
-        /*lr.
-
-        ArrayNode an = ;*/
-
-        return lr.findAll();
+    ArrayNode getFastCasualLocations() throws NoSuchFieldException, IllegalAccessException {
+        ArrayNode FastCasuals = getFastCasual.getFastCas();
+        return FastCasuals;
+    }
+    @GetMapping("/get-convenience-store")
+    ArrayNode getConvenienceStoreLocations() throws NoSuchFieldException, IllegalAccessException {
+        ArrayNode ConvStores = getConvStores.getConvStores();
+        return ConvStores;
+    }
+    @GetMapping("/get-get-go")
+    ArrayNode getGetGo() throws NoSuchFieldException, IllegalAccessException {
+        ArrayNode GetGo = getGetGo.getGetGo();
+        return GetGo;
     }
 
     //Request to do GET-Locations to fill Locations Database with general info including Slugs. These slugs will be used to track specific menus.

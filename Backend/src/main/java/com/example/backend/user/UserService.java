@@ -2,42 +2,47 @@ package com.example.backend.user;
 
 import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
-import com.example.backend.user.payload.AuthPayload;
-import com.example.backend.user.payload.LoginPayload;
+import com.example.backend.user.exceptions.UserAlreadyExistsException;
+import com.example.backend.user.payload.AuthRequestPayload;
+import com.example.backend.user.payload.LoginRequestPayload;
+import com.example.backend.user.payload.RegisterRequestPayload;
+import com.example.backend.user.payload.UserResponsePayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
+import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
     private UserRepository userRepository;
-    private JwtToken jwtTokenHelper;
+    private JwtTokenHelper jwtTokenHelper;
 
     @Autowired
-    public UserService(UserRepository userRepository, JwtToken jwtTokenHelper) {
+    public UserService(UserRepository userRepository, JwtTokenHelper jwtTokenHelper) {
         this.userRepository = userRepository;
         this.jwtTokenHelper = jwtTokenHelper;
     }
 
-    public void createNewUser(String netId, String password) {
+    public User createNewUser(String netId, String password) {
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        User u = new User(netId, hashedPassword);
-        userRepository.save(u);
-    }
-
-    public User getUser(String netId) throws NoSuchElementException {
-        User user = userRepository.findByNetId(netId);
-        if (user == null) throw new NoSuchElementException();
+        User user = new User(netId, hashedPassword);
+        userRepository.save(user);
         return user;
     }
 
-    public User getUserFromAuthPayload(AuthPayload payload) {
-        return getUser(jwtTokenHelper.parseAccessToken(payload.getToken()));
+    public UserResponsePayload getUserResponsePayload(String netId) throws NoSuchElementException {
+        // This method assumes the user exists.
+        return new UserResponsePayload(userRepository.findByNetId(netId));
     }
 
-    public void validateLoginPayload(LoginPayload payload) {
+    public User getUserFromAuthPayload(AuthRequestPayload payload) {
+        return userRepository.findByNetId(jwtTokenHelper.parseAccessToken(payload.getToken()));
+    }
+
+    public void validateLoginPayload(LoginRequestPayload payload) {
         if (payload.isNull()) throw new InvalidPayloadException();
         User user = userRepository.findByNetId(payload.getNetId());
 
@@ -46,10 +51,20 @@ public class UserService {
         }
     }
 
-    public String generateJwtToken(LoginPayload payload) {
+    public String generateJwtToken(LoginRequestPayload payload) {
         validateLoginPayload(payload);
-        User user = getUser(payload.getNetId());
+        User user = userRepository.findByNetId(payload.getNetId());
         return jwtTokenHelper.generateAccessToken(user);
-    }
+   }
 
+    /**
+     * This method checks to make sure that user does not exist, password is valid.
+     * @param registerRequestPayload
+     * @return
+     */
+    public User registerUser(RegisterRequestPayload registerRequestPayload) {
+        User user = userRepository.findByNetId(registerRequestPayload.getNetId());
+        if (user != null) throw new UserAlreadyExistsException();
+        return createNewUser(registerRequestPayload.getNetId(), registerRequestPayload.getPassword());
+    }
 }

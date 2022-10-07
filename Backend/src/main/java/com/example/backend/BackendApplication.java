@@ -21,7 +21,7 @@ public class BackendApplication {
     @Bean
     CommandLineRunner init(UserService us) {
         return args -> {
-            us.createNewUser("jduba", "test");
+            us.createNewUser("admin", "admin");
         };
     }
 }

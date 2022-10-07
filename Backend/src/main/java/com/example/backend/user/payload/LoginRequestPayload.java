@@ -1,12 +1,10 @@
 package com.example.backend.user.payload;
 
-import org.springframework.stereotype.Component;
-
-public class LoginPayload {
+public class LoginRequestPayload {
     private String netId;
     private String password;
 
-    public LoginPayload() {}
+    public LoginRequestPayload() {}
 
     public boolean isNull() {
         return netId == null || password == null;
@@ -18,5 +16,11 @@ public class LoginPayload {
 
     public String getPassword() {
         return password;
+    }
+
+    public String toString() {
+        return "LoginRequestPayload[netId: " + netId
+                + ", password: " + password
+                + "]";
     }
 }

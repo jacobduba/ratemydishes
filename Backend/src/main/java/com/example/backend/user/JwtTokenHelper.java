@@ -1,6 +1,5 @@
 package com.example.backend.user;
 
-import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.exceptions.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -17,10 +16,10 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
-public class JwtToken {
+public class JwtTokenHelper {
     private SecretKey hmacShaKey;
 
-    public JwtToken(@Value("${app.jwt.secret}") String SECRET_KEY) {
+    public JwtTokenHelper(@Value("${app.jwt.secret}") String SECRET_KEY) {
         hmacShaKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
 
@@ -34,7 +33,7 @@ public class JwtToken {
                 .compact();
     }
 
-    // TODO
+    // If token is valid the user should already exist, since we don't create tokens with users that don't exist.
     public String parseAccessToken(String token) {
         try {
             Jws<Claims> jwt = Jwts.parserBuilder()
@@ -47,6 +46,5 @@ public class JwtToken {
         } catch (MalformedJwtException e) {
             throw new InvalidTokenException();
         }
-        // If token is valid the user should already exist, since we don't create tokens with users that don't exist.
     }
 }

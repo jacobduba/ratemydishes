@@ -12,7 +12,7 @@ public class User {
     @Column(nullable = false, length = 30, unique = true)
     private String netId;
 
-    @Column(nullable = false, length = 64)
+    @Column(nullable = false)
     private String hashedPassword;
 
     public User() {}

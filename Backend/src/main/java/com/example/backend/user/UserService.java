@@ -2,6 +2,8 @@ package com.example.backend.user;
 
 import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
+import com.example.backend.user.payload.AuthPayload;
+import com.example.backend.user.payload.LoginPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,10 @@ public class UserService {
         User user = userRepository.findByNetId(netId);
         if (user == null) throw new NoSuchElementException();
         return user;
+    }
+
+    public User getUserFromAuthPayload(AuthPayload payload) {
+        return getUser(jwtTokenHelper.parseAccessToken(payload.getToken()));
     }
 
     public void validateLoginPayload(LoginPayload payload) {

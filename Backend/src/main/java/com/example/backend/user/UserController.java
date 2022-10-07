@@ -1,11 +1,11 @@
 package com.example.backend.user;
 
+import com.example.backend.user.payload.AuthPayload;
+import com.example.backend.user.payload.LoginPayload;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 @RestController @RequestMapping("user")
 public class UserController {
@@ -35,8 +35,9 @@ public class UserController {
         return jwtPayload;
     }
 
-    @GetMapping("ping")
-    public String ping() {
+    @PostMapping("ping")
+    public String pingPost(@RequestBody AuthPayload authPayload) {
+        User user = userService.getUserFromAuthPayload(authPayload);
         return "pong";
     }
 }

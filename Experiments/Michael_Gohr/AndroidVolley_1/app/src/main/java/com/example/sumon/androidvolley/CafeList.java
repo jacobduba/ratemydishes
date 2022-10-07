@@ -38,11 +38,11 @@ public class JsonRequestActivity extends Activity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.json_request);
+        setContentView(R.layout.cafe_list);
 
         btnJsonObj = (Button) findViewById(R.id.btnJsonObj);
         btnJsonArray = (Button) findViewById(R.id.btnJsonArray);
-        msgResponse = (TextView) findViewById(R.id.msgResponse);
+        msgResponse = (TextView) findViewById(R.id.diningLocations);
 
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Loading...");

@@ -72,4 +72,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
 
+    <TextView
+        android:id="@+id/response"
+        android:layout_width="379dp"
+        android:layout_height="147dp"
+        android:layout_marginTop="48dp"
+        android:maxLines="50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerBtn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

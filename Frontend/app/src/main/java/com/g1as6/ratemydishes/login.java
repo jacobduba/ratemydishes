@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.g1as6.ratemydishes.app.AppController;
+import com.g1as6.ratemydishes.app.AppVars;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +39,7 @@ public class login extends AppCompatActivity {
     Button registrationButton;
     EditText usrName;
     EditText pswd;
+    TextView lginStatus;
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/login";
 
@@ -50,10 +52,13 @@ public class login extends AppCompatActivity {
 
         // Component Assignment
         loginButton = findViewById(R.id.loginBtn);
+        lginStatus = findViewById(R.id.loginStatus);
         registrationButton = findViewById(R.id.registerBtn);
         usrName = findViewById(R.id.usrInput);
         pswd = findViewById(R.id.pswdInput);
 
+        // Assign some vars and stuff
+        AppVars.userToken = null;
 
         // login button
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -81,13 +86,29 @@ public class login extends AppCompatActivity {
                                 System.out.println(response.toString());
 
                                 pDialog.hide();
+
+                                try {
+                                    String token = response.get("token").toString();
+
+                                    // If I understand tokens correctly, no token means auth failed
+                                    if (!token.toString().equals("{}")) {
+                                        //((TextView) findViewById(R.id.response)).setText(token.toString());
+                                        AppVars.userToken = token;
+
+                                        Intent intent = new Intent(login.this, restaurantList.class);
+                                        startActivity(intent);
+                                    }else{
+                                        AppVars.userToken = null;
+                                        lginStatus.setText("Invalid Username or Password!");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                VolleyLog.d(TAG, "Error: "+error.getMessage());
-                                ((TextView)findViewById(R.id.response)).setText(error.getMessage());
-                                System.out.println(error.getMessage());
+                                lginStatus.setText("Invalid Username or Password!");
 
                                 pDialog.hide();
                             }

@@ -1,14 +1,22 @@
 package com.example.backend.location;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.time.Instant;
 import java.util.List;
 
 @RestController
+@Configuration
+@EnableScheduling
 public class LocationController {
+
     @Autowired
     LocationRepository lr;
     @Autowired
@@ -26,6 +34,8 @@ public class LocationController {
 
     @Autowired
     Locations l;
+
+    @RequestMapping("location")
 
     @GetMapping("/get-dining-centers")
     ArrayNode getDiningLocations() throws NoSuchFieldException, IllegalAccessException {
@@ -56,10 +66,13 @@ public class LocationController {
     }
 
     //Request to do GET-Locations to fill Locations Database with general info including Slugs. These slugs will be used to track specific menus.
+    //scheduled to run top every hour of every day
+    @Scheduled(cron = "0 0 * * * *")
     @GetMapping("/populate-db")
     ArrayNode populateDB() throws Exception {
         ArrayNode an = getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
-        return getLocations.populateTable(an);
+        getLocations.populateTable(an);
+        return an;
     }
 }
 

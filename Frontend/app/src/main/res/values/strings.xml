@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Rate My Dishes</string>
+    <string name="app_name">Rate Your Dishes</string>
+    <string name="welcome_to_rate_your_dishes">Welcome to Rate Your Dishes</string>
+    <string name="looking_for">looking for</string>
+    <string name="cafe">Cafe</string>
+    <string name="dining_centers">Dining Centers</string>
 </resources>

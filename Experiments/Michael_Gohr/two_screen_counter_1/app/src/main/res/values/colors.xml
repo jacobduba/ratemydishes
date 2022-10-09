@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFEB3B</color> //Where is this color?
-    <color name="purple_500">#F44336</color> //Button and border 2
-    <color name="purple_700">#FFEB3B</color> //Very top border
+    <color name="purple_200">#03A9F4</color> //Where is this color?
+    <color name="purple_500">#FF9800</color> //Button and border 2
+    <color name="purple_700">#4CAF50</color> //Very top border
     <color name="teal_200">#FF03DAC5</color> //Where is this color?
     <color name="teal_700">#FF018786</color> //Where is this color?
     <color name="black">#FF000000</color> //Where is this color?
-    <color name="white">#FFFFFF</color> //Color of letters on button
+    <color name="white">#000000</color> //Color of letters on button
 </resources>

@@ -1,5 +1,6 @@
 package com.g1as6.ratemydishes.net_utils;
 
+<<<<<<< HEAD
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import android.graphics.Bitmap;
 import android.util.LruCache;
@@ -34,4 +35,7 @@ public class LruBitmapCache extends LruCache<String, Bitmap> implements ImageCac
         put(url, bitmap);
     }
 
+=======
+public class LruBitmapCache {
+>>>>>>> login_registration_roundtrip_frontend
 }

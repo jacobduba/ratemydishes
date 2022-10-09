@@ -1,5 +1,6 @@
 package com.g1as6.ratemydishes.app;
 
+<<<<<<< HEAD
 import android.app.Application;
 import android.text.TextUtils;
 import com.android.volley.Request;
@@ -54,4 +55,7 @@ public class AppController extends Application { public static final String TAG 
             mRequestQueue.cancelAll(tag);
         }
     }
+=======
+public class AppController {
+>>>>>>> login_registration_roundtrip_frontend
 }

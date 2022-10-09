@@ -25,6 +25,7 @@ public class UserService {
     }
 
     public User createNewUser(String netId, String password) {
+        if (userRepository.findByNetId(netId) != null) return null;
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         User user = new User(netId, hashedPassword);
         userRepository.save(user);

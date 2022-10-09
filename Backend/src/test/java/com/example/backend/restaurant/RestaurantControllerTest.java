@@ -10,8 +10,8 @@ class RestaurantControllerTest {
     @Autowired
     private RestaurantController restaurantController;
 
-    @Test
-    void getAllRestaurants() {
-        assertNotNull(restaurantController);
-    }
+//    @Test
+//    void getAllRestaurants() {
+//        assertNotNull(restaurantController);
+//    }
 }

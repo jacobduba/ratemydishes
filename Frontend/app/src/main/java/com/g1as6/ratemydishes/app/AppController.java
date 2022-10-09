@@ -2,34 +2,23 @@ package com.g1as6.ratemydishes.app;
 
 import android.app.Application;
 import android.text.TextUtils;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-//import com.g1as6.ratemydishes.app.utils.LruBitmapCache;
+import com.g1as6.ratemydishes.net_utils.LruBitmapCache;
 
-public class AppController extends AppCompatActivity {
+public class AppController extends Application { public static final String TAG = AppController.class
+		.getSimpleName();
 
-	public static final String TAG = AppController.class
-			.getSimpleName();
-
-	private RequestQueue mRequestQueue;
-	private ImageLoader mImageLoader;
-
-	private static AppController mInstance;
-
-	@Override
+	private RequestQueue mRequestQueue; private ImageLoader mImageLoader;
+	private static AppController mInstance; @Override
 	public void onCreate() {
 		super.onCreate();
 		mInstance = this;
 	}
 
-	public static synchronized AppController getInstance() {
-		return mInstance;
-	}
+	public static synchronized AppController getInstance() { return mInstance;}
 
 	public RequestQueue getRequestQueue() {
 		if (mRequestQueue == null) {
@@ -39,13 +28,14 @@ public class AppController extends AppCompatActivity {
 		return mRequestQueue;
 	}
 
+
 	public ImageLoader getImageLoader() {
 		getRequestQueue();
 		if (mImageLoader == null) {
-			mImageLoader = new ImageLoader(this.mRequestQueue,
-					new LruBitmapCache());
+			mImageLoader = new ImageLoader(this.mRequestQueue, (ImageLoader.ImageCache) new LruBitmapCache());
 		}
 		return this.mImageLoader;
+
 	}
 
 	public <T> void addToRequestQueue(Request<T> req, String tag) {
@@ -54,7 +44,7 @@ public class AppController extends AppCompatActivity {
 		getRequestQueue().add(req);
 	}
 
-	public <T> void addToRequestQueue(Request<T> req) {
+	public <T> void addToRequestQueue(Request<T> req) { req.setTag(TAG);
 		req.setTag(TAG);
 		getRequestQueue().add(req);
 	}

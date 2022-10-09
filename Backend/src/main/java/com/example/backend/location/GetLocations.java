@@ -5,16 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.*;
 @Service
+@Configuration
+@EnableScheduling
 public class GetLocations {
     @Autowired
     public LocationRepository lr;
 
-    public ArrayNode getHTML(String urlToRead) throws Exception {
+    public void getHTML(String urlToRead) throws Exception {
         StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -28,13 +32,10 @@ public class GetLocations {
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode jsonArray = (ArrayNode) mapper.readTree(result.toString());
-        return jsonArray;
-    }
 
-    public ArrayNode populateTable(ArrayNode arr) {  //Parse JSON Array
-        for (int i = 0; i < arr.size(); i++) {
+        for (int i = 0; i < jsonArray.size(); i++) {
             //Need to type cast array element to obj
-            ObjectNode jsonObj = (ObjectNode) arr.get(i);
+            ObjectNode jsonObj = (ObjectNode) jsonArray.get(i);
             //Query table data from each JsonObj
             String title1 = String.valueOf(jsonObj.get("title"));
             String slug1 = String.valueOf(jsonObj.get("slug"));
@@ -47,7 +48,6 @@ public class GetLocations {
             if (lr.existsByTitle(title1) == false)
                 lr.save(l);
         }
-        return arr;
     }
 }
 

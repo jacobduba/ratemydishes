@@ -1,5 +1,6 @@
 package com.example.backend.location;
 
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;

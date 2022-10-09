@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @Configuration
 @EnableScheduling
-@RequestMapping("location")
+@RequestMapping("/location")
 public class LocationController {
 
     @Autowired
@@ -41,57 +41,52 @@ public class LocationController {
     Locations l;
 
 
-    @GetMapping("get-dining-centers")
+    @RequestMapping("/get-dining-centers")
     ArrayNode getDiningLocations() throws NoSuchFieldException, IllegalAccessException {
-        ArrayNode DiningCenters = getDiningCenters.getDinCen();//Creating New Array Node to store DiningCenter locations
-        return DiningCenters;
+        return getDiningCenters.getDinCen();
     }
 
 
-    @GetMapping("get-cafe")
+    @RequestMapping("/get-cafe")
     ArrayNode getCafeLocations() throws NoSuchFieldException, IllegalAccessException {
-        ArrayNode Cafes = getCafes.getCafes();
-        return Cafes;
+        return getCafes.getCafes();
     }
 
-    @GetMapping("get-fast-casual")
+    @RequestMapping("/get-fast-casual")
     ArrayNode getFastCasualLocations() throws NoSuchFieldException, IllegalAccessException {
-        ArrayNode FastCasuals = getFastCasual.getFastCas();
-        return FastCasuals;
+        return getFastCasual.getFastCas();
     }
 
-    @GetMapping("get-convenience-store")
+    @RequestMapping("/get-convenience-store")
     ArrayNode getConvenienceStoreLocations() throws NoSuchFieldException, IllegalAccessException {
-        ArrayNode ConvStores = getConvStores.getConvStores();
-        return ConvStores;
+        return getConvStores.getConvStores();
     }
 
-    @GetMapping("get-get-go")
+    @RequestMapping("/get-get-go")
     ArrayNode getGetGo() throws NoSuchFieldException, IllegalAccessException {
-        ArrayNode GetGo = getGetGo.getGetGo();
-        return GetGo;
+        return getGetGo.getGetGo();
     }
 
     //Request to do GET-Locations to fill Locations Database with general info including Slugs. These slugs will be used to track specific menus.
-    //scheduled to run top every hour of every day
+    //scheduled to run top every hour of every day, but it's not starting for some reason
+
+    @RequestMapping("/populate-db")
     @Scheduled(cron = "0 0 * * * *")
-    @GetMapping("populate-db")
-    ArrayNode populateDB() throws Exception {
-        ArrayNode an = getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
-        getLocations.populateTable(an);
-        return an;
+    public void populateDB() throws Exception {
+        getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
+
     }
 
     //run every five minutes
-    @Scheduled(cron = "0 0/5 * * * *")
-    @GetMapping("menu-data")
-    ArrayNode menuData() throws Exception {
+    //@Scheduled(cron = "0 */5 * * * ?")
+    @GetMapping("/menu-data")
+    void menuData() throws Exception {
         //Creating Json Object to store Location Menu
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode locMenu = mapper.createArrayNode();
         //Grabbing list of all Location in database
         List listLoc = lr.findAll();
-        ArrayNode an = null;
+        ArrayNode an;
         //looping through List to extract dining centers into array node
         for (int i = 0; i < listLoc.size(); i++) {
             Object loc = listLoc.get(i);
@@ -107,16 +102,15 @@ public class LocationController {
              an = getSingleLocation.getHTML(slugVal, unixTime, "https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location/");
             getSingleLocation.populateTable(an);
         }
-        return an;
     }
-
+        //To be worked on
     @GetMapping("get-menu/{slug}")
     @ResponseBody
     ArrayNode getMenu(@PathVariable String slug) throws Exception {
         //get current unix time stamp
         long unixTime = Instant.now().getEpochSecond();
         ArrayNode an = getSingleLocation.getHTML(slug, unixTime, "https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location/");
-        getLocations.populateTable(an);
+        //getLocations.populateTable(an);
         return an;
     }
 }

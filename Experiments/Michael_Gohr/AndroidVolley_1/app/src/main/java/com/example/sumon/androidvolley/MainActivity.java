@@ -7,37 +7,37 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class MainActivity extends Activity implements OnClickListener {
-    private Button btnJson, btnString, btnImage;
+    private Button toCafeList, toDiningCentersList, toFastCasualList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnString = (Button) findViewById(R.id.btnStringRequest);
-        btnJson = (Button) findViewById(R.id.btnJsonRequest);
-        btnImage = (Button) findViewById(R.id.btnImageRequest);
+        toDiningCentersList = (Button) findViewById(R.id.toDiningCentersList);
+        toCafeList = (Button) findViewById(R.id.toCafeList);
+        toFastCasualList = (Button) findViewById(R.id.toFastCasualList);
 
         // button click listeners
-        btnString.setOnClickListener(this);
-        btnJson.setOnClickListener(this);
-        btnImage.setOnClickListener(this);
+        toDiningCentersList.setOnClickListener(this);
+        toCafeList.setOnClickListener(this);
+        toFastCasualList.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnStringRequest:
+            case R.id.toDiningCentersList:
                 startActivity(new Intent(MainActivity.this,
-                        StringRequestActivity.class));
+                        DiningCenterList.class));
                 break;
-            case R.id.btnJsonRequest:
+            case R.id.toCafeList:
                 startActivity(new Intent(MainActivity.this,
-                        JsonRequestActivity.class));
+                        CafeList.class));
                 break;
-            case R.id.btnImageRequest:
+            case R.id.toFastCasualList:
                 startActivity(new Intent(MainActivity.this,
-                        ImageRequestActivity.class));
+                        FastCasualList.class));
                 break;
             default:
                 break;

@@ -15,12 +15,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.sumon.androidvolley.app.AppController;
 import com.example.sumon.androidvolley.utils.Const;
 
-public class StringRequestActivity extends Activity {
+public class DiningCenterList extends Activity {
 
-    private String TAG = StringRequestActivity.class.getSimpleName();
-    private Button btnStringReq;
-    private TextView msgResponse;
-    private ProgressDialog pDialog;
+    private String TAG = DiningCenterList.class.getSimpleName();
+    private Button btnDiningLocations;
+    private TextView diningLocations;
+    private ProgressDialog loadScreen;
 
     // This tag will be used to cancel the request
     private String tag_string_req = "string_req";
@@ -28,44 +28,41 @@ public class StringRequestActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.string_request);
+        setContentView(R.layout.dining_center_list);
 
-        btnStringReq = (Button) findViewById(R.id.btnStringReq);
-        msgResponse = (TextView) findViewById(R.id.msgResponse);
+        btnDiningLocations = (Button) findViewById(R.id.btnDiningLocations);
+        diningLocations = (TextView) findViewById(R.id.diningLocations);
 
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Loading...");
-        pDialog.setCancelable(false);
+        loadScreen = new ProgressDialog(this);
+        loadScreen.setMessage("Loading...");
+        loadScreen.setCancelable(false);
 
-        btnStringReq.setOnClickListener(new View.OnClickListener() {
+        btnDiningLocations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeStringReq();
+                getDiningLocations();
             }
         });
     }
 
     private void showProgressDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
+        if (!loadScreen.isShowing())
+            loadScreen.show();
     }
 
     private void hideProgressDialog() {
-        if (pDialog.isShowing())
-            pDialog.hide();
+        if (loadScreen.isShowing())
+            loadScreen.hide();
     }
 
-    /**
-     * Making json object request
-     * */
-    private void makeStringReq() {
+    private void getDiningLocations() {
         showProgressDialog();
 
         StringRequest strReq = new StringRequest(Method.GET, Const.URL_STRING_REQ, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, response.toString());
-                msgResponse.setText(response.toString());
+                diningLocations.setText(response.toString());
                 hideProgressDialog();
             }
         }, new Response.ErrorListener() {

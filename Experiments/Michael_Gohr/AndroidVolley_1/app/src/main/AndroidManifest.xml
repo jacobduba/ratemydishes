@@ -18,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StringRequestActivity" />
-        <activity android:name=".JsonRequestActivity" />
-        <activity android:name=".ImageRequestActivity"></activity>
+        <activity android:name=".DiningCenterList" />
+        <activity android:name=".CafeList" />
+        <activity android:name=".FastCasualList"></activity>
     </application>
 
 </manifest>

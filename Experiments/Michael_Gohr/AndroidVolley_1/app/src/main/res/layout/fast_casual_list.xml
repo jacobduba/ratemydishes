@@ -45,7 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/diningLocations" />
 
     <Button
-        android:id="@+id/btnImageReq"
+        android:id="@+id/btnFastCasualList"
         android:layout_width="411dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="79dp"
@@ -66,7 +66,7 @@
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnImageReq"></com.android.volley.toolbox.NetworkImageView>
+        app:layout_constraintTop_toBottomOf="@+id/btnFastCasualList"></com.android.volley.toolbox.NetworkImageView>
 
     <ImageView
         android:id="@+id/imgView"

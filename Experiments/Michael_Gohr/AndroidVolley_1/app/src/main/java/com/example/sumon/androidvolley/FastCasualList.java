@@ -16,24 +16,24 @@ import com.example.sumon.androidvolley.utils.Const;
 
 import java.io.UnsupportedEncodingException;
 
-public class ImageRequestActivity extends Activity {
+public class FastCasualList extends Activity {
 
-    private static final String TAG = ImageRequestActivity.class
+    private static final String TAG = FastCasualList.class
             .getSimpleName();
-    private Button btnImageReq;
+    private Button btnFastCasualList;
     private NetworkImageView imgNetWorkView;
     private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.image_request);
+        setContentView(R.layout.fast_casual_list);
 
-        btnImageReq = (Button) findViewById(R.id.btnImageReq);
+        btnFastCasualList = (Button) findViewById(R.id.btnFastCasualList);
         imgNetWorkView = (NetworkImageView) findViewById(R.id.imgNetwork);
         imageView = (ImageView) findViewById(R.id.imgView);
 
-        btnImageReq.setOnClickListener(new View.OnClickListener() {
+        btnFastCasualList.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-
+@Configuration
+@EnableScheduling
 @SpringBootApplication
 public class BackendApplication {
     public static void main(String[] args) {
@@ -22,11 +23,4 @@ public class BackendApplication {
             us.createNewUser("admin", "admin");
         };
     }
-}
-
-@Configuration
-@EnableScheduling
-@ConditionalOnProperty(name = "scheduling.enabled", matchIfMissing = true)
-class enableConfiguration {
-
 }

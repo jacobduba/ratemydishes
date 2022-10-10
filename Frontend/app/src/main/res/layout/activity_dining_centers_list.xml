@@ -7,27 +7,6 @@
     android:background="#F4F4D4"
     tools:context=".diningCentersList">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F4F4D4"
-        tools:context=".diningCentersList">
-
-        <Button
-            android:id="@+id/toSeasonsMenu"
-            android:layout_width="429dp"
-            android:layout_height="56dp"
-            android:background="#F44336"
-            android:backgroundTint="#F44336"
-            android:text="Seasons Marketplace"
-            android:textAlignment="textStart"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcomeText2" />
-=======
     <Button
         android:id="@+id/toSeasonsMenu"
         android:layout_width="429dp"
@@ -43,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeText2" />
 
+
     <TextView
         android:id="@+id/welcomeText2"
         android:layout_width="411dp"
@@ -55,7 +35,6 @@
         android:singleLine="false"
         android:text="Dining Centers"
         android:textAlignment="center"
-        android:gravity="center"
         android:textColor="#000000"
         android:textColorHighlight="#F44336"
         android:textIsSelectable="false"
@@ -65,42 +44,15 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-<<<<<<< HEAD
->>>>>>> main
-=======
->>>>>>> main
 
-        <TextView
-            android:id="@+id/welcomeText2"
-            android:layout_width="411dp"
-            android:layout_height="88dp"
-            android:background="#F44336"
-            android:backgroundTint="#F44336"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:shadowColor="#FF0000"
-            android:singleLine="false"
-            android:text="Dining Centers"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textColorHighlight="#F44336"
-            android:textIsSelectable="false"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/backToWelcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:background="#F44336"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageButton
+        android:id="@+id/backToWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:background="#F44336"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
 </androidx.constraintlayout.widget.ConstraintLayout>

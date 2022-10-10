@@ -3,6 +3,7 @@ package com.example.backend.location;
 
 import com.example.backend.location.LocationRepository;
 import com.example.backend.location.Locations;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class GetSingleLocation {
     @Autowired
@@ -35,21 +39,18 @@ public class GetSingleLocation {
         return jsonArray;
     }
 
-    public ArrayNode populateTable(ArrayNode arr) {  //Parse JSON Array
+    public void populateTable(ArrayNode arr) throws IOException {  //Parse JSON Array
         for (int i = 0; i < arr.size(); i++) {
             //Need to type cast array element to obj
             ObjectNode jsonObj = (ObjectNode) arr.get(i);
             //Query table data from each JsonObj
             String title1 = String.valueOf(jsonObj.get("title"));
-            ArrayNode menu1 = (ArrayNode) jsonObj.get("menus");
-
+            String menu1 = String.valueOf(jsonObj.get("menus"));
             //Check to prevent duplicates before input
-            Menus m = new Menus(title1, menu1);
+            Menus m = new Menus( title1, menu1);
             if (mr.existsByTitle(title1) == false)
                 mr.save(m);
+
         }
-        return arr;
     }
 }
-
-

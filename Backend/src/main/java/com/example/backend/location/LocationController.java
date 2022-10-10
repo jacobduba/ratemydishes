@@ -77,7 +77,7 @@ public class LocationController {
     }
     //In-Progress
     //run every five minutes
-    @Scheduled(initialDelay=0, fixedRate=300000)
+    @Scheduled(initialDelay=10000, fixedRate=300000)
     @RequestMapping("/menu-data")
     public void menuData() throws Exception {
         //Creating Json Object to store Location Menu

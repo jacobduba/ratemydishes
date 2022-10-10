@@ -1,87 +1,162 @@
 package com.example.sumon.androidvolley;
 
-
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.android.volley.Cache;
-import com.android.volley.Cache.Entry;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.sumon.androidvolley.app.AppController;
 import com.example.sumon.androidvolley.utils.Const;
 
-import java.io.UnsupportedEncodingException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-public class FastCasualList extends Activity {
+import java.util.HashMap;
+import java.util.Map;
 
-    private static final String TAG = FastCasualList.class
-            .getSimpleName();
-    private Button btnFastCasualList;
-    private NetworkImageView imgNetWorkView;
-    private ImageView imageView;
+public class FastCasualList extends Activity implements OnClickListener {
+
+    private String TAG = CafeList.class.getSimpleName();
+    private Button btnJsonObj, btnJsonArray;
+    private TextView msgResponse;
+    private ProgressDialog pDialog;
+
+    // These tags will be used to cancel the requests
+    private String tag_json_obj = "jobj_req", tag_json_arry = "jarray_req";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fast_casual_list);
+        setContentView(R.layout.cafe_list);
 
-        btnFastCasualList = (Button) findViewById(R.id.btnFastCasualList);
-        imgNetWorkView = (NetworkImageView) findViewById(R.id.imgNetwork);
-        imageView = (ImageView) findViewById(R.id.imgView);
+        btnJsonObj = (Button) findViewById(R.id.btnJsonObj);
+        btnJsonArray = (Button) findViewById(R.id.btnJsonArray);
+        msgResponse = (TextView) findViewById(R.id.diningLocations);
 
-        btnFastCasualList.setOnClickListener(new View.OnClickListener() {
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Loading...");
+        pDialog.setCancelable(false);
 
-            @Override
-            public void onClick(View v) {
-                makeImageRequest();
-            }
-        });
+        btnJsonObj.setOnClickListener(this);
+        btnJsonArray.setOnClickListener(this);
     }
 
-    private void makeImageRequest() {
-        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    private void showProgressDialog() {
+        if (!pDialog.isShowing())
 
-        // If you are using NetworkImageView
-        imgNetWorkView.setImageUrl(Const.URL_IMAGE, imageLoader);
+            pDialog.show();
+    }
 
+    private void hideProgressDialog() {
+        if (pDialog.isShowing())
+            pDialog.hide();
+    }
 
-        // If you are using normal ImageView
-		/*imageLoader.get(Const.URL_IMAGE, new ImageListener() {
+    /**
+     * Making json object request
+     * */
+    private void makeJsonObjReq() {
+        showProgressDialog();
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
+                Const.URL_JSON_FAST, null,
+                new Response.Listener<JSONObject>() {
 
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.e(TAG, "Image Load Error: " + error.getMessage());
-			}
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+                        msgResponse.setText(response.toString());
+                        hideProgressDialog();
+                    }
+                }, new Response.ErrorListener() {
 
-			@Override
-			public void onResponse(ImageContainer response, boolean arg1) {
-				if (response.getBitmap() != null) {
-					// load image into imageview
-					imageView.setImageBitmap(response.getBitmap());
-				}
-			}
-		});*/
-
-        // Loading image with placeholder and error image
-        imageLoader.get(Const.URL_IMAGE, ImageLoader.getImageListener(
-                imageView, R.drawable.ico_loading, R.drawable.ico_error));
-
-        Cache cache = AppController.getInstance().getRequestQueue().getCache();
-        Entry entry = cache.get(Const.URL_IMAGE);
-        if(entry != null){
-            try {
-                String data = new String(entry.data, "UTF-8");
-                // handle data, like converting it to xml, json, bitmap etc.,
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hideProgressDialog();
             }
-        }else{
-            // cached response doesn't exists. Make a network call here
+        }) {
+
+            /**
+             * Passing some request headers
+             * */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", "Androidhive");
+                params.put("email", "abc@androidhive.info");
+                params.put("pass", "password123");
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjReq,
+                tag_json_obj);
+
+        // Cancelling request
+        // ApplicationController.getInstance().getRequestQueue().cancelAll(tag_json_obj);
+    }
+
+    /**
+     * Making json array request
+     * */
+    private void makeJsonArryReq() {
+        showProgressDialog();
+        JsonArrayRequest req = new JsonArrayRequest(Const.URL_JSON_FAST,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, response.toString());
+                        msgResponse.setText(response.toString());
+                        hideProgressDialog();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hideProgressDialog();
+            }
+        });
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(req,
+                tag_json_arry);
+
+        // Cancelling request
+        // ApplicationController.getInstance().getRequestQueue().cancelAll(tag_json_arry);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnJsonObj:
+                makeJsonObjReq();
+                break;
+            case R.id.btnJsonArray:
+                makeJsonArryReq();
+                break;
         }
 
     }
+
 }

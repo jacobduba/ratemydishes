@@ -6,4 +6,85 @@
     android:layout_height="match_parent"
     tools:context=".ConvenienceStoreList">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F4F4d4"
+        tools:context=".restaurantList">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="200dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="16dp"
+            android:text="demo note: JSON req"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/diningLocations" />
+
+        <TextView
+            android:id="@+id/welcomeText3"
+            android:layout_width="411dp"
+            android:layout_height="88dp"
+            android:background="#F44336"
+            android:backgroundTint="#F44336"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:shadowColor="#FF0000"
+            android:singleLine="false"
+            android:text="Convenience Store"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textColorHighlight="#F44336"
+            android:textIsSelectable="false"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnJsonObj"
+            android:layout_width="166dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="86dp"
+            android:layout_marginEnd="16dp"
+            android:background="#F44336"
+            android:text="press to see stores (object)"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnJsonArray"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText3" />
+
+        <Button
+            android:id="@+id/btnJsonArray"
+            android:layout_width="171dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="86dp"
+            android:background="#F44336"
+            android:text="Press to see stores (array)"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText3" />
+
+        <TextView
+            android:id="@+id/diningLocations"
+            android:layout_width="393dp"
+            android:layout_height="401dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="10dp"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnJsonObj" />
+
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

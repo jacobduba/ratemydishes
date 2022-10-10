@@ -8,23 +8,23 @@
     tools:context=".restaurantList">
 
     <Button
-        android:id="@+id/toFastCasualList3"
+        android:id="@+id/toConvenienceStore"
         android:layout_width="424dp"
         android:layout_height="61dp"
         android:backgroundTint="#F4F4D4"
-        android:text="Convenience Store (non functional)"
+        android:text="Convenience Store"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toFastCasualList2" />
+        app:layout_constraintTop_toBottomOf="@+id/toGetAndGoList" />
 
     <Button
-        android:id="@+id/toFastCasualList2"
+        android:id="@+id/toGetAndGoList"
         android:layout_width="424dp"
         android:layout_height="61dp"
         android:layout_marginTop="1dp"
         android:backgroundTint="#F4F4D4"
-        android:text="Get and Go (non functional)"
+        android:text="Get and Go"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toFastCasualList3"
+        app:layout_constraintTop_toBottomOf="@+id/toConvenienceStore"
         app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

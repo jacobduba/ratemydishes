@@ -7,75 +7,85 @@
     android:layout_height="match_parent"
     android:background="#F4F4D4">
 
-    <TextView
-        android:id="@+id/welcomeText4"
-        android:layout_width="411dp"
-        android:layout_height="88dp"
-        android:background="#F44336"
-        android:backgroundTint="#F44336"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:shadowColor="#FF0000"
-        android:singleLine="false"
-        android:text="Fast Casual"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textColorHighlight="#F44336"
-        android:textIsSelectable="false"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F4F4d4"
+        tools:context=".restaurantList">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="200dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="16dp"
-        android:text="demo note: image request"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diningLocations" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="200dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="16dp"
+            android:text="demo note: JSON req"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/diningLocations" />
 
-    <Button
-        android:id="@+id/btnFastCasualList"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="79dp"
-        android:background="#F44336"
-        android:text="Press to see fast casual"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeText4" />
+        <TextView
+            android:id="@+id/welcomeText3"
+            android:layout_width="411dp"
+            android:layout_height="88dp"
+            android:background="#F44336"
+            android:backgroundTint="#F44336"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:shadowColor="#FF0000"
+            android:singleLine="false"
+            android:text="Fast Casual"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textColorHighlight="#F44336"
+            android:textIsSelectable="false"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/imgNetwork"
-        android:layout_width="377dp"
-        android:layout_height="165dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="51dp"
-        android:layout_marginEnd="18dp"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnFastCasualList"></com.android.volley.toolbox.NetworkImageView>
+        <Button
+            android:id="@+id/btnJsonObj"
+            android:layout_width="166dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="86dp"
+            android:layout_marginEnd="16dp"
+            android:background="#F44336"
+            android:text="press to see Fast Casual (object)"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnJsonArray"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText3" />
 
-    <ImageView
-        android:id="@+id/imgView"
-        android:layout_width="393dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="31dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgNetwork"></ImageView>
+        <Button
+            android:id="@+id/btnJsonArray"
+            android:layout_width="171dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="86dp"
+            android:background="#F44336"
+            android:text="Press to see Fast Casual (array)"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText3" />
 
+        <TextView
+            android:id="@+id/diningLocations"
+            android:layout_width="393dp"
+            android:layout_height="401dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="10dp"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnJsonObj" />
+
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

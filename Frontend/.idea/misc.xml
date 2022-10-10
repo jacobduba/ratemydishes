@@ -3,10 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Michael/1_as_6/Frontend/app/src/main/res/layout/activity_dining_centers_list.xml" value="0.11372847011144883" />
+        <entry key="..\:/Users/Michael/1_as_6/Frontend/app/src/main/res/layout/activity_dining_menu.xml" value="0.1" />
+        <entry key="..\:/Users/Michael/1_as_6/Frontend/app/src/main/res/layout/cafe_list.xml" value="0.1" />
+        <entry key="..\:/Users/Michael/1_as_6/Frontend/app/src/main/res/layout/dining_center_list.xml" value="0.1" />
+        <entry key="..\:/Users/Michael/1_as_6/Frontend/app/src/main/res/layout/fast_casual_list.xml" value="0.1" />
+        <entry key="..\:/Users/Michael/1_as_6/Frontend/app/src/main/res/layout/login.xml" value="0.1" />
+        <entry key="..\:/Users/Michael/1_as_6/Frontend/app/src/main/res/layout/registration.xml" value="0.11372847011144883" />
         <entry key="..\:/Users/Michael/1_as_6/Frontend/app/src/main/res/layout/restaurant_list.xml" value="0.11372847011144883" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

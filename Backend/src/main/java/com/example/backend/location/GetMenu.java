@@ -1,9 +1,11 @@
 package com.example.backend.location;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.JsonArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,13 +49,15 @@ MenuRepository mr;
 
             String titleVal1 = titleVal;
             String titleVal2 = titleVal1.substring(1, titleVal.length() - 1);
+
+            JsonNode menusObj = mapper.readTree(menusVal);
             //Check to return correct menu
             if (slugVal2.equals(slug)) {
                 ObjectNode menuObj = mapper.createObjectNode();
 
-                menuObj.put("slug", slugVal2);
-                menuObj.put("title", titleVal2);
-                menuObj.put("Menu", menusVal);
+                menuObj.put("Slug", slugVal2);
+                menuObj.put("Title", titleVal2);
+                menuObj.set("Menu", menusObj);
 
                 menuNode.add(menuObj);
             }

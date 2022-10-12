@@ -1,5 +1,6 @@
 package com.example.backend.location;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class Menus {
     @Column(name = "slug")
     private String slug;
 
-    @Column(length = 16777215, name = "menus")
+    @Column(name = "menus")
     private String menus;
 
     public Menus(String slug, String title, String menus) {

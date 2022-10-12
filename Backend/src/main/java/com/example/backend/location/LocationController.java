@@ -73,14 +73,14 @@ public class LocationController {
     //Request to do GET-Locations to fill Locations Database with general info including Slugs. These slugs will be used to track specific menus.
     //scheduled to run top every 30 min of every day
     @RequestMapping("/populate-db")
-    @Scheduled(initialDelay=0, fixedRate=1800000)
+    @Scheduled(initialDelay=100, fixedRate=1800000)
     public void populateDB() throws Exception {
         getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
 
     }
     //In-Progress
     //run every five minutes
-    @Scheduled(initialDelay=1000, fixedRate=300000)
+    @Scheduled(initialDelay=10000, fixedRate=300000)
     @RequestMapping("/menu-data")
     public void menuData() throws Exception {
         //Creating Json Object to store Location Menu
@@ -110,9 +110,9 @@ public class LocationController {
     ArrayNode getMenu(@PathVariable String slug) throws Exception {
         //get current unix time stamp
         long unixTime = Instant.now().getEpochSecond();
-        getMenu.returnMenu();
+        ArrayNode singleMenu = getMenu.returnMenu(slug);
         //getLocations.populateTable(an);
-        return an;
+        return singleMenu;
     }
 }
 

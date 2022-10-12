@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 @EnableScheduling
 public interface MenuRepository extends JpaRepository<Menus, Long> {
     Menus findById(long id);
+
     boolean existsByTitle(String title);
 
     @Transactional

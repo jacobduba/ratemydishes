@@ -23,18 +23,13 @@ public class Menus {
     @Column(length = 16777215, name = "menus")
     private String menus;
 
-
-    public Menus(String title, String menus) {
+    public Menus(String slug, String title, String menus) {
         this.title = title;
+        this.slug = slug;
         this.menus = menus;
-
     }
 
     public Menus() {
-
-    }
-
-    public Menus(String slug1, String title1, String menu1) {
     }
 
     public void setId(Long id) {
@@ -62,5 +57,4 @@ public class Menus {
     public void setMenus(String menus) {
         this.menus = menus;
     }
-
 }

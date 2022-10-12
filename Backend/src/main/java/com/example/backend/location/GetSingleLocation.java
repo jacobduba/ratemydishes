@@ -44,9 +44,11 @@ public class GetSingleLocation {
             //Need to type cast array element to obj
             ObjectNode jsonObj = (ObjectNode) arr.get(i);
             //Query table data from each JsonObj
-            String slug1 = String.valueOf(jsonObj.get("slug"));
-            String title1 = String.valueOf(jsonObj.get("title"));
             String menu1 = String.valueOf(jsonObj.get("menus"));
+            String title1 = String.valueOf(jsonObj.get("title"));
+            String slug1 = String.valueOf(jsonObj.get("slug"));
+
+
             //Check to prevent duplicates before input
             Menus m = new Menus(slug1, title1, menu1);
             if (mr.existsByTitle(title1) == false)

@@ -17,6 +17,9 @@ public class Menus {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "slug")
+    private String slug;
+
     @Column(length = 16777215, name = "menus")
     private String menus;
 
@@ -31,6 +34,9 @@ public class Menus {
 
     }
 
+    public Menus(String slug1, String title1, String menu1) {
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -39,10 +45,12 @@ public class Menus {
         return id;
     }
 
+    public String getSlug() {return slug; }
     public String getTitle() {
         return title;
     }
 
+    public void setSlug(String slug) {this.title = title;}
     public void setTitle(String title) {
         this.title = title;
     }

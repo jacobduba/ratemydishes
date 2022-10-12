@@ -17,10 +17,10 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    //@Bean
-    //CommandLineRunner init(UserService us) {
-       // return args -> {
-           // us.createNewUser("admin", "admin");
-       // };
-    //}
+    /*@Bean
+    CommandLineRunner init(UserService us) {
+       return args -> {
+           us.createNewUser("admin", "admin");
+        };
+    }*/
 }

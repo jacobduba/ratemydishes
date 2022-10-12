@@ -40,6 +40,9 @@ public class LocationController {
     @Autowired
     Locations l;
 
+    @Autowired
+    GetMenu getMenu;
+
     //Finished
     @RequestMapping("/get-dining-centers")
     ArrayNode getDiningLocations() throws NoSuchFieldException, IllegalAccessException {
@@ -77,7 +80,7 @@ public class LocationController {
     }
     //In-Progress
     //run every five minutes
-    @Scheduled(initialDelay=10000, fixedRate=300000)
+    @Scheduled(initialDelay=1000, fixedRate=300000)
     @RequestMapping("/menu-data")
     public void menuData() throws Exception {
         //Creating Json Object to store Location Menu
@@ -101,12 +104,13 @@ public class LocationController {
         }
     }
         //To be worked on
+        //Call is to retrieve menu information from webserver. Only for locations that are open
     @RequestMapping("/get-menu/{slug}")
     @ResponseBody
     ArrayNode getMenu(@PathVariable String slug) throws Exception {
         //get current unix time stamp
         long unixTime = Instant.now().getEpochSecond();
-        ArrayNode an = getSingleLocation.getHTML(slug, unixTime, "https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location/");
+        getMenu.returnMenu();
         //getLocations.populateTable(an);
         return an;
     }

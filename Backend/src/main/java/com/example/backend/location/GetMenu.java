@@ -17,14 +17,14 @@ MenuRepository mr;
 
     public ArrayNode returnMenu(String slug) throws JsonProcessingException, NoSuchFieldException, IllegalAccessException {
         ObjectMapper mapper = new ObjectMapper();
+        ArrayNode menuNode = mapper.createArrayNode();
         //Query Entire Table
         List menusList = mr.findAll();
-        ArrayNode menuNode = null;
 
         for(int i = 0; i < menusList.size(); i++) {
             //object row represents a row and its field values
             Object row = menusList.get(i);
-            Class cl = menusList.getClass();
+            Class cl = row.getClass();
 
             //Fields of each object
             Field slugField = cl.getDeclaredField("slug");
@@ -41,13 +41,18 @@ MenuRepository mr;
             String titleVal = (String) titleField.get(row);
             String menusVal = (String) menusField.get(row);
 
+            //to remove the double quotes
+            String slugVal1 = slugVal;
+            String slugVal2 = slugVal1.substring(1, slugVal.length() - 1);
 
+            String titleVal1 = titleVal;
+            String titleVal2 = titleVal1.substring(1, titleVal.length() - 1);
             //Check to return correct menu
-            if (slugVal == slug) {
+            if (slugVal2.equals(slug)) {
                 ObjectNode menuObj = mapper.createObjectNode();
 
-                menuObj.put("slug", slugVal);
-                menuObj.put("title", titleVal);
+                menuObj.put("slug", slugVal2);
+                menuObj.put("title", titleVal2);
                 menuObj.put("Menu", menusVal);
 
                 menuNode.add(menuObj);

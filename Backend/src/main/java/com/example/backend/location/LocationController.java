@@ -107,11 +107,8 @@ public class LocationController {
         //Call is to retrieve menu information from webserver. Only for locations that are open
     @RequestMapping("/get-menu/{slug}")
     @ResponseBody
-    ArrayNode getMenu(@PathVariable String slug) throws Exception {
-        //get current unix time stamp
-        long unixTime = Instant.now().getEpochSecond();
+    ArrayNode getMenu(@PathVariable("slug") String slug) throws Exception {
         ArrayNode singleMenu = getMenu.returnMenu(slug);
-        //getLocations.populateTable(an);
         return singleMenu;
     }
 }

@@ -5,7 +5,6 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,27 +13,21 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.g1as6.ratemydishes.app.AppController;
 import com.g1as6.ratemydishes.app.AppVars;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class login extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     Button loginButton;
     Button registrationButton;
     EditText usrName;
@@ -95,7 +88,7 @@ public class login extends AppCompatActivity {
                                         //((TextView) findViewById(R.id.response)).setText(token.toString());
                                         AppVars.userToken = token;
 
-                                        Intent intent = new Intent(login.this, restaurantList.class);
+                                        Intent intent = new Intent(Login.this, RestaurantList.class);
                                         startActivity(intent);
                                     }else{
                                         AppVars.userToken = null;
@@ -132,7 +125,7 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(login.this, registration.class);
+                Intent intent = new Intent(Login.this, Registration.class);
                 startActivity(intent);
             }
         });

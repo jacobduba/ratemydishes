@@ -2,10 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4D4">
+    tools:context=".ConvenienceStoreList">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout3"
@@ -39,7 +38,7 @@
             android:inputType="textPersonName"
             android:shadowColor="#FF0000"
             android:singleLine="false"
-            android:text="Fast Casual"
+            android:text="Convenience Store"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textColorHighlight="#F44336"
@@ -59,7 +58,7 @@
             android:layout_marginTop="86dp"
             android:layout_marginEnd="16dp"
             android:background="#F44336"
-            android:text="press to see Fast Casual (object)"
+            android:text="press to see stores (object)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btnJsonArray"
             app:layout_constraintTop_toBottomOf="@+id/welcomeText3" />
@@ -71,7 +70,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="86dp"
             android:background="#F44336"
-            android:text="Press to see Fast Casual (array)"
+            android:text="Press to see stores (array)"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/welcomeText3" />
 

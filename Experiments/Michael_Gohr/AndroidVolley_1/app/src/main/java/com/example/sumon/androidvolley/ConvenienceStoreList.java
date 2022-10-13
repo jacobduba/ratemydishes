@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FastCasualList extends Activity implements OnClickListener {
+public class ConvenienceStoreList extends Activity implements OnClickListener {
 
     private String TAG = CafeList.class.getSimpleName();
     private Button btnJsonObj, btnJsonArray;
@@ -38,7 +38,7 @@ public class FastCasualList extends Activity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cafe_list);
+        setContentView(R.layout.activity_convenience_store_list);
 
         btnJsonObj = (Button) findViewById(R.id.btnJsonObj);
         btnJsonArray = (Button) findViewById(R.id.btnJsonArray);
@@ -69,7 +69,7 @@ public class FastCasualList extends Activity implements OnClickListener {
     private void makeJsonObjReq() {
         showProgressDialog();
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
-                Const.URL_JSON_FAST, null,
+                Const.URL_JSON_STORE, null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -122,7 +122,7 @@ public class FastCasualList extends Activity implements OnClickListener {
      * */
     private void makeJsonArryReq() {
         showProgressDialog();
-        JsonArrayRequest req = new JsonArrayRequest(Const.URL_JSON_FAST,
+        JsonArrayRequest req = new JsonArrayRequest(Const.URL_JSON_STORE,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {

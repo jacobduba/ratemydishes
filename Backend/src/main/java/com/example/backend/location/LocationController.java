@@ -85,6 +85,8 @@ public class LocationController {
     @Scheduled(initialDelay=10000, fixedRate=300000)
     @RequestMapping("/menu-data")
     public void menuData() throws Exception {
+        //Delete previous vals in Repo so that I can now replace
+        mr.deleteAll();
         //Creating Json Object to store Location Menu
         //Grabbing list of all Location in database
         List listLoc = lr.findAll();

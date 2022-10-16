@@ -40,8 +40,6 @@ public class GetSingleLocation {
     }
 
     public void populateTable(ArrayNode arr) throws IOException {  //Parse JSON Array
-
-        ObjectMapper mapper = new ObjectMapper();
         for (int i = 0; i < arr.size(); i++) {
             //Need to type cast array element to obj
             JsonNode jsonNode = arr.get(i);
@@ -50,12 +48,10 @@ public class GetSingleLocation {
             String title1 = String.valueOf(jsonNode.get("title"));
             String slug1 = String.valueOf(jsonNode.get("slug"));
 
-
             //Check to prevent duplicates before input
             Menus m = new Menus(slug1, title1, menu1);
             if (mr.existsByTitle(title1) == false)
                 mr.save(m);
-
         }
     }
 }

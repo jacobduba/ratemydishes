@@ -32,7 +32,8 @@ public class GetLocations {
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode jsonArray = (ArrayNode) mapper.readTree(result.toString());
-
+        //Deleting current vals in repo to replace with new
+        lr.deleteAll();
         for (int i = 0; i < jsonArray.size(); i++) {
             //Need to type cast array element to obj
             ObjectNode jsonObj = (ObjectNode) jsonArray.get(i);

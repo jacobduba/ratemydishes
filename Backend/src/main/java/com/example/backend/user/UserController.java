@@ -1,10 +1,13 @@
 package com.example.backend.user;
 
+import com.example.backend.ApiError;
 import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.payload.AuthRequestPayload;
 import com.example.backend.user.payload.LoginRequestPayload;
 import com.example.backend.user.payload.RegisterRequestPayload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +53,15 @@ public class UserController {
         res.put("user", userService.getUserResponsePayload(registerRequestPayload.getNetId()));
 
         return res;
+    }
+
+    // Error handling
+    @ExceptionHandler(InvalidPayloadException.class)
+    public ResponseEntity<ApiError> invalidPayloadException(InvalidPayloadException ex) {
+        ApiError err = new ApiError(
+                HttpStatus.UNAUTHORIZED,
+                "InvalidPayloadException: Payload does not contain expected payloads.",
+                ex);
+        return new ResponseEntity<>(err, err.getStatus());
     }
 }

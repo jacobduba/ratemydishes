@@ -1,6 +1,5 @@
 package com.example.backend.user;
 
-
 import javax.persistence.*;
 
 @Entity

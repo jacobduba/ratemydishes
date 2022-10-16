@@ -22,7 +22,7 @@ public class ApiError {
         timestamp = LocalDateTime.now();
         this.status = status;
         this.message = "Unexpected error";
-        logger.warn("Exception: " + ex.getMessage());
+        logger.error("Application error in: [" + ex.getClass().getName() + "]", ex);
     }
 
     public ApiError(HttpStatus status, String message, Throwable ex) {
@@ -32,5 +32,13 @@ public class ApiError {
 
     public HttpStatus getStatus() {
         return status;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

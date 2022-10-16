@@ -1,6 +1,7 @@
 package com.example.backend.location;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,7 +48,7 @@ public class LocationController {
     //Finished
     @RequestMapping("/get-dining-centers")
     ArrayNode getDiningLocations() throws NoSuchFieldException, IllegalAccessException {
-        return getDiningCenters.getDinCen();
+        return getDiningCenters.getDiningCenters();
     }
 
     //Finished
@@ -73,7 +75,7 @@ public class LocationController {
     //Request to do GET-Locations to fill Locations Database with general info including Slugs. These slugs will be used to track specific menus.
     //scheduled to run top every 30 min of every day
     @RequestMapping("/populate-db")
-    @Scheduled(initialDelay=100, fixedRate=1800000)
+    @Scheduled(initialDelay=100, fixedRate=600000)
     public void populateDB() throws Exception {
         getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
 
@@ -107,8 +109,8 @@ public class LocationController {
         //Call is to retrieve menu information from webserver. Only for locations that are open
     @RequestMapping("/get-menu/{slug}")
     @ResponseBody
-    ArrayNode getMenu(@PathVariable("slug") String slug) throws Exception {
-        ArrayNode singleMenu = getMenu.returnMenu(slug);
+    ObjectNode getMenu(@PathVariable("slug") String slug) throws Exception {
+        ObjectNode singleMenu = getMenu.returnMenu(slug);
         return singleMenu;
     }
 }

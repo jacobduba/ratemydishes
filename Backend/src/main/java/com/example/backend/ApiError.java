@@ -29,4 +29,8 @@ public class ApiError {
         this(status, ex);
         this.message = message;
     }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
 }

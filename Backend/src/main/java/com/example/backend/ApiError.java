@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
@@ -28,5 +29,16 @@ public class ApiError {
     public ApiError(HttpStatus status, String message, Throwable ex) {
         this(status, ex);
         this.message = message;
+    }
+
+    /**
+     * Call this to create errors
+     * @param status
+     * @param message
+     * @param ex
+     * @return
+     */
+    public static ResponseEntity<ApiError> buildError(HttpStatus status, String message, Throwable ex) {
+        return new ResponseEntity<ApiError>(new ApiError(status, message, ex), status);
     }
 }

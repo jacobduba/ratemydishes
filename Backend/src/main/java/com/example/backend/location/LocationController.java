@@ -78,7 +78,7 @@ public class LocationController {
     }
     //In-Progress
     //run every five minutes
-    @Scheduled(initialDelay=10000, fixedRate=300000)
+    @Scheduled(initialDelay=1000, fixedRate=300000)
     @RequestMapping("/menu-data")
     public void menuData() throws Exception {
         //Delete previous vals in Repo so that I can now replace

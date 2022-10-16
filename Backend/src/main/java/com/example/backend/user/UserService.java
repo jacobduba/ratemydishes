@@ -37,6 +37,11 @@ public class UserService {
         return new UserResponsePayload(userRepository.findByNetId(netId));
     }
 
+    /**
+     * Pass in your request into this method to get User from auth token
+     * @param payload any class that extends AuthRequestPayload
+     * @return User
+     */
     public User getUserFromAuthPayload(AuthRequestPayload payload) {
         return userRepository.findByNetId(jwtTokenHelper.parseAccessToken(payload.getToken()));
     }

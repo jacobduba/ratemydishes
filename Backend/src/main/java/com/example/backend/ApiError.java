@@ -31,14 +31,7 @@ public class ApiError {
         this.message = message;
     }
 
-    /**
-     * Call this to create errors
-     * @param status
-     * @param message
-     * @param ex
-     * @return
-     */
-    public static ResponseEntity<ApiError> buildError(HttpStatus status, String message, Throwable ex) {
-        return new ResponseEntity<ApiError>(new ApiError(status, message, ex), status);
+    public HttpStatus getStatus() {
+        return status;
     }
 }

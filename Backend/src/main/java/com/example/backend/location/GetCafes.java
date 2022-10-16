@@ -13,7 +13,7 @@ public class GetCafes {
     @Autowired
     public LocationRepository lr;
 
-    public ArrayNode getCafes() throws NoSuchFieldException, IllegalAccessException {
+    public ArrayNode getCafes() {
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<Locations> cafeLoc = lr.findByResType("[\"cafe\"]");

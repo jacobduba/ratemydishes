@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 
 @Service
@@ -14,7 +13,7 @@ public class GetGetGos {
     @Autowired
     public LocationRepository lr;
 
-    public ArrayNode getGetGo() throws NoSuchFieldException, IllegalAccessException {
+    public ArrayNode getGetGo() {
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<Locations> getLoc = lr.findByResType("[\"get-go\"]");

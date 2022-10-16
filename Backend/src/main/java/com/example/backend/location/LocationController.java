@@ -1,5 +1,4 @@
 package com.example.backend.location;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.lang.reflect.Field;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -107,7 +103,7 @@ public class LocationController {
             getSingleLocation.populateTable(an);
         }
     }
-        //To be worked on
+        //Finished
         //Call is to retrieve menu information from webserver. Only for locations that are open
     @RequestMapping("/get-menu/{slug}")
     @ResponseBody

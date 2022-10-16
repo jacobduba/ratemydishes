@@ -1,12 +1,7 @@
 package com.example.backend.location;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
-import java.util.Map;
 
 @Entity
 @Component

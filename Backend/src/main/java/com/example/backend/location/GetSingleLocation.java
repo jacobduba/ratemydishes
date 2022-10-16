@@ -1,20 +1,12 @@
 package com.example.backend.location;
 
-import com.example.backend.location.LocationRepository;
-import com.example.backend.location.Locations;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
-
 import java.io.*;
 import java.net.*;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class GetSingleLocation {
@@ -39,7 +31,7 @@ public class GetSingleLocation {
         }
     }
 
-    public void populateTable(ArrayNode arr) throws IOException {  //Parse JSON Array
+    public void populateTable(ArrayNode arr) {  //Parse JSON Array
         for (int i = 0; i < arr.size(); i++) {
             //Need to type cast array element to obj
             JsonNode jsonNode = arr.get(i);

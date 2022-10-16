@@ -1,14 +1,11 @@
 package com.example.backend.location;
 
-import java.lang.reflect.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class GetFastCasuals {
@@ -16,7 +13,7 @@ public class GetFastCasuals {
     @Autowired
     public LocationRepository lr;
 
-    public ArrayNode getFastCas() throws NoSuchFieldException, IllegalAccessException {
+    public ArrayNode getFastCas() {
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<Locations> fastLoc = lr.findByResType("[\"fast-casual\"]");

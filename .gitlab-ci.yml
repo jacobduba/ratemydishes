@@ -1,0 +1,10 @@
+stages:
+    - maventry
+
+maven-build:
+    stage: maventry
+    tags:
+        - springboot_tag
+    script:
+        - cd Backend
+        - mvn package

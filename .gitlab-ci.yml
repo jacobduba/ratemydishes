@@ -1,5 +1,6 @@
 stages:
-  - maventry
+  - mavenbuild
+  - maventest
 
 maven-build:
   stage: mavenbuild

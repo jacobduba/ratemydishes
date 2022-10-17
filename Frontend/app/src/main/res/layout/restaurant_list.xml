@@ -8,6 +8,48 @@
     android:foregroundTint="#F10606"
     tools:context=".restaurantList">
 
+    <Button
+        android:id="@+id/toDiningCenters4"
+        android:layout_width="434dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="168dp"
+        android:text="Get and Go"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toCafe" />
+
+    <Button
+        android:id="@+id/toDiningCenters3"
+        android:layout_width="434dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="112dp"
+        android:text="Fast Casual"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.434"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toCafe" />
+
+    <Button
+        android:id="@+id/toDiningCenters2"
+        android:layout_width="434dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="56dp"
+        android:text="Convenience Stores"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toCafe" />
+
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="411dp"
@@ -15,12 +57,12 @@
         android:background="#F44336"
         android:backgroundTint="#F44336"
         android:ems="10"
+        android:gravity="center"
         android:inputType="textPersonName"
         android:shadowColor="#FF0000"
         android:singleLine="false"
         android:text="Welcome to Rate Your Dishes"
         android:textAlignment="center"
-        android:gravity="center"
         android:textColor="#000000"
         android:textColorHighlight="#F44336"
         android:textIsSelectable="false"
@@ -38,18 +80,18 @@
         android:background="#F4F4D4"
         android:clickable="false"
         android:ems="10"
+        android:gravity="center"
         android:lines="2"
         android:maxLines="2"
         android:singleLine="false"
+        android:text="Select the type of restaurant you are looking for"
         android:textAlignment="center"
-        android:gravity="center"
         android:textSize="24sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeText"
-        android:text="Select the type of restaurant you are looking for" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
 
     <Button
         android:id="@+id/toCafe"
@@ -76,5 +118,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toCafe" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="164dp"
+        android:layout_height="170dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toDiningCenters4"
+        app:srcCompat="@drawable/clipart1890830" />
+
+    <ImageButton
+        android:id="@+id/toSettings"
+        android:layout_width="58dp"
+        android:layout_height="42dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

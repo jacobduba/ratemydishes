@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
@@ -40,5 +41,14 @@ public class ApiError {
 
     public String getMessage() {
         return message;
+    }
+
+    public static ResponseEntity<ApiError> buildRes(HttpStatus status, String message, Exception ex) {
+        ApiError err = new ApiError(
+                status,
+                message,
+                ex
+        );
+        return new ResponseEntity<>(err, err.getStatus());
     }
 }

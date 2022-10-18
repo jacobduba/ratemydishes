@@ -3,6 +3,7 @@ stages:
   - maventest
   - androidbuild
   - androidtest
+  - mavenDeploy
 
 maven-build:
   stage: mavenbuild
@@ -49,3 +50,15 @@ android-test:
   script:
     - cd Frontend
     - ./gradlew test
+
+autoDeploy:
+  stage: mavenDeploy
+  tags:
+   - springboot_tag
+  script:
+    - cd Backend
+    - mvn package
+    - sudo mv target/*.jar /opt/rmd/backend.jar 
+    - sudo systemctl stop rmd
+    - sudo systemctl start rmd
+

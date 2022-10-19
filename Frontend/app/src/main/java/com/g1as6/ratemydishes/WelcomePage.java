@@ -8,12 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.g1as6.ratemydishes.app.AppVars;
 
-public class restaurantList extends AppCompatActivity {
+public class WelcomePage extends AppCompatActivity {
 
     Button loginBtn;
     Button diningCenters;
@@ -55,7 +54,7 @@ public class restaurantList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(restaurantList.this, diningCentersList.class);
+                Intent intent = new Intent(WelcomePage.this, diningCentersList.class);
                 startActivity(intent);
             }
         });
@@ -64,7 +63,7 @@ public class restaurantList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(restaurantList.this, diningCentersList.class);
+                Intent intent = new Intent(WelcomePage.this, diningCentersList.class);
                 startActivity(intent);
             }
         });
@@ -73,7 +72,7 @@ public class restaurantList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(restaurantList.this, diningCentersList.class);
+                Intent intent = new Intent(WelcomePage.this, diningCentersList.class);
                 startActivity(intent);
             }
         });
@@ -82,7 +81,7 @@ public class restaurantList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(restaurantList.this, diningCentersList.class);
+                Intent intent = new Intent(WelcomePage.this, diningCentersList.class);
                 startActivity(intent);
             }
         });
@@ -91,7 +90,7 @@ public class restaurantList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(restaurantList.this, Settings.class);
+                Intent intent = new Intent(WelcomePage.this, Settings.class);
                 startActivity(intent);
             }
         });

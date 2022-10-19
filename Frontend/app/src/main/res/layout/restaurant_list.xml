@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F4F4D4"
     android:foregroundTint="#F10606"
-    tools:context=".restaurantList">
+    tools:context=".WelcomePage">
 
     <Button
         android:id="@+id/toGetAndGo"

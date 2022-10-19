@@ -23,7 +23,7 @@ public class diningCentersList extends AppCompatActivity {
             public void onClick(View v)
             {
                 //Edit so that this goes back to welcome instead of main
-                Intent intent = new Intent(diningCentersList.this, restaurantList.class);
+                Intent intent = new Intent(diningCentersList.this, WelcomePage.class);
                 startActivity(intent);
             }
         });

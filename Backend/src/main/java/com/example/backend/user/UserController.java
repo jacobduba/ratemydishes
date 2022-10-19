@@ -1,10 +1,17 @@
 package com.example.backend.user;
 
+import com.example.backend.ApiError;
+import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
+import com.example.backend.user.exceptions.InvalidTokenException;
+import com.example.backend.user.exceptions.UserAlreadyExistsException;
 import com.example.backend.user.payload.AuthRequestPayload;
 import com.example.backend.user.payload.LoginRequestPayload;
 import com.example.backend.user.payload.RegisterRequestPayload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +57,51 @@ public class UserController {
         res.put("user", userService.getUserResponsePayload(registerRequestPayload.getNetId()));
 
         return res;
+    }
+
+    // Error handling
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> httpNotReadableException(HttpMessageNotReadableException ex) {
+        return ApiError.buildRes(
+                HttpStatus.UNAUTHORIZED,
+                "No payload sent.",
+                ex
+        );
+    }
+
+    @ExceptionHandler(InvalidPayloadException.class)
+    public ResponseEntity<ApiError> invalidPayloadException(InvalidPayloadException ex) {
+        return ApiError.buildRes(
+                HttpStatus.UNAUTHORIZED,
+                "Payload does not contain expected properties.",
+                ex
+        );
+    }
+
+    @ExceptionHandler(IncorrectUsernameOrPasswordException.class)
+    public ResponseEntity<ApiError> incorrectException(IncorrectUsernameOrPasswordException ex) {
+        return ApiError.buildRes(
+                HttpStatus.UNAUTHORIZED,
+                "Incorrect username or password",
+                ex
+        );
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ApiError> invalidTokenException(InvalidTokenException ex) {
+        return ApiError.buildRes(
+                HttpStatus.UNAUTHORIZED,
+                "Token is invalid.",
+                ex
+        );
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ApiError> userAlreadyExistsException(UserAlreadyExistsException ex) {
+        return ApiError.buildRes(
+                HttpStatus.UNAUTHORIZED,
+                "User already exists.",
+                ex
+        );
     }
 }

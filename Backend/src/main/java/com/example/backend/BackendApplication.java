@@ -4,7 +4,6 @@ import com.example.backend.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,10 +16,10 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    /*@Bean
+    @Bean
     CommandLineRunner init(UserService us) {
        return args -> {
            us.createNewUser("admin", "admin");
         };
-    }*/
+    }
 }

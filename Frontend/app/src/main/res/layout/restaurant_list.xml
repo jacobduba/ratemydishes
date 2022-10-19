@@ -9,7 +9,7 @@
     tools:context=".restaurantList">
 
     <Button
-        android:id="@+id/toDiningCenters4"
+        android:id="@+id/toGetAndGo"
         android:layout_width="434dp"
         android:layout_height="58dp"
         android:layout_marginTop="168dp"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toCafe" />
 
     <Button
-        android:id="@+id/toDiningCenters3"
+        android:id="@+id/toFastCasual"
         android:layout_width="434dp"
         android:layout_height="58dp"
         android:layout_marginTop="112dp"
@@ -126,7 +126,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toDiningCenters4"
+        app:layout_constraintTop_toBottomOf="@+id/toGetAndGo"
         app:srcCompat="@drawable/clipart1890830" />
 
     <ImageButton

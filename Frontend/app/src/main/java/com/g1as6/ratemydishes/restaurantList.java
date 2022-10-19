@@ -17,6 +17,9 @@ public class restaurantList extends AppCompatActivity {
     Button loginBtn;
     Button diningCenters;
     AlertDialog Alert;
+    Button cafe;
+    Button fastCasual;
+    Button getAndGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,9 @@ public class restaurantList extends AppCompatActivity {
         setContentView(R.layout.restaurant_list);
 
         diningCenters = findViewById(R.id.toDiningCenters);
+        cafe = findViewById(R.id.toCafe);
+        fastCasual = findViewById(R.id.toFastCasual);
+        getAndGo = findViewById(R.id.toGetAndGo);
         new AlertDialog.Builder(this)
                 .setTitle("Token")
                 .setMessage(AppVars.userToken)
@@ -42,6 +48,33 @@ public class restaurantList extends AppCompatActivity {
                 .show();
 
         diningCenters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(restaurantList.this, diningCentersList.class);
+                startActivity(intent);
+            }
+        });
+
+        cafe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(restaurantList.this, diningCentersList.class);
+                startActivity(intent);
+            }
+        });
+
+        fastCasual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(restaurantList.this, diningCentersList.class);
+                startActivity(intent);
+            }
+        });
+
+        getAndGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {

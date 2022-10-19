@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 @Service
 public class GetSingleLocation {
@@ -30,7 +32,7 @@ public class GetSingleLocation {
             return response;
         }
     }
-
+    @Modifying
     public void populateTable(ArrayNode arr) {  //Parse JSON Array
         for (int i = 0; i < arr.size(); i++) {
             //Need to type cast array element to obj
@@ -41,8 +43,12 @@ public class GetSingleLocation {
             String slug1 = String.valueOf(jsonNode.get("slug"));
 
             //Check to prevent duplicates before input
+            Menus oldM = mr.findByTitle(title1);
             Menus m = new Menus(slug1, title1, menu1);
             if (mr.existsByTitle(title1) == false)
+                mr.save(m);
+            else if (mr.existsByTitle(title1) == true)
+                mr.delete(oldM);
                 mr.save(m);
         }
     }

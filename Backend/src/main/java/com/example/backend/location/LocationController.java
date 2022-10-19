@@ -69,16 +69,16 @@ public class LocationController {
     }
     //Finished
     //Request to do GET-Locations to fill Locations Database with general info including Slugs. These slugs will be used to track specific menus.
-    //scheduled to run top every 30 min of every day
+    //scheduled to run top every 5 min of every day
     @RequestMapping("/populate-db")
-    @Scheduled(initialDelay=100, fixedRate=600000)
+    @Scheduled(initialDelay=100, fixedRate=300000)
     public void populateDB() throws Exception {
         getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
 
     }
     //In-Progress
-    //run every five minutes
-    @Scheduled(initialDelay=1000, fixedRate=300000)
+    //run every 1 minute
+    @Scheduled(initialDelay=0, fixedRate=60000)
     @RequestMapping("/menu-data")
     public void menuData() throws Exception {
         //Delete previous vals in Repo so that I can now replace

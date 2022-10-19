@@ -1,13 +1,11 @@
 package com.example.backend.location;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.lang.reflect.Field;
 import java.time.Instant;
 import java.util.List;
@@ -40,50 +38,52 @@ public class LocationController {
     @Autowired
     Locations l;
 
+    @Autowired
+    GetMenu getMenu;
 
+    //Finished
     @RequestMapping("/get-dining-centers")
     ArrayNode getDiningLocations() throws NoSuchFieldException, IllegalAccessException {
-        return getDiningCenters.getDinCen();
+        return getDiningCenters.getDiningCenters();
     }
 
-
+    //Finished
     @RequestMapping("/get-cafe")
     ArrayNode getCafeLocations() throws NoSuchFieldException, IllegalAccessException {
         return getCafes.getCafes();
     }
-
+    //Finished
     @RequestMapping("/get-fast-casual")
     ArrayNode getFastCasualLocations() throws NoSuchFieldException, IllegalAccessException {
         return getFastCasual.getFastCas();
     }
-
+    //Finished
     @RequestMapping("/get-convenience-store")
     ArrayNode getConvenienceStoreLocations() throws NoSuchFieldException, IllegalAccessException {
         return getConvStores.getConvStores();
     }
-
+    //Finished
     @RequestMapping("/get-get-go")
     ArrayNode getGetGo() throws NoSuchFieldException, IllegalAccessException {
         return getGetGo.getGetGo();
     }
-
+    //Finished
     //Request to do GET-Locations to fill Locations Database with general info including Slugs. These slugs will be used to track specific menus.
-    //scheduled to run top every 30 min of every day
-
+    //scheduled to run top every 5 min of every day
     @RequestMapping("/populate-db")
-    @Scheduled(initialDelay=0, fixedRate=1800000)
+    @Scheduled(initialDelay=100, fixedRate=300000)
     public void populateDB() throws Exception {
         getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
 
     }
-
-    //run every five minutes
-    //@Scheduled(initialDelay=0, fixedRate=300000)
-    @GetMapping("/menu-data")
-    void menuData() throws Exception {
+    //In-Progress
+    //run every 1 minute
+    @Scheduled(initialDelay=0, fixedRate=60000)
+    @RequestMapping("/menu-data")
+    public void menuData() throws Exception {
+        //Delete previous vals in Repo so that I can now replace
+        mr.deleteAll();
         //Creating Json Object to store Location Menu
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode locMenu = mapper.createArrayNode();
         //Grabbing list of all Location in database
         List listLoc = lr.findAll();
         ArrayNode an;
@@ -99,19 +99,17 @@ public class LocationController {
 
             //get current unix time stamp
             long unixTime = Instant.now().getEpochSecond();
-             an = getSingleLocation.getHTML(slugVal, unixTime, "https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location/");
+            an = getSingleLocation.getHTML(slugVal, unixTime, "https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location/");
             getSingleLocation.populateTable(an);
         }
     }
-        //To be worked on
-    @GetMapping("get-menu/{slug}")
+        //Finished
+        //Call is to retrieve menu information from webserver. Only for locations that are open
+    @RequestMapping("/get-menu/{slug}")
     @ResponseBody
-    ArrayNode getMenu(@PathVariable String slug) throws Exception {
-        //get current unix time stamp
-        long unixTime = Instant.now().getEpochSecond();
-        ArrayNode an = getSingleLocation.getHTML(slug, unixTime, "https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location/");
-        //getLocations.populateTable(an);
-        return an;
+    ObjectNode getMenu(@PathVariable("slug") String slug) throws Exception {
+        ObjectNode singleMenu = getMenu.returnMenu(slug);
+        return singleMenu;
     }
 }
 

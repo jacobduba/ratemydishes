@@ -1,6 +1,5 @@
 package com.example.backend.location;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
-
 import java.io.*;
 import java.net.*;
 @Service
@@ -32,7 +30,8 @@ public class GetLocations {
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode jsonArray = (ArrayNode) mapper.readTree(result.toString());
-
+        //Deleting current vals in repo to replace with new
+        lr.deleteAll();
         for (int i = 0; i < jsonArray.size(); i++) {
             //Need to type cast array element to obj
             ObjectNode jsonObj = (ObjectNode) jsonArray.get(i);

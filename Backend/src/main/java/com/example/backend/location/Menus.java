@@ -1,13 +1,7 @@
 package com.example.backend.location;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 @Entity
 @Component
@@ -19,18 +13,19 @@ public class Menus {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "menus")
-    private ArrayNode menus;
+    @Column(name = "slug")
+    private String slug;
 
+    @Column(name = "menus", columnDefinition = "json")
+    private String menus;
 
-    public Menus(String title, ArrayNode menus) {
+    public Menus(String slug, String title, String menus) {
         this.title = title;
+        this.slug = slug;
         this.menus = menus;
-
     }
 
     public Menus() {
-
     }
 
     public void setId(Long id) {
@@ -41,20 +36,21 @@ public class Menus {
         return id;
     }
 
+    public String getSlug() {return slug; }
     public String getTitle() {
         return title;
     }
 
+    public void setSlug(String slug) {this.title = title;}
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public ArrayNode getMenus() {
+    public String getMenus() {
         return menus;
     }
 
-    public void setMenus(ArrayNode menus) {
+    public void setMenus(String menus) {
         this.menus = menus;
     }
-
 }

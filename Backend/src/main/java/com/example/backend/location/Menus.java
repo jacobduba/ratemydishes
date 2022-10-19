@@ -16,7 +16,7 @@ public class Menus {
     @Column(name = "slug")
     private String slug;
 
-    @Column(name = "menus", columnDefinition = "json")
+    @Column(name = "menus")
     private String menus;
 
     public Menus(String slug, String title, String menus) {

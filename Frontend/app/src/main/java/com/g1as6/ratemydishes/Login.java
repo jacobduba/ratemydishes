@@ -27,7 +27,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class login extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     Button loginButton;
     Button registrationButton;
     EditText usrName;
@@ -42,6 +42,10 @@ public class login extends AppCompatActivity {
         AppController.getInstance().getRequestQueue().start();
         setContentView(R.layout.login);
         ProgressDialog pDialog = new ProgressDialog(this);
+
+        // TODO: Remove this
+        Intent intent = new Intent(Login.this, WelcomePage.class);
+        startActivity(intent);
 
         // Component Assignment
         loginButton = findViewById(R.id.loginBtn);
@@ -88,7 +92,7 @@ public class login extends AppCompatActivity {
                                         //((TextView) findViewById(R.id.response)).setText(token.toString());
                                         AppVars.userToken = token;
 
-                                        Intent intent = new Intent(login.this, WelcomePage.class);
+                                        Intent intent = new Intent(Login.this, WelcomePage.class);
                                         startActivity(intent);
                                     }else{
                                         AppVars.userToken = null;
@@ -125,7 +129,7 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(login.this, registration.class);
+                Intent intent = new Intent(Login.this, Registration.class);
                 startActivity(intent);
             }
         });

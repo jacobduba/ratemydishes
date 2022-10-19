@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class registration extends AppCompatActivity {
+public class Registration extends AppCompatActivity {
     ImageButton backBtn;
     Button createBtn;
     TextView passStat;
@@ -60,7 +60,7 @@ public class registration extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(registration.this, login.class);
+                Intent intent = new Intent(Registration.this, Login.class);
                 startActivity(intent);
             }
         });
@@ -121,7 +121,7 @@ public class registration extends AppCompatActivity {
                                             //((TextView) findViewById(R.id.response)).setText(token.toString());
                                             AppVars.userToken = token;
 
-                                            Intent intent = new Intent(registration.this, WelcomePage.class);
+                                            Intent intent = new Intent(Registration.this, WelcomePage.class);
                                             startActivity(intent);
                                         }else{
                                             AppVars.userToken = null;

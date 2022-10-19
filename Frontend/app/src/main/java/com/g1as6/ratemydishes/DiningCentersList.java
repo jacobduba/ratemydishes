@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-public class diningCentersList extends AppCompatActivity {
+public class DiningCentersList extends AppCompatActivity {
 
     ImageButton backToWelcome;
 
@@ -23,7 +23,7 @@ public class diningCentersList extends AppCompatActivity {
             public void onClick(View v)
             {
                 //Edit so that this goes back to welcome instead of main
-                Intent intent = new Intent(diningCentersList.this, WelcomePage.class);
+                Intent intent = new Intent(DiningCentersList.this, WelcomePage.class);
                 startActivity(intent);
             }
         });

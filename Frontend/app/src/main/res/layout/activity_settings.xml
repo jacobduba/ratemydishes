@@ -13,6 +13,67 @@
         tools:context=".DiningCentersList">
 
 
+        <Button
+            android:id="@+id/changePassword"
+            android:layout_width="429dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="84dp"
+            android:background="#F44336"
+            android:backgroundTint="#F44336"
+            android:text="Change Password"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText5" />
+
+        <Button
+            android:id="@+id/deleteAccount"
+            android:layout_width="429dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="152dp"
+            android:background="#F44336"
+            android:backgroundTint="#F44336"
+            android:text="Delete Account"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText5" />
+
+        <Button
+            android:id="@+id/toAdmin"
+            android:layout_width="429dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="516dp"
+            android:background="#F44336"
+            android:backgroundTint="#F44336"
+            android:text="Admin Settings"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.444"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText5" />
+
+        <Button
+            android:id="@+id/toLogin"
+            android:layout_width="429dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="#F44336"
+            android:backgroundTint="#F44336"
+            android:text="Logout"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText5" />
+
         <TextView
             android:id="@+id/welcomeText5"
             android:layout_width="411dp"

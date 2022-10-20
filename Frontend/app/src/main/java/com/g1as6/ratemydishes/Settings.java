@@ -13,7 +13,7 @@ public class Settings extends AppCompatActivity {
 
     ImageButton settingsToWelcome;
     Button logout;
-    //Button toAdmin;
+    Button toAdmin;
     //Button changePassword;
     //Button deleteAccount;
 
@@ -22,8 +22,9 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        settingsToWelcome = findViewById(R.id.settingsToWelcome);
+        settingsToWelcome = findViewById(R.id.adminToSettings);
         logout = findViewById(R.id.toLogin);
+        toAdmin = findViewById(R.id.toAdmin);
 
 
         settingsToWelcome.setOnClickListener(new View.OnClickListener() {
@@ -40,15 +41,15 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                //Edit so that this goes back to welcome instead of main
+                AppVars.userToken = null;
                 Intent intent = new Intent(Settings.this, Login.class);
                 startActivity(intent);
-                AppVars.userToken = null;
+
 
             }
         });
 
-        /*toAdmin.setOnClickListener(new View.OnClickListener() {
+        toAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -58,7 +59,7 @@ public class Settings extends AppCompatActivity {
 
             }
         });
-        */
+
 
         /*changePassword.setOnClickListener(new View.OnClickListener() {
             @Override

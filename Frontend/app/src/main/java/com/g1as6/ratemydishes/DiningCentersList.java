@@ -16,7 +16,7 @@ public class DiningCentersList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dining_centers_list);
 
-        backToWelcome = findViewById(R.id.settingsToWelcome);
+        backToWelcome = findViewById(R.id.adminToSettings);
 
         backToWelcome.setOnClickListener(new View.OnClickListener() {
             @Override

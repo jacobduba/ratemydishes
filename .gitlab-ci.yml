@@ -63,5 +63,5 @@ autoDeploy:
     - sudo systemctl start rmd
   only:
     refs:
-      - master
+      - main
 

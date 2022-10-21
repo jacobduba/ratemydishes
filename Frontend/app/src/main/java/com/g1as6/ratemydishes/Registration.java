@@ -1,7 +1,5 @@
 package com.g1as6.ratemydishes;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.g1as6.ratemydishes.app.AppController;
 import com.g1as6.ratemydishes.app.AppVars;
@@ -30,9 +27,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-public class registration extends AppCompatActivity {
+public class Registration extends AppCompatActivity {
     ImageButton backBtn;
     Button createBtn;
     TextView passStat;
@@ -67,7 +63,7 @@ public class registration extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(registration.this, login.class);
+                Intent intent = new Intent(Registration.this, Login.class);
                 startActivity(intent);
             }
         });
@@ -133,7 +129,7 @@ public class registration extends AppCompatActivity {
                                             }catch(Exception e){    }
                                             AppVars.userToken = tokenString;
 
-                                            Intent intent = new Intent(registration.this, restaurantList.class);
+                                            Intent intent = new Intent(Registration.this, RestaurantList.class);
                                             startActivity(intent);
                                         }else{
                                             AppVars.userToken = null;

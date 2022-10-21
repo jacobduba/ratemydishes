@@ -3,10 +3,7 @@ package com.example.backend.user;
 import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.exceptions.UserAlreadyExistsException;
-import com.example.backend.user.payload.AuthRequestPayload;
-import com.example.backend.user.payload.LoginRequestPayload;
-import com.example.backend.user.payload.RegisterRequestPayload;
-import com.example.backend.user.payload.UserResponsePayload;
+import com.example.backend.user.payload.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -70,5 +67,14 @@ public class UserService {
         User user = userRepository.findByNetId(registerRequestPayload.getNetId());
         if (user != null) throw new UserAlreadyExistsException();
         return createNewUser(registerRequestPayload.getNetId(), registerRequestPayload.getPassword());
+    }
+
+    public String deleteUser(DeleteRequestPayload deleteRequestPayload) {
+        User user = getUserFromAuthPayload(deleteRequestPayload);
+        if (!BCrypt.checkpw(deleteRequestPayload.getPassword(), user.getHashedPassword())) throw new IncorrectUsernameOrPasswordException();
+
+        userRepository.deleteById(user.getId());
+
+        return user.getNetId();
     }
 }

@@ -25,6 +25,9 @@ import com.g1as6.ratemydishes.app.AppVars;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -45,7 +48,7 @@ public class registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
         ProgressDialog pDialog = new ProgressDialog(this);
-
+        File token = new File(this.getFilesDir(), "token.txt");
 
         // Create widgets
         backBtn = findViewById(R.id.back);
@@ -118,12 +121,17 @@ public class registration extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        String token = response.get("token").toString();
+                                        String tokenString = response.get("token").toString();
 
                                         // If I understand tokens correctly, no token means auth failed
-                                        if (!token.toString().equals("{}")) {
-                                            //((TextView) findViewById(R.id.response)).setText(token.toString());
-                                            AppVars.userToken = token;
+                                        if (!tokenString.toString().equals("{}")) {
+                                            try{
+                                                BufferedWriter writer = new BufferedWriter(new FileWriter(token));
+                                                writer.write(tokenString);
+
+                                                writer.close();
+                                            }catch(Exception e){    }
+                                            AppVars.userToken = tokenString;
 
                                             Intent intent = new Intent(registration.this, restaurantList.class);
                                             startActivity(intent);

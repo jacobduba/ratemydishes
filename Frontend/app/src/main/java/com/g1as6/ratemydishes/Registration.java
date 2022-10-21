@@ -39,6 +39,7 @@ public class Registration extends AppCompatActivity {
 
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/register";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +62,7 @@ public class Registration extends AppCompatActivity {
         // Back button
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(Registration.this, Login.class);
                 startActivity(intent);
             }
@@ -71,8 +71,7 @@ public class Registration extends AppCompatActivity {
         // Create Button
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 boolean validNet = false;
                 boolean validPass = false;
                 pDialog.setMessage("Making account...");
@@ -82,38 +81,38 @@ public class Registration extends AppCompatActivity {
                 String passText = pswd.getText().toString();
 
                 // Check to see if everything is valid
-                if(netText.length() > 3 && netText.length() < 8 && netText.matches("^[a-zA-Z0-9]*$")){
+                if (netText.length() > 3 && netText.length() < 8 && netText.matches("^[a-zA-Z0-9]*$")) {
                     netStatus.setText("");
                     validNet = true;
-                }else {
+                } else {
                     netStatus.setText("Invalid Net Id");
                     validNet = false;
                 }
 
-                if(passText.equals(pswdConf.getText().toString())) {
-                    if(passText.length() > 6){
+                if (passText.equals(pswdConf.getText().toString())) {
+                    if (passText.length() > 6) {
                         passStat.setText("");
                         validPass = true;
-                    }else{
+                    } else {
                         passStat.setText("Password must be greater than 6 characters!");
                         validPass = false;
                     }
-                }else{
+                } else {
                     passStat.setText("Passwords do not match!");
                     validNet = false;
                 }
 
 
-                if(validNet && validPass){
+                if (validNet && validPass) {
                     JSONObject body = new JSONObject();
                     try {
                         body.put("netId", netText);
                         body.put("password", passText);
-                    } catch (JSONException e) { }
+                    } catch (JSONException e) {
+                    }
 
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                            (Request.Method.POST, url, body, new Response.Listener<JSONObject>()
-                            {
+                            (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
@@ -121,17 +120,18 @@ public class Registration extends AppCompatActivity {
 
                                         // If I understand tokens correctly, no token means auth failed
                                         if (!tokenString.toString().equals("{}")) {
-                                            try{
+                                            try {
                                                 BufferedWriter writer = new BufferedWriter(new FileWriter(token));
                                                 writer.write(tokenString);
 
                                                 writer.close();
-                                            }catch(Exception e){    }
+                                            } catch (Exception e) {
+                                            }
                                             AppVars.userToken = tokenString;
 
                                             Intent intent = new Intent(Registration.this, RestaurantList.class);
                                             startActivity(intent);
-                                        }else{
+                                        } else {
                                             AppVars.userToken = null;
                                             passStat.setText("Something went wrong.");
                                         }

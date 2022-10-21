@@ -55,7 +55,7 @@ public class Login extends AppCompatActivity {
         // Check if user previously logged in
         // If file exists, then user is logged in
         // Otherwise, create the file and delete it on logout
-        if(token.exists()){
+        if (token.exists()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(token));
                 String t = reader.readLine();
@@ -73,14 +73,14 @@ public class Login extends AppCompatActivity {
                         .setTitle("Error!");
                 AlertDialog dialog = builder.create();
             }
-        }else{
+        } else {
             try {
                 token.createNewFile();
             } catch (IOException e) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
                 builder.setMessage("Could not create token file! You should probably contact a developer!")
                         .setTitle("Error!");
-                 AlertDialog dialog = builder.create();
+                AlertDialog dialog = builder.create();
             }
         }
 
@@ -104,16 +104,15 @@ public class Login extends AppCompatActivity {
                     body.put("netId", usrName.getText().toString());
                     body.put("password", pswd.getText().toString());
                 } catch (JSONException e) {
-                    ((TextView)findViewById(R.id.response)).setText("Could not login!");
+                    ((TextView) findViewById(R.id.response)).setText("Could not login!");
                 }
 
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                        (Request.Method.POST, url, body, new Response.Listener<JSONObject>()
-                        {
+                        (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 VolleyLog.d(TAG, response.toString());
-                                ((TextView)findViewById(R.id.response)).setText(response.toString());
+                                ((TextView) findViewById(R.id.response)).setText(response.toString());
                                 System.out.println(response.toString());
 
                                 pDialog.hide();
@@ -123,7 +122,7 @@ public class Login extends AppCompatActivity {
 
                                     // If I understand tokens correctly, no token means auth failed
                                     if (!tokenString.toString().equals("{}")) {
-                                        try{
+                                        try {
                                             // Token file should already exist
                                             BufferedWriter writer = new BufferedWriter(new FileWriter(token));
                                             writer.write(tokenString);
@@ -133,9 +132,10 @@ public class Login extends AppCompatActivity {
 
                                             Intent intent = new Intent(Login.this, RestaurantList.class);
                                             startActivity(intent);
-                                        }catch(Exception e){    }
+                                        } catch (Exception e) {
+                                        }
 
-                                    }else{
+                                    } else {
                                         AppVars.userToken = null;
                                         lginStatus.setText("Invalid Username or Password!");
                                     }
@@ -152,7 +152,7 @@ public class Login extends AppCompatActivity {
                             }
                         }) {
                     @Override
-                    public Map getHeaders() throws AuthFailureError{
+                    public Map getHeaders() throws AuthFailureError {
                         HashMap headers = new HashMap();
                         headers.put("Content-Type", "application/json");
                         headers.put("Accept", "application/json");
@@ -162,14 +162,13 @@ public class Login extends AppCompatActivity {
                 };
 
                 AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_obj);
-                }
-            });
+            }
+        });
 
         // registration button
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(Login.this, Registration.class);
                 startActivity(intent);
             }

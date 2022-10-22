@@ -1,7 +1,5 @@
 package com.g1as6.ratemydishes;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.g1as6.ratemydishes.app.AppController;
 import com.g1as6.ratemydishes.app.AppVars;
@@ -25,11 +22,13 @@ import com.g1as6.ratemydishes.app.AppVars;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-public class registration extends AppCompatActivity {
+public class Registration extends AppCompatActivity {
     ImageButton backBtn;
     Button createBtn;
     TextView passStat;
@@ -40,12 +39,13 @@ public class registration extends AppCompatActivity {
 
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/register";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
         ProgressDialog pDialog = new ProgressDialog(this);
-
+        File token = new File(this.getFilesDir(), "token.txt");
 
         // Create widgets
         backBtn = findViewById(R.id.back);
@@ -62,9 +62,8 @@ public class registration extends AppCompatActivity {
         // Back button
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(registration.this, login.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(Registration.this, Login.class);
                 startActivity(intent);
             }
         });
@@ -72,8 +71,7 @@ public class registration extends AppCompatActivity {
         // Create Button
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 boolean validNet = false;
                 boolean validPass = false;
                 pDialog.setMessage("Making account...");
@@ -83,51 +81,57 @@ public class registration extends AppCompatActivity {
                 String passText = pswd.getText().toString();
 
                 // Check to see if everything is valid
-                if(netText.length() > 3 && netText.length() < 8 && netText.matches("^[a-zA-Z0-9]*$")){
+                if (netText.length() > 3 && netText.length() < 8 && netText.matches("^[a-zA-Z0-9]*$")) {
                     netStatus.setText("");
                     validNet = true;
-                }else {
+                } else {
                     netStatus.setText("Invalid Net Id");
                     validNet = false;
                 }
 
-                if(passText.equals(pswdConf.getText().toString())) {
-                    if(passText.length() > 6){
+                if (passText.equals(pswdConf.getText().toString())) {
+                    if (passText.length() > 6) {
                         passStat.setText("");
                         validPass = true;
-                    }else{
+                    } else {
                         passStat.setText("Password must be greater than 6 characters!");
                         validPass = false;
                     }
-                }else{
+                } else {
                     passStat.setText("Passwords do not match!");
                     validNet = false;
                 }
 
 
-                if(validNet && validPass){
+                if (validNet && validPass) {
                     JSONObject body = new JSONObject();
                     try {
                         body.put("netId", netText);
                         body.put("password", passText);
-                    } catch (JSONException e) { }
+                    } catch (JSONException e) {
+                    }
 
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                            (Request.Method.POST, url, body, new Response.Listener<JSONObject>()
-                            {
+                            (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        String token = response.get("token").toString();
+                                        String tokenString = response.get("token").toString();
 
                                         // If I understand tokens correctly, no token means auth failed
-                                        if (!token.toString().equals("{}")) {
-                                            //((TextView) findViewById(R.id.response)).setText(token.toString());
-                                            AppVars.userToken = token;
+                                        if (!tokenString.toString().equals("{}")) {
+                                            try {
+                                                BufferedWriter writer = new BufferedWriter(new FileWriter(token));
+                                                writer.write(tokenString);
 
-                                            Intent intent = new Intent(registration.this, restaurantList.class);
+                                                writer.close();
+                                            } catch (Exception e) {
+                                            }
+                                            AppVars.userToken = tokenString;
+
+                                            Intent intent = new Intent(Registration.this, RestaurantList.class);
                                             startActivity(intent);
-                                        }else{
+                                        } else {
                                             AppVars.userToken = null;
                                             passStat.setText("Something went wrong.");
                                         }

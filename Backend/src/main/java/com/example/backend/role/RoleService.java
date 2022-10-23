@@ -14,12 +14,15 @@ public class RoleService {
     }
 
     public Role createNewRole(String name) {
+        if (roleRepository.findByName(name) != null) return null;
         Role role = new Role(name);
         roleRepository.save(role);
         return role;
     }
 
     public void giveRole(User user, Role role) {
+        if (user == null || role == null) return;
+
         role.addUser(user);
         user.addRole(role);
         roleRepository.save(role);

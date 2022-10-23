@@ -41,7 +41,7 @@ public class User {
     }
 
     public Set<Role> getRoles() {
-        return getRoles();
+        return roles;
     }
 
     public void addRole(Role role) {

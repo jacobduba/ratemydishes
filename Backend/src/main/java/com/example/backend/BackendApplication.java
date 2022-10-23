@@ -1,10 +1,12 @@
 package com.example.backend;
 
+import com.example.backend.role.Role;
+import com.example.backend.role.RoleService;
+import com.example.backend.user.User;
 import com.example.backend.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -18,9 +20,11 @@ public class BackendApplication {
     }
 
     @Bean
-    CommandLineRunner init(UserService us) {
+    CommandLineRunner init(UserService userService, RoleService roleService) {
        return args -> {
-           us.createNewUser("admin", "admin");
+           Role adminRole = roleService.createNewRole("admin");
+           User adminUser = userService.createNewUser("admin", "admin");
+           roleService.giveRole(adminUser, adminRole);
         };
     }
 }

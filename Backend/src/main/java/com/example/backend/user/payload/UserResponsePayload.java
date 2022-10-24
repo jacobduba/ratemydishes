@@ -2,6 +2,8 @@ package com.example.backend.user.payload;
 
 import com.example.backend.role.Role;
 import com.example.backend.user.User;
+import lombok.Data;
+import lombok.Getter;
 
 import java.util.Set;
 
@@ -12,6 +14,7 @@ import java.util.Set;
  * user and "filters" out info we don't want to
  * share!
  */
+@Data
 public class UserResponsePayload {
     private String netId;
     private boolean isAdmin;
@@ -26,13 +29,5 @@ public class UserResponsePayload {
                 isAdmin = true;
             }
         }
-    }
-
-    public String getNetId() {
-        return netId;
-    }
-
-    public boolean getIsAdmin() {
-        return isAdmin;
     }
 }

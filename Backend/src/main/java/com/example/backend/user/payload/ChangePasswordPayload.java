@@ -1,7 +1,10 @@
 package com.example.backend.user.payload;
 
+import lombok.Data;
+
 import javax.validation.constraints.Size;
 
+@Data
 public class ChangePasswordPayload extends AuthRequestPayload {
     private String oldPassword;
 
@@ -9,12 +12,4 @@ public class ChangePasswordPayload extends AuthRequestPayload {
     private String newPassword;
 
     public ChangePasswordPayload() {}
-
-    public String getOldPassword() {
-        return oldPassword;
-    }
-
-    public String getNewPassword() {
-        return newPassword;
-    }
 }

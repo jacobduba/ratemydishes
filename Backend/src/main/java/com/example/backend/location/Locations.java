@@ -1,5 +1,6 @@
 package com.example.backend.location;
 
+import lombok.Data;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 
 @Entity
 @Component
+@Data
 public class Locations {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,55 +40,5 @@ public class Locations {
         this.dietType = dietType;
     }
 
-    public Locations() {
-
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getResType() {
-        return resType;
-    }
-
-    public void setResType(String resType) {
-        this.resType = resType;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public String getFacility() {
-        return facility;
-    }
-
-    public void setFacility(String facility) {
-        this.facility = facility;
-    }
-
-    public String getDietType() {
-        return dietType;
-    }
-
-    public void setDietType(String dietType) {
-        this.dietType = dietType;
-    }
+    public Locations() {}
 }

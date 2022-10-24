@@ -111,7 +111,8 @@ public class Login extends AppCompatActivity {
 
                                 pDialog.hide();
                             }
-                        }) {
+                        })
+                {
                     @Override
                     public Map getHeaders() throws AuthFailureError{
                         HashMap headers = new HashMap();

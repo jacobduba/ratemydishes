@@ -15,6 +15,27 @@
         tools:layout_editor_absoluteY="-70dp">
 
 
+        <TextView
+            android:id="@+id/deleteStatus"
+            android:layout_width="230dp"
+            android:layout_height="17dp"
+            android:textAlignment="center"
+            android:textColor="#FF0000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/deleteResponse"
+            android:layout_width="379dp"
+            android:layout_height="147dp"
+            android:layout_marginBottom="136dp"
+            android:maxLines="50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <Button
             android:id="@+id/changePassword"
             android:layout_width="429dp"

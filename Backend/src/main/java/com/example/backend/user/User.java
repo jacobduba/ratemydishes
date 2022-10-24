@@ -40,6 +40,10 @@ public class User {
         return hashedPassword;
     }
 
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }

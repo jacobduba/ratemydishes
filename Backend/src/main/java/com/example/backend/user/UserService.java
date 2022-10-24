@@ -1,6 +1,5 @@
 package com.example.backend.user;
 
-import com.example.backend.role.Role;
 import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.exceptions.UserAlreadyExistsException;
@@ -9,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -79,5 +76,18 @@ public class UserService {
         userRepository.deleteById(user.getId());
 
         return user.getNetId();
+    }
+
+    // TODO refactor to not use these payload objects... code quality suffering
+    public void changeUserPW(ChangePasswordPayload changePasswordPayload) {
+        User user = getUserFromAuthPayload(changePasswordPayload);
+
+        if (!BCrypt.checkpw(changePasswordPayload.getOldPassword(), user.getHashedPassword())) {
+            throw new IncorrectUsernameOrPasswordException();
+        }
+
+        user.setHashedPassword(BCrypt.hashpw(changePasswordPayload.getNewPassword(), BCrypt.gensalt()));
+
+        userRepository.save(user);
     }
 }

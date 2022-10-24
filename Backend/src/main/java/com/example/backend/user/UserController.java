@@ -6,6 +6,7 @@ import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.exceptions.InvalidTokenException;
 import com.example.backend.user.exceptions.UserAlreadyExistsException;
 import com.example.backend.user.payload.AuthRequestPayload;
+import com.example.backend.user.payload.DeleteRequestPayload;
 import com.example.backend.user.payload.LoginRequestPayload;
 import com.example.backend.user.payload.RegisterRequestPayload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,18 @@ public class UserController {
         res.put("status", "Registration for user '" + registerRequestPayload.getNetId() + "' successful.");
         res.put("token", userService.registrationGenerateJwtToken(registerRequestPayload));
         res.put("user", userService.getUserResponsePayload(registerRequestPayload.getNetId()));
+
+        return res;
+    }
+
+    @DeleteMapping("delete")
+    public LinkedHashMap<String, Object> delete(@Valid @RequestBody DeleteRequestPayload deleteRequestPayload) {
+        String netId = userService.deleteUser(deleteRequestPayload);
+
+        LinkedHashMap<String, Object> res = new LinkedHashMap<>();
+
+        res.put("status", HttpStatus.ACCEPTED);
+        res.put("netId", netId);
 
         return res;
     }

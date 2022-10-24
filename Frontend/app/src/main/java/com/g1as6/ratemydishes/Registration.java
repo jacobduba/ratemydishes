@@ -70,7 +70,7 @@ public class Registration extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                boolean validNet = false;
+                boolean validNet;
                 boolean validPass = false;
                 pDialog.setMessage("Making account...");
                 pDialog.show();

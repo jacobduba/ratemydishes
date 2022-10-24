@@ -33,6 +33,7 @@ public class Settings extends AppCompatActivity {
     TextView deleteStatus;
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/delete";
+    String loginUrl = "http://coms-309-006.class.las.iastate.edu:8080/user/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Edit so that this goes back to welcome instead of main
-                Intent intent = new Intent(Settings.this, Login.class);
+                Intent intent = new Intent(Settings.this, Registration.class);
                 startActivity(intent);
 
             }

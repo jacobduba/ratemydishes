@@ -25,6 +25,7 @@ public class Settings extends AppCompatActivity {
         settingsToWelcome = findViewById(R.id.adminToSettings);
         logout = findViewById(R.id.toLogin);
         toAdmin = findViewById(R.id.toAdmin);
+        changePassword = findViewById(R.id.changePassword);
 
 
         settingsToWelcome.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +60,12 @@ public class Settings extends AppCompatActivity {
                 }
             });
         }
+        else {
+            toAdmin.setVisibility(View.INVISIBLE);
+        }
 
 
-        /*changePassword.setOnClickListener(new View.OnClickListener() {
+        changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -70,7 +74,7 @@ public class Settings extends AppCompatActivity {
                 startActivity(intent);
 
             }
-        });*/
+        });
 
     }
 }

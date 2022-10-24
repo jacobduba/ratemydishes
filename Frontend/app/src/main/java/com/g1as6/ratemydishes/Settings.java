@@ -14,7 +14,7 @@ public class Settings extends AppCompatActivity {
     ImageButton settingsToWelcome;
     Button logout;
     Button toAdmin;
-    //Button changePassword;
+    Button changePassword;
     //Button deleteAccount;
 
     @Override
@@ -49,16 +49,16 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        toAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                //Edit so that this goes back to welcome instead of main
-                Intent intent = new Intent(Settings.this, AdminSettings.class);
-                startActivity(intent);
+        if(AppVars.isAdmin) {
+            toAdmin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Settings.this, AdminSettings.class);
+                    startActivity(intent);
 
-            }
-        });
+                }
+            });
+        }
 
 
         /*changePassword.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +70,7 @@ public class Settings extends AppCompatActivity {
                 startActivity(intent);
 
             }
-        });
-        */
+        });*/
+
     }
 }

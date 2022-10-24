@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F4F4D4"
-        tools:context=".DiningCentersList">
+        tools:context=".DiningCentersList"
+        tools:layout_editor_absoluteX="-72dp"
+        tools:layout_editor_absoluteY="-70dp">
 
 
         <Button

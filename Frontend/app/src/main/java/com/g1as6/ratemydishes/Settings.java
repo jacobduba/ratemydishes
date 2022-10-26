@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class Settings extends AppCompatActivity {
     Button changePassword;
     Button deleteAccount;
     TextView deleteStatus;
+    EditText confirmDelete;
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/delete";
     String loginUrl = "http://coms-309-006.class.las.iastate.edu:8080/user/login";
@@ -47,6 +49,8 @@ public class Settings extends AppCompatActivity {
         changePassword = findViewById(R.id.changePassword);
         deleteAccount = findViewById(R.id.deleteAccount);
         deleteStatus = findViewById(R.id.deleteStatus);
+        confirmDelete = findViewById(R.id.confirmDelete);
+        confirmDelete.setVisibility(View.INVISIBLE);
 
 
         settingsToWelcome.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +90,11 @@ public class Settings extends AppCompatActivity {
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                confirmDelete.setVisibility(View.VISIBLE);
                 //Edit so that this goes back to welcome instead of main
-                Intent intent = new Intent(Settings.this, Registration.class);
-                startActivity(intent);
+                //Intent intent = new Intent(Settings.this, Registration.class);
+                //startActivity(intent);
+
 
             }
         });

@@ -43,10 +43,6 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login);
         ProgressDialog pDialog = new ProgressDialog(this);
 
-        // TODO: Remove this
-        Intent intent = new Intent(Login.this, WelcomePage.class);
-        startActivity(intent);
-
         // Component Assignment
         loginButton = findViewById(R.id.loginBtn);
         lginStatus = findViewById(R.id.loginStatus);
@@ -56,6 +52,11 @@ public class Login extends AppCompatActivity {
 
         // Assign some vars and stuff
         AppVars.userToken = null;
+
+
+        // TODO: Remove this
+        Intent intent = new Intent(Login.this, WelcomePage.class);
+        startActivity(intent);
 
         // login button
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -92,10 +93,10 @@ public class Login extends AppCompatActivity {
                                     // If I understand tokens correctly, no token means auth failed
                                     if (!token.toString().equals("{}")) {
                                         //((TextView) findViewById(R.id.response)).setText(token.toString());
-                                        AppVars.userToken = token;
-
                                         Intent intent = new Intent(Login.this, WelcomePage.class);
                                         startActivity(intent);
+                                        AppVars.userToken = token;
+
                                     }else{
                                         AppVars.userToken = null;
                                         lginStatus.setText("Invalid Username or Password!");

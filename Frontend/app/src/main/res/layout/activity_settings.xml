@@ -10,23 +10,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F4F4D4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:context=".DiningCentersList"
-        tools:layout_editor_absoluteX="-72dp"
-        tools:layout_editor_absoluteY="-70dp">
+        tools:layout_editor_absoluteX="37dp">
 
+
+        <Button
+            android:id="@+id/changePass"
+            android:layout_width="140dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="312dp"
+            android:background="#F44336"
+            android:backgroundTint="#F44336"
+            android:text="Change Password"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText5" />
+
+        <EditText
+            android:id="@+id/confirmNewPass"
+            android:layout_width="262dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="Password..."
+            android:inputType="textPassword"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deleteAccount" />
 
         <EditText
             android:id="@+id/confirmDelete"
             android:layout_width="262dp"
             android:layout_height="48dp"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="7dp"
             android:ems="10"
             android:hint="Confirm Password..."
             android:inputType="textPassword"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/deleteAccount" />
+            app:layout_constraintTop_toBottomOf="@+id/confirmNewPass" />
 
         <TextView
             android:id="@+id/deleteStatus"
@@ -39,13 +72,13 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.558" />
+            app:layout_constraintVertical_bias="0.609" />
 
         <TextView
             android:id="@+id/deleteResponse"
             android:layout_width="379dp"
             android:layout_height="147dp"
-            android:layout_marginBottom="136dp"
+            android:layout_marginBottom="124dp"
             android:maxLines="50"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -140,10 +173,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="24dp"
             android:background="#F44336"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="?attr/actionModeCloseDrawable" />
+
+        <TextView
+            android:id="@+id/passStat"
+            android:layout_width="222dp"
+            android:layout_height="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmDelete" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

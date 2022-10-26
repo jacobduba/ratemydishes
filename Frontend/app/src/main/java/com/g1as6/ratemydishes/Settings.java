@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,6 +25,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Settings extends AppCompatActivity {
 
     ImageButton settingsToWelcome;
@@ -33,6 +37,9 @@ public class Settings extends AppCompatActivity {
     Button deleteAccount;
     TextView deleteStatus;
     EditText confirmDelete;
+    EditText confirmNewPass;
+    TextView passStat;
+    Button changePass;
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/delete";
     String loginUrl = "http://coms-309-006.class.las.iastate.edu:8080/user/login";
@@ -51,7 +58,12 @@ public class Settings extends AppCompatActivity {
         deleteAccount = findViewById(R.id.deleteAccount);
         deleteStatus = findViewById(R.id.deleteStatus);
         confirmDelete = findViewById(R.id.confirmDelete);
+        confirmNewPass = findViewById(R.id.confirmNewPass);
+        passStat = findViewById(R.id.passStat);
+        changePass = findViewById(R.id.changePass);
+        changePass.setVisibility(View.INVISIBLE);
         confirmDelete.setVisibility(View.INVISIBLE);
+        confirmNewPass.setVisibility(View.INVISIBLE);
 
 
         settingsToWelcome.setOnClickListener(new View.OnClickListener() {
@@ -91,12 +103,63 @@ public class Settings extends AppCompatActivity {
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //
+                changePass.setVisibility(View.VISIBLE);
                 confirmDelete.setVisibility(View.VISIBLE);
+                confirmNewPass.setVisibility(View.VISIBLE);
+                passStat.setText("");
+                changePass.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean validPass = false;
 
-                //Edit so that this goes back to welcome instead of main
-                //Intent intent = new Intent(Settings.this, Registration.class);
-                //startActivity(intent);
+                        String passText = confirmNewPass.getText().toString();
 
+                        if(passText.equals(confirmDelete.getText().toString())) {
+                            if(passText.length() > 6){
+                                validPass = true;
+                            }else{
+                                passStat.setText("Password must be greater than 6 characters!");
+                                validPass = false;
+                            }
+                        }else{
+                            passStat.setText("Passwords do not match!");
+                        }
+                        if(validPass) {
+                            JSONObject body = new JSONObject();
+                            try {
+                                body.put("newPassword", confirmDelete);
+                            } catch (JSONException e) {
+                            }
+
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                                    (Request.Method.POST, changePasswordUrl, body, new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            try {
+                                                String token = response.get("status").toString();
+                                                // If I understand tokens correctly, no token means auth failed
+                                                if (!token.toString().equals("ACCEPTED")) {
+                                                    passStat.setText("Password Changed.");
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            passStat.setText("Something went wrong!");
+                                        }
+                                    }) {
+                            };
+                            AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_obj);
+                        }
+                        changePass.setVisibility(View.INVISIBLE);
+                        confirmDelete.setVisibility(View.INVISIBLE);
+                        confirmNewPass.setVisibility(View.INVISIBLE);
+                    }
+                });
 
             }
         });

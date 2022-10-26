@@ -5,9 +5,7 @@ import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.exceptions.InvalidTokenException;
 import com.example.backend.user.exceptions.UserAlreadyExistsException;
-import com.example.backend.user.payload.AuthRequestPayload;
-import com.example.backend.user.payload.LoginRequestPayload;
-import com.example.backend.user.payload.RegisterRequestPayload;
+import com.example.backend.user.payload.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +54,29 @@ public class UserController {
         res.put("token", userService.registrationGenerateJwtToken(registerRequestPayload));
         res.put("user", userService.getUserResponsePayload(registerRequestPayload.getNetId()));
 
+        return res;
+    }
+
+    @DeleteMapping("delete")
+    public LinkedHashMap<String, Object> delete(@RequestBody DeleteRequestPayload deleteRequestPayload) {
+        String netId = userService.deleteUser(deleteRequestPayload);
+
+        LinkedHashMap<String, Object> res = new LinkedHashMap<>();
+
+        res.put("status", HttpStatus.ACCEPTED);
+        res.put("netId", netId);
+
+        return res;
+    }
+
+    @PostMapping("changepw")
+    public LinkedHashMap<String, Object> changePassword(@Valid @RequestBody ChangePasswordPayload changePasswordPayload, BindingResult br) {
+        if (br.hasErrors()) throw new InvalidPayloadException();
+        userService.changeUserPW(changePasswordPayload);
+
+        LinkedHashMap<String, Object> res = new LinkedHashMap<>();
+        res.put("status", HttpStatus.ACCEPTED);
+        res.put("token", changePasswordPayload.getToken());
         return res;
     }
 

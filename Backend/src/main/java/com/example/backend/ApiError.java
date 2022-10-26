@@ -1,6 +1,7 @@
 package com.example.backend;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 /**
  * This class returns a friendly and safe error while logging debug information.
  */
+@Getter
 public class ApiError {
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
@@ -29,18 +31,6 @@ public class ApiError {
     public ApiError(HttpStatus status, String message, Throwable ex) {
         this(status, ex);
         this.message = message;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public static ResponseEntity<ApiError> buildRes(HttpStatus status, String message, Exception ex) {

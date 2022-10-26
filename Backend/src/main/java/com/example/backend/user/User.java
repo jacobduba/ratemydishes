@@ -1,9 +1,15 @@
 package com.example.backend.user;
 
+import com.example.backend.role.Role;
+import lombok.Data;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -14,6 +20,9 @@ public class User {
     @Column(nullable = false)
     private String hashedPassword;
 
+    @ManyToMany(mappedBy = "users")
+    private Set<Role> roles = new HashSet<>();
+
     public User() {}
 
     public User(String netId, String hashedPassword) {
@@ -21,16 +30,8 @@ public class User {
         this.hashedPassword = hashedPassword;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getNetId() {
-        return netId;
-    }
-
-    public String getHashedPassword() {
-        return hashedPassword;
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     // TODO change to more closely reflect mocked table

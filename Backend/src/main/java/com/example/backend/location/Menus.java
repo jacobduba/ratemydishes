@@ -1,10 +1,12 @@
 package com.example.backend.location;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 import javax.persistence.*;
 
 @Entity
 @Component
+@Data
 public class Menus {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,32 +27,5 @@ public class Menus {
         this.menus = menus;
     }
 
-    public Menus() {
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getSlug() {return slug; }
-    public String getTitle() {
-        return title;
-    }
-
-    public void setSlug(String slug) {this.title = title;}
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getMenus() {
-        return menus;
-    }
-
-    public void setMenus(String menus) {
-        this.menus = menus;
-    }
+    public Menus() {}
 }

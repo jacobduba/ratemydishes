@@ -36,6 +36,7 @@ public class Settings extends AppCompatActivity {
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/delete";
     String loginUrl = "http://coms-309-006.class.las.iastate.edu:8080/user/login";
+    String changePasswordUrl = "https://8c20b9f5-775f-4743-b448-0987b7e9af20.mock.pstmn.io/user/changepw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmDelete.setVisibility(View.VISIBLE);
+
                 //Edit so that this goes back to welcome instead of main
                 //Intent intent = new Intent(Settings.this, Registration.class);
                 //startActivity(intent);

@@ -1,4 +1,4 @@
-package com.example.backend.location;
+package com.example.backend.menu;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.annotation.EnableScheduling;

@@ -1,4 +1,4 @@
-package com.example.backend.location;
+package com.example.backend.menu;
 
 import org.springframework.stereotype.Component;
 import javax.persistence.*;

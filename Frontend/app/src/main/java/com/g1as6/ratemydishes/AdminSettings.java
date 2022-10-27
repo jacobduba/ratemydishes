@@ -6,6 +6,11 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.ImageButton;
+import com.g1as6.ratemydishes.app.AppVars;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class AdminSettings extends AppCompatActivity {
 
@@ -15,6 +20,8 @@ public class AdminSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_settings);
+
+
 
         backToSettings = findViewById(R.id.adminToSettings);
 

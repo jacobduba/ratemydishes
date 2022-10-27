@@ -2,8 +2,8 @@ package com.example.backend.user.payload;
 
 import com.example.backend.role.Role;
 import com.example.backend.user.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.Set;
 
@@ -17,6 +17,7 @@ import java.util.Set;
 @Data
 public class UserResponsePayload {
     private String netId;
+    @JsonProperty("isAdmin")
     private boolean isAdmin;
 
     public UserResponsePayload(User user) {
@@ -27,6 +28,7 @@ public class UserResponsePayload {
         for (Role role : roles) {
             if (role.getName().equals("admin")) {
                 isAdmin = true;
+                break;
             }
         }
     }

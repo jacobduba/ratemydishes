@@ -1,7 +1,8 @@
 package com.example.backend.role;
 
 import com.example.backend.user.User;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter @Setter
 public class Role {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

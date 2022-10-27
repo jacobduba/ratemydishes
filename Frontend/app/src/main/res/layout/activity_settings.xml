@@ -16,6 +16,21 @@
         tools:layout_editor_absoluteX="37dp">
 
 
+        <EditText
+            android:id="@+id/oldPassword"
+            android:layout_width="262dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="164dp"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="Old Password..."
+            android:inputType="textPassword"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deleteAccount" />
+
         <Button
             android:id="@+id/changePass"
             android:layout_width="140dp"
@@ -28,7 +43,7 @@
             android:textColor="#000000"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/welcomeText5" />
 
@@ -76,9 +91,9 @@
 
         <TextView
             android:id="@+id/deleteResponse"
-            android:layout_width="379dp"
-            android:layout_height="147dp"
-            android:layout_marginBottom="124dp"
+            android:layout_width="359dp"
+            android:layout_height="66dp"
+            android:layout_marginBottom="132dp"
             android:maxLines="50"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

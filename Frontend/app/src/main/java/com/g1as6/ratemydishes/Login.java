@@ -53,11 +53,6 @@ public class Login extends AppCompatActivity {
         // Assign some vars and stuff
         AppVars.userToken = null;
 
-
-        // TODO: Remove this
-        Intent intent = new Intent(Login.this, WelcomePage.class);
-        startActivity(intent);
-
         // login button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +82,7 @@ public class Login extends AppCompatActivity {
 
                                 try {
                                     String token = response.get("token").toString();
-                                    boolean isAdmin = response.getBoolean("isAdmin");
+                                    boolean isAdmin = response.getJSONObject("user").getBoolean("isAdmin");
                                     AppVars.isAdmin = isAdmin;
 
                                     // If I understand tokens correctly, no token means auth failed

@@ -40,10 +40,11 @@ public class Settings extends AppCompatActivity {
     EditText confirmNewPass;
     TextView passStat;
     Button changePass;
+    EditText oldPassword;
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/delete";
     String loginUrl = "http://coms-309-006.class.las.iastate.edu:8080/user/login";
-    String changePasswordUrl = "https://8c20b9f5-775f-4743-b448-0987b7e9af20.mock.pstmn.io/user/changepw";
+    String changePasswordUrl = "http://coms-309-006.class.las.iastate.edu:8080/user/changepw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,8 @@ public class Settings extends AppCompatActivity {
         confirmNewPass = findViewById(R.id.confirmNewPass);
         passStat = findViewById(R.id.passStat);
         changePass = findViewById(R.id.changePass);
+        oldPassword = findViewById(R.id.oldPassword);
+        oldPassword.setVisibility(View.INVISIBLE);
         changePass.setVisibility(View.INVISIBLE);
         confirmDelete.setVisibility(View.INVISIBLE);
         confirmNewPass.setVisibility(View.INVISIBLE);
@@ -93,6 +96,8 @@ public class Settings extends AppCompatActivity {
                     Intent intent = new Intent(Settings.this, AdminSettings.class);
                     startActivity(intent);
 
+
+
                 }
             });
         } else {
@@ -107,6 +112,7 @@ public class Settings extends AppCompatActivity {
                 changePass.setVisibility(View.VISIBLE);
                 confirmDelete.setVisibility(View.VISIBLE);
                 confirmNewPass.setVisibility(View.VISIBLE);
+                oldPassword.setVisibility(View.VISIBLE);
                 passStat.setText("");
                 changePass.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -128,7 +134,9 @@ public class Settings extends AppCompatActivity {
                         if(validPass) {
                             JSONObject body = new JSONObject();
                             try {
-                                body.put("newPassword", confirmDelete);
+                                body.put("token",AppVars.userToken);
+                                body.put("newPassword", confirmDelete.getText());
+                                body.put("oldPassword" , oldPassword.getText());
                             } catch (JSONException e) {
                             }
 
@@ -137,9 +145,9 @@ public class Settings extends AppCompatActivity {
                                         @Override
                                         public void onResponse(JSONObject response) {
                                             try {
-                                                String token = response.get("status").toString();
+                                                String accepted = response.get("status").toString();
                                                 // If I understand tokens correctly, no token means auth failed
-                                                if (!token.toString().equals("ACCEPTED")) {
+                                                if (accepted.toString().equals("ACCEPTED")) {
                                                     passStat.setText("Password Changed.");
                                                 }
                                             } catch (JSONException e) {

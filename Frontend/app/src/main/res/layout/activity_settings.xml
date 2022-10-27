@@ -16,6 +16,22 @@
         tools:layout_editor_absoluteX="37dp">
 
 
+        <Button
+            android:id="@+id/acctDelete"
+            android:layout_width="140dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="336dp"
+            android:background="#F44336"
+            android:backgroundTint="#F44336"
+            android:text="Confirm delete"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeText5" />
+
         <EditText
             android:id="@+id/oldPassword"
             android:layout_width="262dp"
@@ -24,6 +40,21 @@
             android:ems="10"
             android:gravity="center_vertical"
             android:hint="Old Password..."
+            android:inputType="textPassword"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deleteAccount" />
+
+        <EditText
+            android:id="@+id/deleteAcct"
+            android:layout_width="262dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="188dp"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="Enter Password..."
             android:inputType="textPassword"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"

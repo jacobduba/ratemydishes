@@ -38,8 +38,10 @@ public class Settings extends AppCompatActivity {
     TextView deleteStatus;
     EditText confirmDelete;
     EditText confirmNewPass;
+    EditText deleteAcct;
     TextView passStat;
     Button changePass;
+    Button acctDelete;
     EditText oldPassword;
     String tag_json_obj = "json_obj_req";
     String url = "http://coms-309-006.class.las.iastate.edu:8080/user/delete";
@@ -63,6 +65,10 @@ public class Settings extends AppCompatActivity {
         passStat = findViewById(R.id.passStat);
         changePass = findViewById(R.id.changePass);
         oldPassword = findViewById(R.id.oldPassword);
+        deleteAcct = findViewById(R.id.deleteAcct);
+        acctDelete = findViewById(R.id.acctDelete);
+        acctDelete.setVisibility(View.INVISIBLE);
+        deleteAcct.setVisibility(View.INVISIBLE);
         oldPassword.setVisibility(View.INVISIBLE);
         changePass.setVisibility(View.INVISIBLE);
         confirmDelete.setVisibility(View.INVISIBLE);
@@ -95,8 +101,6 @@ public class Settings extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(Settings.this, AdminSettings.class);
                     startActivity(intent);
-
-
 
                 }
             });
@@ -175,50 +179,56 @@ public class Settings extends AppCompatActivity {
         deleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                deleteAcct.setVisibility(View.VISIBLE);
+                acctDelete.setVisibility(View.VISIBLE);
+                acctDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        pDialog.setMessage("Deleting Account...");
+                        pDialog.show();
 
-                pDialog.setMessage("Deleting Account...");
-                pDialog.show();
+                        JSONObject body = new JSONObject();
+                        try {
+                            body.put("token", AppVars.userToken);
+                            body.put("password", deleteAcct.getText());
+                        } catch (JSONException e) {
+                            ((TextView) findViewById(R.id.deleteResponse)).setText("Could not delete!");
+                        }
 
-                JSONObject body = new JSONObject();
-                try {
-                    body.put("token", "mocktoken");
-                    body.put("password", "test");
-                } catch (JSONException e) {
-                    ((TextView) findViewById(R.id.deleteResponse)).setText("Could not delete!");
-                }
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                                (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        VolleyLog.d(TAG, response.toString());
+                                        ((TextView)findViewById(R.id.deleteResponse)).setText(response.toString());
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                        (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                VolleyLog.d(TAG, response.toString());
-                                ((TextView)findViewById(R.id.deleteResponse)).setText(response.toString());
+                                        pDialog.hide();
 
-                                pDialog.hide();
+                                        try {
+                                            String status = response.get("Status").toString();
 
-                                try {
-                                    String status = response.get("Status").toString();
+                                            if (status.equals("ACCEPTED")) {
+                                                deleteStatus.setText("Account deleted");
 
-                                    if (status.equals("ACCEPTED")) {
-                                        deleteStatus.setText("Account deleted");
-
-                                    }else{
-                                        deleteStatus.setText("Error Deleting!");
+                                            }else{
+                                                deleteStatus.setText("Error Deleting!");
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
 
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                deleteStatus.setText("No response from server");
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        deleteStatus.setText("No response from server");
+                                        pDialog.hide();
+                                    }
+                                });
+                        AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_obj);
+                    }
+                });
 
-                                pDialog.hide();
-                            }
-                        });
-                AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_obj);
             }
 
         });

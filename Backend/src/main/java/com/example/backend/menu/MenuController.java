@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @Configuration
 @EnableScheduling
-@RequestMapping("/location")
+@RequestMapping("/menu")
 public class MenuController {
 
     @Autowired
@@ -30,6 +30,10 @@ public class MenuController {
 
     @Autowired
     GetMenu getMenu;
+
+    @Autowired
+    PopCategory popCat;
+
 
 
     //In-Progress
@@ -67,4 +71,10 @@ public class MenuController {
         ObjectNode singleMenu = getMenu.returnMenu(slug);
         return singleMenu;
     }
+    @RequestMapping("/populate-categories")
+    @ResponseBody
+    ArrayNode getCategories() throws Exception {
+        return popCat.popCats();
+    }
+
 }

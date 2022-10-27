@@ -36,7 +36,7 @@ public class GetSingleLocation {
     @Modifying
     public void populateTable(ArrayNode arr) {  //Parse JSON Array
         for (int i = 0; i < arr.size(); i++) {
-            //Need to type cast array element to obj
+            //Need to type cast array element to node
             JsonNode jsonNode = arr.get(i);
             //Query table data from each JsonObj
             String menu1 = String.valueOf(jsonNode.get("menus"));
@@ -46,10 +46,10 @@ public class GetSingleLocation {
             //Check to prevent duplicates before input
             try {
                 Menus oldM = mr.findByTitle(title1);
-                Menus m = new Menus(slug1, title1, menu1);
-                if (mr.existsByTitle(title1) == false)
+                Menus m = new Menus(slug1, title1, menu1, null);
+                if (!mr.existsByTitle(title1))
                     mr.save(m);
-                else if (mr.existsByTitle(title1) == true)
+                else if (mr.existsByTitle(title1))
                     mr.delete(oldM);
                 mr.save(m);
             } catch (Exception e) {

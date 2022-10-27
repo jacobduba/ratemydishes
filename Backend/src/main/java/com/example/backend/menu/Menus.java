@@ -19,10 +19,14 @@ public class Menus {
     @Column(name = "menus", columnDefinition = "json")
     private String menus;
 
-    public Menus(String slug, String title, String menus) {
+    @Column(name = "categories", columnDefinition = "json")
+    private String categories;
+
+    public Menus(String slug, String title, String menus, String categories) {
         this.title = title;
         this.slug = slug;
         this.menus = menus;
+        this.categories = categories;
     }
 
     public Menus() {
@@ -40,11 +44,16 @@ public class Menus {
     public String getTitle() {
         return title;
     }
+    public String getCategories() { return categories;}
 
-    public void setSlug(String slug) {this.title = title;}
+    public void setSlug(String slug) {this.slug = slug;}
     public void setTitle(String title) {
         this.title = title;
     }
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
+
 
     public String getMenus() {
         return menus;

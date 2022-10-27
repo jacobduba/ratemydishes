@@ -53,6 +53,11 @@ public class Login extends AppCompatActivity {
         ProgressDialog pDialog = new ProgressDialog(this);
         File token = new File(this.getFilesDir(), "token.txt");
 
+        // TODO: Remove!
+        // For some reason, server isn't sending a request back
+        Intent tmp = new Intent(Login.this, WelcomePage.class);
+        startActivity(tmp);
+
         // Check if user previously logged in
         // If file exists, then user is logged in
         // Otherwise, create the file and delete it on logout
@@ -63,7 +68,7 @@ public class Login extends AppCompatActivity {
                 reader.close();
 
                 AppVars.userToken = t.toString();
-                Intent intent = new Intent(Login.this, RestaurantList.class);
+                Intent intent = new Intent(Login.this, WelcomePage.class);
                 startActivity(intent);
             } catch (Exception e) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);

@@ -14,7 +14,7 @@ public class DiningMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dining_menu);
+        setContentView(R.layout.dining_menu);
 
         backToDining = findViewById(R.id.backToDining);
 
@@ -23,7 +23,7 @@ public class DiningMenu extends AppCompatActivity {
             public void onClick(View v)
             {
                 //Edit so that this goes back to welcome instead of main
-                Intent intent = new Intent(DiningMenu.this, DiningCentersList.class);
+                Intent intent = new Intent(DiningMenu.this, WelcomePage.class);
                 startActivity(intent);
             }
         });

@@ -62,7 +62,8 @@ public class Registration extends AppCompatActivity {
         // Back button
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(Registration.this, Login.class);
                 startActivity(intent);
             }
@@ -71,8 +72,9 @@ public class Registration extends AppCompatActivity {
         // Create Button
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                boolean validNet = false;
+            public void onClick(View v)
+            {
+                boolean validNet;
                 boolean validPass = false;
                 pDialog.setMessage("Making account...");
                 pDialog.show();
@@ -116,20 +118,21 @@ public class Registration extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        String tokenString = response.get("token").toString();
+                                        String token = response.get("token").toString();
+                                        boolean isAdmin = response.getBoolean("isAdmin");
+                                        AppVars.isAdmin = isAdmin;
 
                                         // If I understand tokens correctly, no token means auth failed
-                                        if (!tokenString.toString().equals("{}")) {
+                                        if (!token.toString().equals("{}")) {
                                             try {
                                                 BufferedWriter writer = new BufferedWriter(new FileWriter(token));
-                                                writer.write(tokenString);
-
+                                                writer.write(token);
                                                 writer.close();
                                             } catch (Exception e) {
                                             }
-                                            AppVars.userToken = tokenString;
+                                            AppVars.userToken = token;
 
-                                            Intent intent = new Intent(Registration.this, RestaurantList.class);
+                                            Intent intent = new Intent(Registration.this, WelcomePage.class);
                                             startActivity(intent);
                                         } else {
                                             AppVars.userToken = null;

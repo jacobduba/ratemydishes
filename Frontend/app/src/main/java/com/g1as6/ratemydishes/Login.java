@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,9 +61,6 @@ public class Login extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(new FileReader(token));
                 String t = reader.readLine();
                 reader.close();
-
-                // TODO: Check if token is a valid user token
-                // Should probably get Backend for this
 
                 AppVars.userToken = t.toString();
                 Intent intent = new Intent(Login.this, RestaurantList.class);
@@ -104,7 +102,7 @@ public class Login extends AppCompatActivity {
                     body.put("netId", usrName.getText().toString());
                     body.put("password", pswd.getText().toString());
                 } catch (JSONException e) {
-                    ((TextView) findViewById(R.id.response)).setText("Could not login!");
+                    ((TextView) findViewById(R.id.loginStatus)).setText("Could not login!");
                 }
 
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -112,30 +110,23 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 VolleyLog.d(TAG, response.toString());
-                                ((TextView) findViewById(R.id.response)).setText(response.toString());
                                 System.out.println(response.toString());
 
                                 pDialog.hide();
 
                                 try {
-                                    String tokenString = response.get("token").toString();
+                                    String token = response.get("token").toString();
+                                    boolean isAdmin = response.getBoolean("isAdmin");
+                                    AppVars.isAdmin = isAdmin;
 
                                     // If I understand tokens correctly, no token means auth failed
-                                    if (!tokenString.toString().equals("{}")) {
-                                        try {
-                                            // Token file should already exist
-                                            BufferedWriter writer = new BufferedWriter(new FileWriter(token));
-                                            writer.write(tokenString);
-                                            writer.close();
+                                    if (!token.toString().equals("{}")) {
+                                        //((TextView) findViewById(R.id.response)).setText(token.toString());
+                                        Intent intent = new Intent(Login.this, WelcomePage.class);
+                                        startActivity(intent);
+                                        AppVars.userToken = token;
 
-                                            AppVars.userToken = tokenString;
-
-                                            Intent intent = new Intent(Login.this, RestaurantList.class);
-                                            startActivity(intent);
-                                        } catch (Exception e) {
-                                        }
-
-                                    } else {
+                                    }else{
                                         AppVars.userToken = null;
                                         lginStatus.setText("Invalid Username or Password!");
                                     }
@@ -150,7 +141,8 @@ public class Login extends AppCompatActivity {
 
                                 pDialog.hide();
                             }
-                        }) {
+                        })
+                {
                     @Override
                     public Map getHeaders() throws AuthFailureError {
                         HashMap headers = new HashMap();
@@ -168,7 +160,8 @@ public class Login extends AppCompatActivity {
         // registration button
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(Login.this, Registration.class);
                 startActivity(intent);
             }

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F4F4D4"
-        tools:context=".DiningCentersList">
+        tools:context=".RestaurantList">
 
         <TextView
             android:id="@+id/welcomeText4"
@@ -22,7 +22,7 @@
             android:inputType="textPersonName"
             android:shadowColor="#FF0000"
             android:singleLine="false"
-            android:text="Seasons Menu"
+            android:text="Menu"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textColorHighlight="#F44336"

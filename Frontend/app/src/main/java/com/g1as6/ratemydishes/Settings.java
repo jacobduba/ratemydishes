@@ -25,11 +25,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Settings extends AppCompatActivity {
-
     ImageButton settingsToWelcome;
     Button logout;
     Button toAdmin;
@@ -53,6 +53,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
         ProgressDialog pDialog = new ProgressDialog(this);
+        File token = new File(this.getFilesDir(), "token.txt");
 
         settingsToWelcome = findViewById(R.id.adminToSettings);
         logout = findViewById(R.id.toLogin);
@@ -86,6 +87,8 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AppVars.userToken = null;
+                token.delete();
+
                 Intent intent = new Intent(Settings.this, Login.class);
                 startActivity(intent);
 

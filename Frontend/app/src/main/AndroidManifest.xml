@@ -20,7 +20,7 @@
         android:theme="@style/Theme.RateMyDishes"
         tools:targetApi="31">
         <activity
-            android:name=".DiningMenu"
+            android:name=".RestaurantList"
             android:exported="false" />
         <activity
             android:name=".WelcomePage"

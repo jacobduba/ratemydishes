@@ -3,7 +3,6 @@ package com.g1as6.ratemydishes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -36,7 +35,9 @@ public class WelcomePage extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WelcomePage.this, DiningMenu.class);
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.DINING_CENTER);
+
                 startActivity(intent);
             }
         });
@@ -45,7 +46,9 @@ public class WelcomePage extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WelcomePage.this, DiningMenu.class);
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.CAFE);
+
                 startActivity(intent);
             }
         });
@@ -54,7 +57,9 @@ public class WelcomePage extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WelcomePage.this, DiningMenu.class);
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.FAST_CASUAL);
+
                 startActivity(intent);
             }
         });
@@ -63,7 +68,9 @@ public class WelcomePage extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WelcomePage.this, DiningMenu.class);
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.GET_AND_GO);
+
                 startActivity(intent);
             }
         });

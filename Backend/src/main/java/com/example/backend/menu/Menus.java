@@ -17,10 +17,10 @@ public class Menus {
     @Column(name = "slug")
     private String slug;
 
-    @Column(name = "menus", columnDefinition = "json")
+    @Column(name = "menus", columnDefinition = "longblob")
     private String menus;
 
-    @Column(name = "clear_menus", columnDefinition = "json")
+    @Column(name = "clear_menus", columnDefinition = "longblob")
     private String clearMenus;
 
     public Menus(String slug, String title, String menus, String clearMenus) {

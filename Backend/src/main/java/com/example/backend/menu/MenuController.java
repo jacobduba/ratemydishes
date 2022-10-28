@@ -71,10 +71,11 @@ public class MenuController {
         ObjectNode singleMenu = getMenu.returnMenu(slug);
         return singleMenu;
     }
+    @Scheduled(initialDelay=0, fixedRate=60000)
     @RequestMapping("/populate-categories")
     @ResponseBody
-    ArrayNode getCategories() throws Exception {
-        return popCat.popCats();
+    public void getCategories() throws Exception {
+        popCat.popCats();
     }
 
 }

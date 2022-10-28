@@ -1,8 +1,9 @@
 package com.example.backend.menu;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Component;
 import javax.persistence.*;
-
+@DynamicUpdate
 @Entity
 @Component
 public class Menus {
@@ -19,14 +20,14 @@ public class Menus {
     @Column(name = "menus", columnDefinition = "json")
     private String menus;
 
-    @Column(name = "categories", columnDefinition = "json")
-    private String categories;
+    @Column(name = "clear_menus", columnDefinition = "json")
+    private String clearMenus;
 
-    public Menus(String slug, String title, String menus, String categories) {
+    public Menus(String slug, String title, String menus, String clearMenus) {
         this.title = title;
         this.slug = slug;
         this.menus = menus;
-        this.categories = categories;
+        this.clearMenus = clearMenus;
     }
 
     public Menus() {
@@ -44,14 +45,14 @@ public class Menus {
     public String getTitle() {
         return title;
     }
-    public String getCategories() { return categories;}
+    public String getClearMenus() { return clearMenus;}
 
     public void setSlug(String slug) {this.slug = slug;}
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setCategories(String categories) {
-        this.categories = categories;
+    public void setClearMenus(String clearMenus) {
+        this.clearMenus = clearMenus;
     }
 
 

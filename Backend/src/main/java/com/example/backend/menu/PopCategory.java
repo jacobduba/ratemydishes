@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
-import java.util.List;
 
+
+@Service
 @Component
 public class PopCategory {
     @Autowired
@@ -77,12 +79,22 @@ public class PopCategory {
                             //Set function overrides the previous, so using count variable to change name of object
                             catObj.set("Menu-Item-" + count + "", miObj);
                             count++;
+
                         }
                         mDObj.set("Categories-" + count1 + "", catObj);
                         count1++;
                     }
                     menuObj.set("Menu-Display-" + count2 + "", mDObj);
                     count2++;
+                    //Stringify catArray
+                    String stringObj = menuObj.toString();
+                    //grab current title
+                    String title = menuList.get(i).getTitle();
+                    //grab current row
+                    Menus currRow = mr.findByTitle(title);
+                    //save catArray string to currRow
+                    currRow.setClearMenus(stringObj);
+                    mr.save(currRow);
                 }
             }
             catArray.add(menuObj);

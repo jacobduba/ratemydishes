@@ -170,6 +170,7 @@ public class Settings extends AppCompatActivity {
                         changePass.setVisibility(View.INVISIBLE);
                         confirmDelete.setVisibility(View.INVISIBLE);
                         confirmNewPass.setVisibility(View.INVISIBLE);
+                        oldPassword.setVisibility(View.INVISIBLE);
                     }
                 });
 
@@ -204,18 +205,9 @@ public class Settings extends AppCompatActivity {
 
                                         pDialog.hide();
 
-                                        try {
-                                            String status = response.get("Status").toString();
-
-                                            if (status.equals("ACCEPTED")) {
-                                                deleteStatus.setText("Account deleted");
-
-                                            }else{
-                                                deleteStatus.setText("Error Deleting!");
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
+                                        AppVars.userToken = null;
+                                        Intent intent = new Intent(Settings.this, Login.class);
+                                        startActivity(intent);
                                     }
 
                                 }, new Response.ErrorListener() {

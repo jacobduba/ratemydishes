@@ -57,7 +57,7 @@ public class UserController {
         return res;
     }
 
-    @DeleteMapping("delete")
+    @PostMapping("delete")
     public LinkedHashMap<String, Object> delete(@RequestBody DeleteRequestPayload deleteRequestPayload) {
         String netId = userService.deleteUser(deleteRequestPayload);
 

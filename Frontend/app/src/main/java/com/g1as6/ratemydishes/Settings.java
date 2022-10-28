@@ -126,10 +126,10 @@ public class Settings extends AppCompatActivity {
                         String passText = confirmNewPass.getText().toString();
 
                         if(passText.equals(confirmDelete.getText().toString())) {
-                            if(passText.length() > 6){
+                            if(passText.length() >= 6){
                                 validPass = true;
                             }else{
-                                passStat.setText("Password must be greater than 6 characters!");
+                                passStat.setText("Password must be greater than or equal to 6 characters!");
                                 validPass = false;
                             }
                         }else{

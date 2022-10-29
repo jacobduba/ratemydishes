@@ -53,6 +53,10 @@ public class Login extends AppCompatActivity {
         ProgressDialog pDialog = new ProgressDialog(this);
         File token = new File(this.getFilesDir(), "token.txt");
 
+        // TODO: Remove me! Login doesn't work :(
+        Intent tmp = new Intent(Login.this, WelcomePage.class);
+        startActivity(tmp);
+
         // Check if user previously logged in
         // If file exists, then user is logged in
         // Otherwise, create the file and delete it on logout

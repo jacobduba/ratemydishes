@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 /**
  * This class returns a friendly and safe error while logging debug information.
  */
-@Getter
 public class ApiError {
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
@@ -40,5 +39,17 @@ public class ApiError {
                 ex
         );
         return new ResponseEntity<>(err, err.getStatus());
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

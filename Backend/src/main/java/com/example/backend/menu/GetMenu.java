@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 @Component
 public class GetMenu {
-@Autowired
-MenuRepository mr;
+    @Autowired
+    MenuRepository mr;
 
     public ObjectNode returnMenu(String slug) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

@@ -1,5 +1,6 @@
 package com.example.backend.location;
 
+import com.example.backend.admin.LocationSettingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -13,6 +14,9 @@ public class GetConvStores {
     @Autowired
     public LocationRepository lr;
 
+    @Autowired
+    public LocationSettingService lss;
+
     public ArrayNode getConvStores() {
 
         ObjectMapper mapper = new ObjectMapper();
@@ -21,15 +25,17 @@ public class GetConvStores {
 
         //Return everything but ID to Frontend
         for (int i = 0; i < convLoc.size(); i++) {
-            ObjectNode locationNode = mapper.createObjectNode();
+            if (lss.getEnabled(convLoc.get(i).getTitle())) {
+                ObjectNode locationNode = mapper.createObjectNode();
 
-            locationNode.put("Title", convLoc.get(i).getTitle());
-            locationNode.put("Slug", convLoc.get(i).getSlug());
-            locationNode.put("Restaurant_type", convLoc.get(i).getResType());
-            locationNode.put("facility", convLoc.get(i).getFacility());
-            locationNode.put("Dietary_type", convLoc.get(i).getDietType());
+                locationNode.put("Title", convLoc.get(i).getTitle());
+                locationNode.put("Slug", convLoc.get(i).getSlug());
+                locationNode.put("Restaurant_type", convLoc.get(i).getResType());
+                locationNode.put("facility", convLoc.get(i).getFacility());
+                locationNode.put("Dietary_type", convLoc.get(i).getDietType());
 
-            returnList.add(locationNode);
+                returnList.add(locationNode);
+            }
         }
 
         return returnList;

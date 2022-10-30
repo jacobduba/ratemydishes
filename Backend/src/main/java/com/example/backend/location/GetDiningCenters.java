@@ -1,5 +1,6 @@
 package com.example.backend.location;
 
+import com.example.backend.admin.LocationSettingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -13,6 +14,9 @@ public class GetDiningCenters {
     @Autowired
     public LocationRepository lr;
 
+    @Autowired
+    public LocationSettingService lss;
+
     public ArrayNode getDiningCenters() {
 
         ObjectMapper mapper = new ObjectMapper();
@@ -21,15 +25,17 @@ public class GetDiningCenters {
 
         //Return everything but ID to Frontend
         for (int i = 0; i < diningLoc.size(); i++) {
-            ObjectNode locationNode = mapper.createObjectNode();
+            if (lss.getEnabled(diningLoc.get(i).getTitle())) {
+                ObjectNode locationNode = mapper.createObjectNode();
 
-            locationNode.put("Title", diningLoc.get(i).getTitle());
-            locationNode.put("Slug", diningLoc.get(i).getSlug());
-            locationNode.put("Restaurant_type", diningLoc.get(i).getResType());
-            locationNode.put("facility", diningLoc.get(i).getFacility());
-            locationNode.put("Dietary_type", diningLoc.get(i).getDietType());
+                locationNode.put("Title", diningLoc.get(i).getTitle());
+                locationNode.put("Slug", diningLoc.get(i).getSlug());
+                locationNode.put("Restaurant_type", diningLoc.get(i).getResType());
+                locationNode.put("facility", diningLoc.get(i).getFacility());
+                locationNode.put("Dietary_type", diningLoc.get(i).getDietType());
 
-            returnList.add(locationNode);
+                returnList.add(locationNode);
+            }
         }
 
         return returnList;

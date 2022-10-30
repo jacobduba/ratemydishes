@@ -1,5 +1,7 @@
 package com.example.backend.location;
 
+import com.example.backend.admin.LocationSettingRepository;
+import com.example.backend.admin.LocationSettingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,6 +17,9 @@ import java.net.*;
 public class GetLocations {
     @Autowired
     public LocationRepository lr;
+
+    @Autowired
+    public LocationSettingService lss;
 
     public void getHTML(String urlToRead) throws Exception {
         StringBuilder result = new StringBuilder();
@@ -44,8 +49,10 @@ public class GetLocations {
 
             //Check to prevent duplicates before input
             Locations l = new Locations(dietary_type1, facility1, restaurant_type1, slug1, title1);
-            if (lr.existsByTitle(title1) == false)
+            if (lr.existsByTitle(title1) == false) {
                 lr.save(l);
+                lss.getEnabled(title1); // Create new LocationSetting if it doesn't exist.
+            }
         }
     }
 }

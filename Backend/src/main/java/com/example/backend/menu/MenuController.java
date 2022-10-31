@@ -37,8 +37,8 @@ public class MenuController {
 
 
     //In-Progress
-    //run every 1 minute
-    @Scheduled(initialDelay=0, fixedRate=60000)
+    //run every 10 minutes
+    @Scheduled(initialDelay=200, fixedRate=600000)
     @RequestMapping("/menu-data")
     public void menuData() throws Exception {
         //Delete previous vals in Repo so that I can now replace
@@ -71,7 +71,8 @@ public class MenuController {
         ObjectNode singleMenu = getMenu.returnMenu(slug);
         return singleMenu;
     }
-    @Scheduled(initialDelay=0, fixedRate=60000)
+    //Scheduled to run every 10 minutes
+    @Scheduled(initialDelay=300, fixedRate=600000)
     @RequestMapping("/populate-categories")
     @ResponseBody
     public void getCategories() throws Exception {

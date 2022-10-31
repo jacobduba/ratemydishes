@@ -1,5 +1,4 @@
-package com.example.backend.location;
-
+package com.example.backend.menu;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,10 +21,10 @@ MenuRepository mr;
 
         //For loop to return menu
         for(int i=0;i < menusList.size(); i++) {
-            JsonNode menusObj = mapper.readTree(menusList.get(i).getMenus());
+            JsonNode menusObj = mapper.readTree(menusList.get(i).getClearMenus());
 
-            menuNode.put("Slug", menusList.get(i).getSlug());
             menuNode.put("Title", menusList.get(i).getTitle());
+            menuNode.put("Slug", menusList.get(i).getSlug());
             menuNode.set("Menu", menusObj);
         }
         return menuNode;

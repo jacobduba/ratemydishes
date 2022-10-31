@@ -1,4 +1,6 @@
 package com.example.backend.location;
+import com.example.backend.menu.GetMenu;
+import com.example.backend.menu.MenuRepository;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,48 +71,15 @@ public class LocationController {
     }
     //Finished
     //Request to do GET-Locations to fill Locations Database with general info including Slugs. These slugs will be used to track specific menus.
-    //scheduled to run top every 5 min of every day
+    //scheduled to run every 10 minutes
     @RequestMapping("/populate-db")
-    @Scheduled(initialDelay=100, fixedRate=300000)
+    @Scheduled(initialDelay=100, fixedRate=600000)
     public void populateDB() throws Exception {
         getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
 
     }
-    //In-Progress
-    //run every 1 minute
-    @Scheduled(initialDelay=0, fixedRate=60000)
-    @RequestMapping("/menu-data")
-    public void menuData() throws Exception {
-        //Delete previous vals in Repo so that I can now replace
-        mr.deleteAll();
-        //Creating Json Object to store Location Menu
-        //Grabbing list of all Location in database
-        List listLoc = lr.findAll();
-        ArrayNode an;
-        //looping through List to extract dining centers into array node
-        for (int i = 0; i < listLoc.size(); i++) {
-            Object loc = listLoc.get(i);
-            Class cl = loc.getClass();
-            //Field of slug and converting to string
-            Field slugField = cl.getDeclaredField("slug");
-            slugField.setAccessible(true);
-            String slugVal = (String) slugField.get(loc);
-            slugVal = slugVal.substring(1, slugVal.length() - 1);
 
-            //get current unix time stamp
-            long unixTime = Instant.now().getEpochSecond();
-            an = getSingleLocation.getHTML(slugVal, unixTime, "https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location/");
-            getSingleLocation.populateTable(an);
-        }
-    }
-        //Finished
-        //Call is to retrieve menu information from webserver. Only for locations that are open
-    @RequestMapping("/get-menu/{slug}")
-    @ResponseBody
-    ObjectNode getMenu(@PathVariable("slug") String slug) throws Exception {
-        ObjectNode singleMenu = getMenu.returnMenu(slug);
-        return singleMenu;
-    }
+
 }
 
 

@@ -35,5 +35,15 @@ public class User {
         this.roles.add(role);
     }
 
+    public boolean hasRole(String role) {
+        // Contains does not use equals for sets, apparently
+        for (Role r : this.roles) {
+            if (r.getName().equals(role)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // TODO change to more closely reflect mocked table
 }

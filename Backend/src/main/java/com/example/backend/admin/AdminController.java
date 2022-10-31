@@ -1,5 +1,6 @@
 package com.example.backend.admin;
 
+import com.example.backend.admin.exceptions.UserNotPrivilegedException;
 import com.example.backend.user.User;
 import com.example.backend.user.UserService;
 import com.example.backend.user.payload.AuthRequestPayload;
@@ -27,6 +28,8 @@ public class AdminController {
     @PostMapping("/get-settings")
     public ObjectNode getSettings(@RequestBody AuthRequestPayload payload) {
         User user = us.getUserFromAuthPayload(payload);
+
+        if (!user.hasRole("admin")) throw new UserNotPrivilegedException();
 
         ObjectNode returnNode = mapper.createObjectNode();
 

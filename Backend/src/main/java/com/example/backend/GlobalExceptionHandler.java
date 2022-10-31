@@ -1,5 +1,6 @@
 package com.example.backend;
 
+import com.example.backend.admin.exceptions.UserNotPrivilegedException;
 import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.exceptions.InvalidTokenException;
@@ -58,6 +59,15 @@ public class GlobalExceptionHandler {
         return ApiError.buildRes(
                 HttpStatus.UNAUTHORIZED,
                 "User already exists.",
+                ex
+        );
+    }
+
+    @ExceptionHandler(UserNotPrivilegedException.class)
+    public ResponseEntity<ApiError> userNotPrivelgedException(UserNotPrivilegedException ex) {
+        return ApiError.buildRes(
+                HttpStatus.UNAUTHORIZED,
+                "User is not privileged enough to view this data.",
                 ex
         );
     }

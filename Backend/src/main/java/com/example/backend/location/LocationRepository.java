@@ -7,11 +7,11 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 
 @Repository
-public interface LocationRepository extends JpaRepository<Locations, Long> {
-    Locations findById(long id);
+public interface LocationRepository extends JpaRepository<Location, Long> {
+    Location findById(long id);
     boolean existsByTitle(String title);
 
-    ArrayList<Locations> findByResType(String resType);
+    ArrayList<Location> findByResType(String resType);
     @Transactional
-    Locations deleteById(long i);
+    Location deleteById(long i);
 }

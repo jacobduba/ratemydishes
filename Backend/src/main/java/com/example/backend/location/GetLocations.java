@@ -1,6 +1,5 @@
 package com.example.backend.location;
 
-import com.example.backend.admin.LocationSettingRepository;
 import com.example.backend.admin.LocationSettingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -41,14 +40,14 @@ public class GetLocations {
             //Need to type cast array element to obj
             ObjectNode jsonObj = (ObjectNode) jsonArray.get(i);
             //Query table data from each JsonObj
-            String title1 = String.valueOf(jsonObj.get("title"));
-            String slug1 = String.valueOf(jsonObj.get("slug"));
-            String facility1 = String.valueOf(jsonObj.get("facility"));
-            String restaurant_type1 = String.valueOf(jsonObj.get("locationType"));
-            String dietary_type1 = String.valueOf(jsonObj.get("dietaryType"));
+            String title1 = jsonObj.get("title").textValue();
+            String slug1 = jsonObj.get("slug").textValue();
+            String facility1 = jsonObj.get("facility").textValue();
+            String restaurant_type1 = jsonObj.get("locationType").toString();
+            String dietary_type1 = jsonObj.get("dietaryType").toString();
 
             //Check to prevent duplicates before input
-            Locations l = new Locations(dietary_type1, facility1, restaurant_type1, slug1, title1);
+            Location l = new Location(dietary_type1, facility1, restaurant_type1, slug1, title1);
             if (lr.existsByTitle(title1) == false) {
                 lr.save(l);
                 lss.getEnabled(title1); // Create new LocationSetting if it doesn't exist.

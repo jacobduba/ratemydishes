@@ -1,6 +1,7 @@
 package com.example.backend.location;
 
 import com.example.backend.admin.LocationSettingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -17,10 +18,10 @@ public class GetGetGos {
     @Autowired
     public LocationSettingService lss;
 
-    public ArrayNode getGetGo() {
+    public ArrayNode getGetGo() throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
-        ArrayList<Locations> getLoc = lr.findByResType("[\"get-go\"]");
+        ArrayList<Location> getLoc = lr.findByResType("[\"get-go\"]");
         ArrayNode returnList = mapper.createArrayNode();
 
         //Return everything but ID to Frontend
@@ -28,11 +29,11 @@ public class GetGetGos {
             if (lss.getEnabled(getLoc.get(i).getTitle())) {
                 ObjectNode locationNode = mapper.createObjectNode();
 
-                locationNode.put("Title", getLoc.get(i).getTitle());
-                locationNode.put("Slug", getLoc.get(i).getSlug());
-                locationNode.put("Restaurant_type", getLoc.get(i).getResType());
+                locationNode.put("title", getLoc.get(i).getTitle());
+                locationNode.put("slug", getLoc.get(i).getSlug());
+                locationNode.set("restaurant_type", mapper.readTree(getLoc.get(i).getResType()));
                 locationNode.put("facility", getLoc.get(i).getFacility());
-                locationNode.put("Dietary_type", getLoc.get(i).getDietType());
+                locationNode.set("dietary_type", mapper.readTree(getLoc.get(i).getDietType()));
 
                 returnList.add(locationNode);
             }

@@ -1,6 +1,7 @@
 package com.example.backend.location;
 
 import com.example.backend.admin.LocationSettingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -17,10 +18,10 @@ public class GetConvStores {
     @Autowired
     public LocationSettingService lss;
 
-    public ArrayNode getConvStores() {
+    public ArrayNode getConvStores() throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
-        ArrayList<Locations> convLoc = lr.findByResType("[\"convenience-store\"]");
+        ArrayList<Location> convLoc = lr.findByResType("[\"convenience-store\"]");
         ArrayNode returnList = mapper.createArrayNode();
 
         //Return everything but ID to Frontend
@@ -28,11 +29,11 @@ public class GetConvStores {
             if (lss.getEnabled(convLoc.get(i).getTitle())) {
                 ObjectNode locationNode = mapper.createObjectNode();
 
-                locationNode.put("Title", convLoc.get(i).getTitle());
-                locationNode.put("Slug", convLoc.get(i).getSlug());
-                locationNode.put("Restaurant_type", convLoc.get(i).getResType());
+                locationNode.put("title", convLoc.get(i).getTitle());
+                locationNode.put("slug", convLoc.get(i).getSlug());
+                locationNode.set("restaurant_type", mapper.readTree(convLoc.get(i).getResType()));
                 locationNode.put("facility", convLoc.get(i).getFacility());
-                locationNode.put("Dietary_type", convLoc.get(i).getDietType());
+                locationNode.set("dietary_type", mapper.readTree(convLoc.get(i).getDietType()));
 
                 returnList.add(locationNode);
             }

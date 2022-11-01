@@ -1,7 +1,7 @@
 package com.example.backend.location;
 
 import com.example.backend.menu.MenuRepository;
-import com.example.backend.menu.Menus;
+import com.example.backend.menu.Menu;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -39,14 +39,14 @@ public class GetSingleLocation {
             //Need to type cast array element to node
             JsonNode jsonNode = arr.get(i);
             //Query table data from each JsonObj
-            String menu1 = String.valueOf(jsonNode.get("menus"));
-            String title1 = String.valueOf(jsonNode.get("title"));
-            String slug1 = String.valueOf(jsonNode.get("slug"));
+            String menu1 = jsonNode.get("menus").toString();
+            String title1 = jsonNode.get("title").textValue();
+            String slug1 = jsonNode.get("slug").textValue();
 
             //Check to prevent duplicates before input
             try {
-                Menus oldM = mr.findByTitle(title1);
-                Menus m = new Menus(slug1, title1, menu1, null);
+                Menu oldM = mr.findByTitle(title1);
+                Menu m = new Menu(slug1, title1, menu1, null);
                 if (!mr.existsByTitle(title1))
                     mr.save(m);
                 else if (mr.existsByTitle(title1))

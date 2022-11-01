@@ -1,6 +1,7 @@
 package com.example.backend.location;
 
 import com.example.backend.admin.LocationSettingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -17,10 +18,10 @@ public class GetDiningCenters {
     @Autowired
     public LocationSettingService lss;
 
-    public ArrayNode getDiningCenters() {
+    public ArrayNode getDiningCenters() throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
-        ArrayList<Locations> diningLoc = lr.findByResType("[\"dining-center\"]");
+        ArrayList<Location> diningLoc = lr.findByResType("[\"dining-center\"]");
         ArrayNode returnList = mapper.createArrayNode();
 
         //Return everything but ID to Frontend
@@ -28,11 +29,11 @@ public class GetDiningCenters {
             if (lss.getEnabled(diningLoc.get(i).getTitle())) {
                 ObjectNode locationNode = mapper.createObjectNode();
 
-                locationNode.put("Title", diningLoc.get(i).getTitle());
-                locationNode.put("Slug", diningLoc.get(i).getSlug());
-                locationNode.put("Restaurant_type", diningLoc.get(i).getResType());
+                locationNode.put("title", diningLoc.get(i).getTitle());
+                locationNode.put("slug", diningLoc.get(i).getSlug());
+                locationNode.set("restaurant_type", mapper.readTree(diningLoc.get(i).getResType()));
                 locationNode.put("facility", diningLoc.get(i).getFacility());
-                locationNode.put("Dietary_type", diningLoc.get(i).getDietType());
+                locationNode.set("dietary_type", mapper.readTree(diningLoc.get(i).getDietType()));
 
                 returnList.add(locationNode);
             }

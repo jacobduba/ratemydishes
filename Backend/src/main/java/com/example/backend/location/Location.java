@@ -1,7 +1,6 @@
 package com.example.backend.location;
 
 import lombok.Data;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
@@ -12,7 +11,7 @@ import javax.persistence.GenerationType;
 @Entity
 @Component
 @Data
-public class Locations {
+public class Location {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -32,7 +31,7 @@ public class Locations {
     @Column(name = "dietary_type")
     private String dietType;
 
-    public Locations(String dietType, String facility, String resType, String slug, String title) {
+    public Location(String dietType, String facility, String resType, String slug, String title) {
         this.title = title;
         this.resType = resType;
         this.slug = slug;
@@ -40,5 +39,5 @@ public class Locations {
         this.dietType = dietType;
     }
 
-    public Locations() {}
+    public Location() {}
 }

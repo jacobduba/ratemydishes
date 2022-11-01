@@ -17,13 +17,13 @@ public class PopCategory {
     MenuRepository mr;
 
     @Autowired
-    Menus m;
+    Menu m;
 
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode catArray = mapper.createArrayNode();
         //Query Entire Table
-        ArrayList<Menus> menuList = (ArrayList<Menus>) mr.findAll();
+        ArrayList<Menu> menuList = (ArrayList<Menu>) mr.findAll();
 
         //For loop to each row, grab menu, parse for categories
         for (int i = 0; i < menuList.size(); i++) {
@@ -91,7 +91,7 @@ public class PopCategory {
                     //grab current title
                     String title = menuList.get(i).getTitle();
                     //grab current row
-                    Menus currRow = mr.findByTitle(title);
+                    Menu currRow = mr.findByTitle(title);
                     //save catArray string to currRow
                     currRow.setClearMenus(stringObj);
                     mr.save(currRow);

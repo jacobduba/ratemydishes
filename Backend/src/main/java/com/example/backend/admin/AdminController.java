@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     private ObjectMapper mapper = new ObjectMapper();
     private LocationSettingService lss;
+    private CategorySettingRepository csr;
     private UserService us;
 
     @Autowired
-    public AdminController(LocationSettingService lss, UserService us) {
+    public AdminController(LocationSettingService lss, CategorySettingRepository csr, UserService us) {
         this.lss = lss;
+        this.csr = csr;
         this.us = us;
     }
 
@@ -37,12 +39,23 @@ public class AdminController {
         for (LocationSetting ls : lss.findAll()) {
             ObjectNode location = mapper.createObjectNode();
 
-            location.put("title", ls.getTitle());
+            location.put("name", ls.getName());
             location.put("enabled", ls.isEnabled());
 
             locationNode.add(location);
         }
-        returnNode.set("locationNode", locationNode);
+        returnNode.set("locations", locationNode);
+
+        ArrayNode categoryNode = mapper.createArrayNode();
+        for (CategorySetting cs : csr.findAll()) {
+            ObjectNode category = mapper.createObjectNode();
+
+            category.put("title", cs.getName());
+            category.put("enabled", cs.isEnabled());
+
+            categoryNode.add(category);
+        }
+        returnNode.set("categories", categoryNode);
 
         return returnNode;
     }

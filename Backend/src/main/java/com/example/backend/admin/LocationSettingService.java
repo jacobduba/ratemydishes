@@ -18,19 +18,19 @@ public class LocationSettingService {
         return locationSettingRepository.findAll();
     }
 
-    public boolean getEnabled(String title) {
-        LocationSetting locationSetting = locationSettingRepository.findByTitle(title);
+    public boolean getEnabled(String name) {
+        LocationSetting locationSetting = locationSettingRepository.findByName(name);
 
         if (locationSetting == null) {
-            createNewLocationSetting(title);
+            createNewLocationSetting(name);
             return true;
         }
 
         return locationSetting.isEnabled();
     }
 
-    private void createNewLocationSetting(String title) {
-        LocationSetting locationSetting = new LocationSetting(title, true);
+    private void createNewLocationSetting(String name) {
+        LocationSetting locationSetting = new LocationSetting(name, true);
         locationSettingRepository.save(locationSetting);
     }
 }

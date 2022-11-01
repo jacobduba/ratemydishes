@@ -7,9 +7,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "location_settings")
+@Table(name = "category_settings")
 @Getter @Setter @NoArgsConstructor
-public class LocationSetting {
+public class CategorySetting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -21,7 +21,7 @@ public class LocationSetting {
     @Column(nullable = false)
     private boolean enabled;
 
-    public LocationSetting(String name, boolean enabled) {
+    public CategorySetting(String name, boolean enabled) {
         this.name = name;
         this.enabled = enabled;
     }

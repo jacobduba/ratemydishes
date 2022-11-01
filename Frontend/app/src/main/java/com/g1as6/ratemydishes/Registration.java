@@ -79,7 +79,7 @@ public class Registration extends AppCompatActivity {
                 String passText = pswd.getText().toString();
 
                 // Check to see if everything is valid
-                if(netText.length() > 3 && netText.length() < 8 && netText.matches("^[a-zA-Z0-9]*$")){
+                if(netText.length() >= 3 && netText.length() <= 8 && netText.matches("^[a-zA-Z0-9]*$")){
                     netStatus.setText("");
                     validNet = true;
                 }else {
@@ -88,7 +88,7 @@ public class Registration extends AppCompatActivity {
                 }
 
                 if(passText.equals(pswdConf.getText().toString())) {
-                    if(passText.length() > 6){
+                    if(passText.length() >= 6){
                         passStat.setText("");
                         validPass = true;
                     }else{

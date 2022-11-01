@@ -16,25 +16,18 @@ import java.util.List;
 @EnableScheduling
 @RequestMapping("/menu")
 public class MenuController {
-
     @Autowired
     LocationRepository lr;
     @Autowired
     MenuRepository mr;
-
     @Autowired
     GetSingleLocation getSingleLocation;
-
     @Autowired
-    Locations l;
-
+    Location l;
     @Autowired
     GetMenu getMenu;
-
     @Autowired
     PopCategory popCat;
-
-
 
     //In-Progress
     //run every 10 minutes
@@ -45,17 +38,11 @@ public class MenuController {
         mr.deleteAll();
         //Creating Json Object to store Location Menu
         //Grabbing list of all Location in database
-        List listLoc = lr.findAll();
+        List<Location> listLoc = lr.findAll();
         ArrayNode an;
         //looping through List to extract dining centers into array node
-        for (int i = 0; i < listLoc.size(); i++) {
-            Object loc = listLoc.get(i);
-            Class cl = loc.getClass();
-            //Field of slug and converting to string
-            Field slugField = cl.getDeclaredField("slug");
-            slugField.setAccessible(true);
-            String slugVal = (String) slugField.get(loc);
-            slugVal = slugVal.substring(1, slugVal.length() - 1);
+        for (Location loc : listLoc) {
+            String slugVal = loc.getSlug();
 
             //get current unix time stamp
             long unixTime = Instant.now().getEpochSecond();
@@ -71,6 +58,7 @@ public class MenuController {
         ObjectNode singleMenu = getMenu.returnMenu(slug);
         return singleMenu;
     }
+
     //Scheduled to run every 10 minutes
     @Scheduled(initialDelay=300, fixedRate=600000)
     @RequestMapping("/populate-categories")

@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 @Repository
 @EnableScheduling
-public interface MenuRepository extends JpaRepository<Menus, Long> {
-    Menus findById(long id);
+public interface MenuRepository extends JpaRepository<Menu, Long> {
+    Menu findById(long id);
 
     boolean existsByTitle(String title);
 
-    ArrayList<Menus> findBySlug(String slug);
-    Menus findByTitle(String title);
+    ArrayList<Menu> findBySlug(String slug);
+    Menu findByTitle(String title);
     @Transactional
-    Menus deleteById(long i);
+    Menu deleteById(long i);
 }

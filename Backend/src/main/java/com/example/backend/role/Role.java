@@ -1,6 +1,7 @@
 package com.example.backend.role;
 
 import com.example.backend.user.User;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,5 +34,9 @@ public class Role {
 
     public void addUser(User user) {
         this.users.add(user);
+    }
+
+    public boolean equals(Role role) {
+        return true;
     }
 }

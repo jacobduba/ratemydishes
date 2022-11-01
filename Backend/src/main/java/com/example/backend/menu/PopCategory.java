@@ -1,4 +1,5 @@
 package com.example.backend.menu;
+import com.example.backend.admin.CategorySettingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,15 +16,16 @@ import java.util.ArrayList;
 public class PopCategory {
     @Autowired
     MenuRepository mr;
-
     @Autowired
-    Menus m;
+    Menu m;
+    @Autowired
+    CategorySettingService css;
 
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode catArray = mapper.createArrayNode();
         //Query Entire Table
-        ArrayList<Menus> menuList = (ArrayList<Menus>) mr.findAll();
+        ArrayList<Menu> menuList = (ArrayList<Menu>) mr.findAll();
 
         //For loop to each row, grab menu, parse for categories
         for (int i = 0; i < menuList.size(); i++) {
@@ -43,67 +45,72 @@ public class PopCategory {
                 JsonNode menuDisplays = rowNode.get("menuDisplays");
                 rowObj.put("Location", titleVal);
 
-                    int count2 = 1;
-                    for (int k = 0; k < menuDisplays.size(); k++) {
-                        //child object
-                        ObjectNode mDObj = mapper.createObjectNode();
-                        JsonNode mDNode = menuDisplays.get(k);
-                        JsonNode mDName = mDNode.get("name");
-                        JsonNode catVals = mDNode.get("categories");
+                int count2 = 1;
+                for (int k = 0; k < menuDisplays.size(); k++) {
+                    //child object
+                    ObjectNode mDObj = mapper.createObjectNode();
+                    JsonNode mDNode = menuDisplays.get(k);
+                    JsonNode mDName = mDNode.get("name");
+                    JsonNode catVals = mDNode.get("categories");
+                    //put into child object
+                    mDObj.set("Menu-Display", mDName);
+
+                    int count1 = 1;
+                    for (int l = 0; l < catVals.size(); l++) {
+                        ObjectNode catObj = mapper.createObjectNode();
+                        JsonNode catNode = catVals.get(l);
+                        JsonNode catName = catNode.get("category");
+                        JsonNode menuItems = catNode.get("menuItems");
+
+                        // Store category as category setting!
+                        css.getEnabled(catName.asText());
+
                         //put into child object
                         mDObj.set("Menu-Display-" + count2 + "", mDName);
 
-                        int count1 = 1;
-                        for (int l = 0; l < catVals.size(); l++) {
-                            ObjectNode catObj = mapper.createObjectNode();
-                            JsonNode catNode = catVals.get(l);
-                            JsonNode catName = catNode.get("category");
-                            JsonNode menuItems = catNode.get("menuItems");
-                            //put into child object
-                            catObj.set("Category-" + count2 + "", catName);
-                            int count = 1;
-                            for (int m = 0; m < menuItems.size(); m++) {
-                                ObjectNode miObj = mapper.createObjectNode();
-                                JsonNode miNode = menuItems.get(m);
-                                JsonNode miName = miNode.get("name");
-                                //JsonNode miTraits = miNode.get("traits");
-                                JsonNode miHalal = miNode.get("isHalal");
-                                JsonNode miVegan = miNode.get("isVegan");
-                                JsonNode miCals = miNode.get("totalCal");
-                                JsonNode miVeg = miNode.get("isVegetarian");
+                        int count = 1;
+                        for (int m = 0; m < menuItems.size(); m++) {
+                            ObjectNode miObj = mapper.createObjectNode();
+                            JsonNode miNode = menuItems.get(m);
+                            JsonNode miName = miNode.get("name");
+                            //JsonNode miTraits = miNode.get("traits");
+                            JsonNode miHalal = miNode.get("isHalal");
+                            JsonNode miVegan = miNode.get("isVegan");
+                            JsonNode miCals = miNode.get("totalCal");
+                            JsonNode miVeg = miNode.get("isVegetarian");
 
-                                miObj.set("Name-" + count + "", miName);
-                                //miObj.set("Traits", miTraits);
-                                miObj.set("isHalal-" + count + "", miHalal);
-                                miObj.set("isVegan-" + count + "", miVegan);
-                                miObj.set("isVegetarian-" + count + "", miVeg);
-                                miObj.set("Total-Calories-" + count + "", miCals);
+                            miObj.set("Name-" + count + "", miName);
+                            //miObj.set("Traits", miTraits);
+                            miObj.set("isHalal-" + count + "", miHalal);
+                            miObj.set("isVegan-" + count + "", miVegan);
+                            miObj.set("isVegetarian-" + count + "", miVeg);
+                            miObj.set("Total-Calories-" + count + "", miCals);
 
-                                //Set function overrides the previous, so using count variable to change name of object
-                                catObj.set("Menu-Item-" + count + "", miObj);
-                                count++;
+                            //Set function overrides the previous, so using count variable to change name of object
+                            catObj.set("Menu-Item-" + count + "", miObj);
+                            count++;
                             }
-                            mDObj.set("Categories-" + count1 + "", catObj);
-                            count1++;
-                        }
-                        rowObj.set("Section-" + count3 + "", mDSection);
-                        rowObj.set("Menu-Display-" + count2 + "", mDObj);
-                        count2++;
+                        mDObj.set("Categories-" + count1 + "", catObj);
+                        count1++;
                     }
-                    menuObj.set("Menu-" + count3 + "", rowObj);
-                    count3++;
-                    //Stringify catArray
-                    String stringObj = menuObj.toString();
-                    //grab current title
-                    String title = menuList.get(i).getTitle();
-                    //grab current row
-                    Menus currRow = mr.findByTitle(title);
-                    //save catArray string to currRow
-                    currRow.setClearMenus(stringObj);
-                    mr.save(currRow);
+                    rowObj.set("Section-" + count3 + "", mDSection);
+                    rowObj.set("Menu-Display-" + count2 + "", mDObj);
+                    count2++;
                 }
-                catArray.add(menuObj);
+                menuObj.set("Menu-" + count3 + "", rowObj);
+                count3++;
+                //Stringify catArray
+                String stringObj = menuObj.toString();
+                //grab current title
+                String title = menuList.get(i).getTitle();
+                //grab current row
+                Menu currRow = mr.findByTitle(title);
+                //save catArray string to currRow
+                currRow.setClearMenus(stringObj);
+                mr.save(currRow);
             }
+            catArray.add(menuObj);
+        }
         return catArray;
     }
 }

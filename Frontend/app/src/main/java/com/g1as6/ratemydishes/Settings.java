@@ -199,15 +199,14 @@ public class Settings extends AppCompatActivity {
                                 (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        VolleyLog.d(TAG, response.toString());
-                                        ((TextView)findViewById(R.id.deleteResponse)).setText(response.toString());
+                                        //VolleyLog.d(TAG, response.toString());
+                                        //((TextView)findViewById(R.id.deleteResponse)).setText(response.toString());
 
                                         pDialog.hide();
 
-                                        try {
-                                            String status = response.get("Status").toString();
-
-                                            if (status.equals("ACCEPTED")) {
+                                        /*try {
+                                            String status = response.get("status").toString();
+                                            if (status.toString().equals("ACCEPTED")) {
                                                 deleteStatus.setText("Account deleted");
 
                                             }else{
@@ -215,13 +214,13 @@ public class Settings extends AppCompatActivity {
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
-                                        }
+                                        }*/
                                     }
 
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        deleteStatus.setText("No response from server");
+                                        deleteStatus.setText("Something went wrong");
                                         pDialog.hide();
                                     }
                                 });

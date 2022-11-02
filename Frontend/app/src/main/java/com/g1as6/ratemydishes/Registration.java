@@ -62,7 +62,8 @@ public class Registration extends AppCompatActivity {
         // Back button
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(Registration.this, Login.class);
                 startActivity(intent);
             }
@@ -71,8 +72,9 @@ public class Registration extends AppCompatActivity {
         // Create Button
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                boolean validNet = false;
+            public void onClick(View v)
+            {
+                boolean validNet;
                 boolean validPass = false;
                 pDialog.setMessage("Making account...");
                 pDialog.show();
@@ -125,13 +127,12 @@ public class Registration extends AppCompatActivity {
                                             try {
                                                 BufferedWriter writer = new BufferedWriter(new FileWriter(token));
                                                 writer.write(token);
-
                                                 writer.close();
                                             } catch (Exception e) {
                                             }
                                             AppVars.userToken = token;
 
-                                            Intent intent = new Intent(Registration.this, RestaurantList.class);
+                                            Intent intent = new Intent(Registration.this, WelcomePage.class);
                                             startActivity(intent);
                                         } else {
                                             AppVars.userToken = null;

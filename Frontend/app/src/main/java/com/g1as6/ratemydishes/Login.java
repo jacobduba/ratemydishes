@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +55,10 @@ public class Login extends AppCompatActivity {
         File token = new File(this.getFilesDir(), "token.txt");
         File admin = new File(this.getFilesDir(), "admin.txt");
 
+        // TODO: Remove me! Login doesn't work :(
+        Intent tmp = new Intent(Login.this, WelcomePage.class);
+        startActivity(tmp);
+
         // Check if user previously logged in
         // If file exists, then user is logged in
         // Otherwise, create the file and delete it on logout
@@ -65,9 +70,6 @@ public class Login extends AppCompatActivity {
                 BufferedReader adminReader = new BufferedReader(new FileReader(admin));
                 String t1 = adminReader.readLine();
                 adminReader.close();
-
-                // TODO: Check if token is a valid user token
-                // Should probably get Backend for this
 
                 AppVars.userToken = t.toString();
                 AppVars.isAdmin = t1.equals("true");
@@ -113,7 +115,7 @@ public class Login extends AppCompatActivity {
                     body.put("netId", usrName.getText().toString());
                     body.put("password", pswd.getText().toString());
                 } catch (JSONException e) {
-                    ((TextView) findViewById(R.id.response)).setText("Could not login!");
+                    ((TextView) findViewById(R.id.loginStatus)).setText("Could not login!");
                 }
 
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -121,28 +123,26 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 VolleyLog.d(TAG, response.toString());
-                                ((TextView) findViewById(R.id.response)).setText(response.toString());
                                 System.out.println(response.toString());
 
                                 pDialog.hide();
 
                                 try {
-
-                                    String tokenString = response.get("token").toString();
+                                    String token = response.get("token").toString();
                                     boolean isAdmin = response.getJSONObject("user").getBoolean("isAdmin");
                                     AppVars.isAdmin = isAdmin;
 
                                     // If I understand tokens correctly, no token means auth failed
-                                    if (!tokenString.toString().equals("{}")) {
+                                    if (!token.equals("{}")) {
                                         try {
                                             // Token file should already exist
                                             //File tokenFile = new File(this.getFilesDir(), "token.txt");
-                                            AppVars.userToken = tokenString;
+                                            AppVars.userToken = token;
 
                                             Intent intent = new Intent(Login.this, WelcomePage.class);
                                             startActivity(intent);
                                             BufferedWriter writer = new BufferedWriter(new FileWriter(token));
-                                            writer.write(tokenString);
+                                            writer.write(token);
                                             writer.close();
 
                                             BufferedWriter writer1 = new BufferedWriter(new FileWriter(admin));
@@ -186,7 +186,8 @@ public class Login extends AppCompatActivity {
         // registration button
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(Login.this, Registration.class);
                 startActivity(intent);
             }

@@ -1,7 +1,5 @@
 package com.g1as6.ratemydishes;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +9,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.g1as6.ratemydishes.app.AppController;
 import com.g1as6.ratemydishes.app.AppVars;
@@ -24,16 +20,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Settings extends AppCompatActivity {
-
     ImageButton settingsToWelcome;
     Button logout;
     Button toAdmin;
@@ -55,7 +47,7 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.settings);
         ProgressDialog pDialog = new ProgressDialog(this);
         File token = new File(this.getFilesDir(), "token.txt");
         File admin = new File(this.getFilesDir(), "admin.txt");
@@ -94,8 +86,6 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AppVars.userToken = null;
-                Intent intent = new Intent(Settings.this, Login.class);
-                startActivity(intent);
                 AppVars.isAdmin = false;
 
                 BufferedWriter writer = null;
@@ -109,6 +99,10 @@ public class Settings extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                token.delete();
+
+                Intent intent = new Intent(Settings.this, Login.class);
+                startActivity(intent);
 
             }
         });
@@ -217,14 +211,14 @@ public class Settings extends AppCompatActivity {
                                 (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        //VolleyLog.d(TAG, response.toString());
-                                        //((TextView)findViewById(R.id.deleteResponse)).setText(response.toString());
+                                        ((TextView)findViewById(R.id.deleteResponse)).setText(response.toString());
 
                                         pDialog.hide();
 
-                                        /*try {
-                                            String status = response.get("status").toString();
-                                            if (status.toString().equals("ACCEPTED")) {
+                                        try {
+                                            String status = response.get("Status").toString();
+
+                                            if (status.equals("ACCEPTED")) {
                                                 deleteStatus.setText("Account deleted");
 
                                             }else{
@@ -232,22 +226,21 @@ public class Settings extends AppCompatActivity {
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
-                                        }*/
+                                        }
                                     }
 
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        deleteStatus.setText("Something went wrong");
+
+                                        deleteStatus.setText("No response from server");
                                         pDialog.hide();
                                     }
                                 });
                         AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_obj);
                     }
                 });
-
             }
-
         });
     }
 }

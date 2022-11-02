@@ -2,8 +2,6 @@ package com.g1as6.ratemydishes;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +11,11 @@ import android.widget.ImageButton;
 import com.g1as6.ratemydishes.app.AppVars;
 
 public class WelcomePage extends AppCompatActivity {
-
     Button loginBtn;
     Button diningCenters;
     AlertDialog Alert;
     Button cafe;
+    Button cs;
     Button fastCasual;
     Button getAndGo;
     ImageButton toSettings;
@@ -25,36 +23,21 @@ public class WelcomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.restaurant_list);
+        setContentView(R.layout.welcome);
 
         diningCenters = findViewById(R.id.toDiningCenters);
         cafe = findViewById(R.id.toCafe);
         fastCasual = findViewById(R.id.toFastCasual);
+        cs = findViewById(R.id.toCS);
         getAndGo = findViewById(R.id.toGetAndGo);
         toSettings = findViewById(R.id.toSettings);
-
-//        new AlertDialog.Builder(this)
-//                .setTitle("Token")
-//                .setMessage(AppVars.userToken)
-//
-//                // Specifying a listener allows you to take an action before dismissing the dialog.
-//                // The dialog is automatically dismissed when a dialog button is clicked.
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // Continue with delete operation
-//                    }
-//                })
-//
-//                // A null listener allows the button to dismiss the dialog and take no further action.
-//                .setNegativeButton(android.R.string.no, null)
-//                .setIcon(android.R.drawable.ic_dialog_alert)
-//                .show();
-
         diningCenters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WelcomePage.this, DiningCentersList.class);
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.DINING_CENTER);
+
                 startActivity(intent);
             }
         });
@@ -63,7 +46,20 @@ public class WelcomePage extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WelcomePage.this, DiningCentersList.class);
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.CAFE);
+
+                startActivity(intent);
+            }
+        });
+
+        cs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.CONVENIENCE_STORES);
+
                 startActivity(intent);
             }
         });
@@ -72,7 +68,9 @@ public class WelcomePage extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WelcomePage.this, DiningCentersList.class);
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.FAST_CASUAL);
+
                 startActivity(intent);
             }
         });
@@ -81,7 +79,9 @@ public class WelcomePage extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WelcomePage.this, DiningCentersList.class);
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.GET_AND_GO);
+
                 startActivity(intent);
             }
         });

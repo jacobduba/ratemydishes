@@ -68,4 +68,8 @@ autoDeploy:
 
 michaelStage: 
   stage: michaelStage
+  script: 
+    - echo "it works"
+  tags: 
+    - android_tag
 

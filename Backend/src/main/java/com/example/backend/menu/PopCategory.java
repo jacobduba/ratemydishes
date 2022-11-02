@@ -87,7 +87,7 @@ public class PopCategory {
                             //Set function overrides the previous, so using count variable to change name of object
                             catObj.set("Menu-Item-" + count + "", miObj);
                             count++;
-                            }
+                        }
                         mDObj.set("Categories-" + count1 + "", catObj);
                         count1++;
                     }
@@ -102,8 +102,8 @@ public class PopCategory {
                     currRow.setClearMenus(stringObj);
                     mr.save(currRow);
                 }
-                catArray.add(menuArray);
             }
+            //Adding Menu array to parent array
             catArray.add(menuArray);
         }
         return catArray;

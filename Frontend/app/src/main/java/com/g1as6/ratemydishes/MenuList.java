@@ -31,12 +31,6 @@ public class MenuList extends AppCompatActivity {
         String u = url;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_list);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragment_container_view, MenuFragment.class, null)
-                    .commit();
-        }
 
         backToDining = findViewById(R.id.backToDining);
 

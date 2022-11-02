@@ -215,18 +215,22 @@ public class Settings extends AppCompatActivity {
 
                                         pDialog.hide();
 
+                                        deleteStatus.setText("Account deleted");
+                                        BufferedWriter writer = null;
                                         try {
-                                            String status = response.get("Status").toString();
-
-                                            if (status.equals("ACCEPTED")) {
-                                                deleteStatus.setText("Account deleted");
-
-                                            }else{
-                                                deleteStatus.setText("Error Deleting!");
-                                            }
-                                        } catch (JSONException e) {
+                                            writer = new BufferedWriter(new FileWriter(token));
+                                            writer.write("");
+                                            writer.close();
+                                            BufferedWriter writer1 = new BufferedWriter(new FileWriter(admin));
+                                            writer1.write("");
+                                            writer1.close();
+                                        } catch (IOException e) {
                                             e.printStackTrace();
                                         }
+                                        token.delete();
+
+                                        Intent intent = new Intent(Settings.this, Login.class);
+                                        startActivity(intent);
                                     }
 
                                 }, new Response.ErrorListener() {

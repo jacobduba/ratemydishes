@@ -55,10 +55,6 @@ public class Login extends AppCompatActivity {
         File token = new File(this.getFilesDir(), "token.txt");
         File admin = new File(this.getFilesDir(), "admin.txt");
 
-        // TODO: Remove me! Login doesn't work :(
-        Intent tmp = new Intent(Login.this, WelcomePage.class);
-        startActivity(tmp);
-
         // Check if user previously logged in
         // If file exists, then user is logged in
         // Otherwise, create the file and delete it on logout
@@ -71,7 +67,7 @@ public class Login extends AppCompatActivity {
                 String t1 = adminReader.readLine();
                 adminReader.close();
 
-                AppVars.userToken = t.toString();
+                AppVars.userToken = t;
                 AppVars.isAdmin = t1.equals("true");
                 Intent intent = new Intent(Login.this, WelcomePage.class);
                 startActivity(intent);
@@ -99,9 +95,6 @@ public class Login extends AppCompatActivity {
         usrName = findViewById(R.id.usrInput);
         pswd = findViewById(R.id.pswdInput);
 
-        // Assign some vars and stuff
-        AppVars.userToken = null;
-
         // login button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,21 +121,20 @@ public class Login extends AppCompatActivity {
                                 pDialog.hide();
 
                                 try {
-                                    String token = response.get("token").toString();
+                                    String tokenString = response.get("token").toString();
                                     boolean isAdmin = response.getJSONObject("user").getBoolean("isAdmin");
-                                    AppVars.isAdmin = isAdmin;
 
                                     // If I understand tokens correctly, no token means auth failed
-                                    if (!token.equals("{}")) {
+                                    if (!tokenString.equals("{}")) {
                                         try {
                                             // Token file should already exist
-                                            //File tokenFile = new File(this.getFilesDir(), "token.txt");
-                                            AppVars.userToken = token;
+                                            AppVars.isAdmin = isAdmin;
+                                            AppVars.userToken = tokenString;
 
                                             Intent intent = new Intent(Login.this, WelcomePage.class);
                                             startActivity(intent);
                                             BufferedWriter writer = new BufferedWriter(new FileWriter(token));
-                                            writer.write(token);
+                                            writer.write(tokenString);
                                             writer.close();
 
                                             BufferedWriter writer1 = new BufferedWriter(new FileWriter(admin));

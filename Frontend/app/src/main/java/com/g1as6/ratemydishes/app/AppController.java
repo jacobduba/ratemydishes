@@ -8,11 +8,13 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.g1as6.ratemydishes.net_utils.LruBitmapCache;
 
-public class AppController extends Application { public static final String TAG = AppController.class
-		.getSimpleName();
+public class AppController extends Application {
+	public static final String TAG = AppController.class.getSimpleName();
 
 	private RequestQueue mRequestQueue; private ImageLoader mImageLoader;
-	private static AppController mInstance; @Override
+	private static AppController mInstance;
+
+	@Override
 	public void onCreate() {
 		super.onCreate();
 		mInstance = this;

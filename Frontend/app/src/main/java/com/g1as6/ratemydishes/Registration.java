@@ -46,6 +46,7 @@ public class Registration extends AppCompatActivity {
         setContentView(R.layout.registration);
         ProgressDialog pDialog = new ProgressDialog(this);
         File token = new File(this.getFilesDir(), "token.txt");
+        File admin = new File(this.getFilesDir(), "admin.txt");
 
         // Create widgets
         backBtn = findViewById(R.id.back);
@@ -118,19 +119,26 @@ public class Registration extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        String token = response.get("token").toString();
+                                        String tokenString = response.get("token").toString();
                                         boolean isAdmin = response.getJSONObject("user").getBoolean("isAdmin");
-                                        AppVars.isAdmin = isAdmin;
 
                                         // If I understand tokens correctly, no token means auth failed
-                                        if (!token.toString().equals("{}")) {
+                                        if (!tokenString.toString().equals("{}")) {
                                             try {
+                                                AppVars.isAdmin = isAdmin;
+                                                AppVars.userToken = tokenString;
+
+                                                Intent intent = new Intent(Registration.this, WelcomePage.class);
+                                                startActivity(intent);
                                                 BufferedWriter writer = new BufferedWriter(new FileWriter(token));
-                                                writer.write(token);
+                                                writer.write(tokenString);
                                                 writer.close();
+
+                                                BufferedWriter writer1 = new BufferedWriter(new FileWriter(admin));
+                                                writer1.write(String.valueOf(isAdmin));
+                                                writer1.close();
                                             } catch (Exception e) {
                                             }
-                                            AppVars.userToken = token;
 
                                             Intent intent = new Intent(Registration.this, WelcomePage.class);
                                             startActivity(intent);

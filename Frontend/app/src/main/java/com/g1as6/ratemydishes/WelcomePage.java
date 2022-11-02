@@ -16,6 +16,7 @@ public class WelcomePage extends AppCompatActivity {
     Button diningCenters;
     AlertDialog Alert;
     Button cafe;
+    Button cs;
     Button fastCasual;
     Button getAndGo;
     ImageButton toSettings;
@@ -28,6 +29,7 @@ public class WelcomePage extends AppCompatActivity {
         diningCenters = findViewById(R.id.toDiningCenters);
         cafe = findViewById(R.id.toCafe);
         fastCasual = findViewById(R.id.toFastCasual);
+        cs = findViewById(R.id.toCS);
         getAndGo = findViewById(R.id.toGetAndGo);
         toSettings = findViewById(R.id.toSettings);
 
@@ -48,6 +50,17 @@ public class WelcomePage extends AppCompatActivity {
             {
                 Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
                 intent.putExtra("type", AppVars.Restaurant.CAFE);
+
+                startActivity(intent);
+            }
+        });
+
+        cs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(WelcomePage.this, RestaurantList.class);
+                intent.putExtra("type", AppVars.Restaurant.CONVENIENCE_STORES);
 
                 startActivity(intent);
             }

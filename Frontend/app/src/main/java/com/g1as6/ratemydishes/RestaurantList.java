@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.android.volley.Request;
@@ -27,10 +25,10 @@ import org.json.JSONObject;
 public class RestaurantList extends AppCompatActivity {
 
     private ImageButton backToDining;
-    //private String url = "http://coms-309-006.class.las.iastate.edu:8080/location/";
-    private String url = "https://ce96178b-dd5e-4c1b-80e8-def480aa7eb4.mock.pstmn.io/location/get-cafe";
-    private String slug;
+    private String url = "http://coms-309-006.class.las.iastate.edu:8080/location/";
+    //private String url = "https://ce96178b-dd5e-4c1b-80e8-def480aa7eb4.mock.pstmn.io/location/get-cafe";
     private Button lastButton;
+    protected static AppVars.Restaurant loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +48,9 @@ public class RestaurantList extends AppCompatActivity {
         });
 
         Bundle extras = getIntent().getExtras();
-        AppVars.Restaurant value = (AppVars.Restaurant)extras.getSerializable("type");
-        /*
-        switch(value){
+        loc = (AppVars.Restaurant)extras.getSerializable("type");
+
+        switch(loc){
             case CAFE:
                 url += "get-cafe";
                 break;
@@ -68,7 +66,7 @@ public class RestaurantList extends AppCompatActivity {
             default:
                 break;
         }
-        */
+
         populateScreen();
     }
 
@@ -79,7 +77,7 @@ public class RestaurantList extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONArray response) {
                     // Access each element in the jsonarray
-                    int last = findViewById(R.id.welcomeText4).getId();
+                    int lastId = findViewById(R.id.welcomeText4).getId();
                     for(int i = 0; i < response.length(); i++){
                         try { // Rip readability
                             // Lots of definitions
@@ -88,16 +86,28 @@ public class RestaurantList extends AppCompatActivity {
                             final Button btn = new Button(RestaurantList.this);
                             DisplayMetrics displayMetrics = new DisplayMetrics();
                             JSONObject object = (JSONObject)response.get(i);
-                            String title = object.getString("Title");
+                            String title = object.getString("title");
 
                             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
                             btn.setId(View.generateViewId());
                             btn.setText(title);
                             btn.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                            btn.setTextSize(18);
+                            btn.setTextSize(24);
                             btn.setWidth(displayMetrics.widthPixels);
                             btn.setBackgroundColor(0xFFF4F4D4);
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v){
+                                    // Destruct slug then send it as string for a much better life experience
+                                    Intent intent = new Intent(RestaurantList.this, MenuList.class);
+                                    try {
+                                        intent.putExtra("slug", object.getString("slug"));
+                                        startActivity(intent);
+                                    }catch (JSONException e){   }
+
+                                }
+                            });
 
                             set.constrainHeight(btn.getId(), ConstraintSet.WRAP_CONTENT);
                             set.constrainWidth(btn.getId(), ConstraintSet.WRAP_CONTENT);
@@ -105,10 +115,10 @@ public class RestaurantList extends AppCompatActivity {
                             layout.addView(btn,0);
 
                             set.clone(layout);
-                            set.connect(btn.getId(), 3, last, 4);
+                            set.connect(btn.getId(), 3, lastId, 4);
                             set.applyTo(layout);
 
-                            last = btn.getId();
+                            lastId = btn.getId();
                         }catch(JSONException e){  /* lol you expect this to get handled? lol */  }
                     }
                 }

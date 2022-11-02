@@ -7,6 +7,7 @@ public class AppVars {
         DINING_CENTER,
         CAFE,
         FAST_CASUAL,
-        GET_AND_GO
+        GET_AND_GO,
+        CONVENIENCE_STORES
     }
 }

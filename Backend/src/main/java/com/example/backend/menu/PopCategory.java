@@ -30,7 +30,7 @@ public class PopCategory {
         //For loop to each row, grab menu, parse for categories
         for (int i = 0; i < menuList.size(); i++) {
             //Create master Object
-            ObjectNode menuObj = mapper.createObjectNode();
+            ArrayNode menuArray = mapper.createArrayNode();
             //Find current menu
             JsonNode row = mapper.readTree(menuList.get(i).getMenus());
             String location = menuList.get(i).getTitle();
@@ -93,21 +93,19 @@ public class PopCategory {
                         mDObj.set("Categories-" + count1 + "", catObj);
                         count1++;
                     }
-                    rowObj.set("Section-" + count3 + "", mDSection);
-                    rowObj.set("Menu-Display-" + count2 + "", mDObj);
-                    count2++;
+                    menuArray.add(rowObj);
+                    count3++;
+                    //Stringify catArray
+                    String stringObj = menuArray.toString();
+                    //grab current title
+                    String title = menuList.get(i).getTitle();
+                    //grab current row
+                    Menus currRow = mr.findByTitle(title);
+                    //save catArray string to currRow
+                    currRow.setClearMenus(stringObj);
+                    mr.save(currRow);
                 }
-                menuObj.set("Menu-" + count3 + "", rowObj);
-                count3++;
-                //Stringify catArray
-                String stringObj = menuObj.toString();
-                //grab current title
-                String title = menuList.get(i).getTitle();
-                //grab current row
-                Menu currRow = mr.findByTitle(title);
-                //save catArray string to currRow
-                currRow.setClearMenus(stringObj);
-                mr.save(currRow);
+                catArray.add(menuArray);
             }
             catArray.add(menuObj);
         }

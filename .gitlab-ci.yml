@@ -5,6 +5,9 @@ stages:
   - androidtest
   - mavenDeploy
   - michaelStage
+  - brandonStage
+  - karthikStage
+
 
 maven-build:
   stage: mavenbuild
@@ -72,4 +75,18 @@ michaelStage:
     - echo "it works"
   tags: 
     - android_tag
+
+brandonStage: 
+  stage: brandonStage
+  script: 
+    - echo "it works"
+  tags: 
+    - android_tag
+
+karthikStage: 
+  stage: karthikStage
+  script:
+    - echo "it works"
+  tags: 
+    - springboot_tag
 

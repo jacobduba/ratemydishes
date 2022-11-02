@@ -1,20 +1,16 @@
 package com.example.backend;
 
+import com.example.backend.admin.exceptions.LocationDoesNotExistException;
 import com.example.backend.admin.exceptions.UserNotPrivilegedException;
 import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.exceptions.InvalidTokenException;
 import com.example.backend.user.exceptions.UserAlreadyExistsException;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -68,6 +64,15 @@ public class GlobalExceptionHandler {
         return ApiError.buildRes(
                 HttpStatus.UNAUTHORIZED,
                 "User is not privileged enough to view this data.",
+                ex
+        );
+    }
+
+    @ExceptionHandler(LocationDoesNotExistException.class)
+    public ResponseEntity<ApiError> locationDoesNotExistException(LocationDoesNotExistException ex) {
+        return ApiError.buildRes(
+                HttpStatus.NOT_FOUND,
+                "Location does not exist.",
                 ex
         );
     }

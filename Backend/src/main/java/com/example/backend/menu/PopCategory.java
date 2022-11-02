@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
-
 @Service
 @Component
 public class PopCategory {
@@ -35,7 +34,6 @@ public class PopCategory {
             JsonNode row = mapper.readTree(menuList.get(i).getMenus());
             String location = menuList.get(i).getTitle();
 
-            int count3 = 1;
             for (int j = 0; j < row.size(); j++) {
                 ObjectNode rowObj = mapper.createObjectNode();
                 //Parse for categories
@@ -94,20 +92,19 @@ public class PopCategory {
                         count1++;
                     }
                     menuArray.add(rowObj);
-                    count3++;
                     //Stringify catArray
                     String stringObj = menuArray.toString();
                     //grab current title
                     String title = menuList.get(i).getTitle();
                     //grab current row
-                    Menus currRow = mr.findByTitle(title);
+                    Menu currRow = mr.findByTitle(title);
                     //save catArray string to currRow
                     currRow.setClearMenus(stringObj);
                     mr.save(currRow);
                 }
                 catArray.add(menuArray);
             }
-            catArray.add(menuObj);
+            catArray.add(menuArray);
         }
         return catArray;
     }

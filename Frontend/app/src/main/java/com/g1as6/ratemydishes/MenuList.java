@@ -10,14 +10,13 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.g1as6.ratemydishes.app.AppController;
+import com.g1as6.ratemydishes.utils.MenuFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +31,12 @@ public class MenuList extends AppCompatActivity {
         String u = url;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_list);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_container_view, MenuFragment.class, null)
+                    .commit();
+        }
 
         backToDining = findViewById(R.id.backToDining);
 

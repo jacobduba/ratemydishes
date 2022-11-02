@@ -1,6 +1,7 @@
 package com.example.backend.admin;
 
 import com.example.backend.admin.exceptions.UserNotPrivilegedException;
+import com.example.backend.admin.payload.ToggleLocationRequestPayload;
 import com.example.backend.user.User;
 import com.example.backend.user.UserService;
 import com.example.backend.user.payload.AuthRequestPayload;
@@ -56,6 +57,21 @@ public class AdminController {
             categoryNode.add(category);
         }
         returnNode.set("categories", categoryNode);
+
+        return returnNode;
+    }
+
+    @PostMapping("toggle-location")
+    public ObjectNode toggleLocation(@RequestBody ToggleLocationRequestPayload payload) {
+        User user = us.getUserFromAuthPayload(payload);
+
+        if (!user.hasRole("admin")) throw new UserNotPrivilegedException();
+
+        lss.setEnabled(payload.getName(), payload.isEnabled());
+
+        ObjectNode returnNode = mapper.createObjectNode();
+        returnNode.put("name", payload.getName());
+        returnNode.put("enabled", payload.isEnabled());
 
         return returnNode;
     }

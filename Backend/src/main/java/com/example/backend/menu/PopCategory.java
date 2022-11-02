@@ -21,75 +21,86 @@ public class PopCategory {
 
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        ArrayNode catArray = mapper.createArrayNode();
+        ArrayNode parentArray = mapper.createArrayNode();
         //Query Entire Table
         ArrayList<Menu> menuList = (ArrayList<Menu>) mr.findAll();
 
         //For loop to each row, grab menu, parse for categories
         for (int i = 0; i < menuList.size(); i++) {
-            //Create master Object
+            //Create master Array
             ArrayNode menuArray = mapper.createArrayNode();
             //Find current menu
             JsonNode row = mapper.readTree(menuList.get(i).getMenus());
-            String location = menuList.get(i).getTitle();
 
-            int count3 = 1;
             for (int j = 0; j < row.size(); j++) {
-                ObjectNode rowObj = mapper.createObjectNode();
+                ArrayNode rowArray = mapper.createArrayNode();
                 //Parse for categories
                 JsonNode rowNode = row.get(j);
-                String titleVal = location;
                 JsonNode mDSection = rowNode.get("section");
                 JsonNode menuDisplays = rowNode.get("menuDisplays");
-                rowObj.put("Location", titleVal);
 
-                int count2 = 1;
                 for (int k = 0; k < menuDisplays.size(); k++) {
                     //child object
-                    ObjectNode mDObj = mapper.createObjectNode();
+                    ArrayNode mDArray = mapper.createArrayNode();
                     JsonNode mDNode = menuDisplays.get(k);
                     JsonNode mDName = mDNode.get("name");
                     JsonNode catVals = mDNode.get("categories");
                     //put into child object
-                    mDObj.set("Menu-Display-" + count2 + "", mDName);
+                    mDArray.add(mDName);
 
-                    int count1 = 1;
                     for (int l = 0; l < catVals.size(); l++) {
-                        ObjectNode catObj = mapper.createObjectNode();
+                        ArrayNode catArray = mapper.createArrayNode();
                         JsonNode catNode = catVals.get(l);
                         JsonNode catName = catNode.get("category");
                         JsonNode menuItems = catNode.get("menuItems");
                         //put into child object
-                        catObj.set("Category-" + count2 + "", catName);
-                        int count = 1;
+                        catArray.add(catName);
                         for (int m = 0; m < menuItems.size(); m++) {
-                            ObjectNode miObj = mapper.createObjectNode();
+                            ArrayNode miArray = mapper.createArrayNode();
                             JsonNode miNode = menuItems.get(m);
                             JsonNode miName = miNode.get("name");
-                            //JsonNode miTraits = miNode.get("traits");
                             JsonNode miHalal = miNode.get("isHalal");
                             JsonNode miVegan = miNode.get("isVegan");
                             JsonNode miCals = miNode.get("totalCal");
                             JsonNode miVeg = miNode.get("isVegetarian");
 
-                            miObj.set("Name-" + count + "", miName);
-                            //miObj.set("Traits", miTraits);
-                            miObj.set("isHalal-" + count + "", miHalal);
-                            miObj.set("isVegan-" + count + "", miVegan);
-                            miObj.set("isVegetarian-" + count + "", miVeg);
-                            miObj.set("Total-Calories-" + count + "", miCals);
+                            //create json Objects to map json nodes to
+                            ObjectNode name = mapper.createObjectNode();
+                            ObjectNode halal = mapper.createObjectNode();
+                            ObjectNode vegan = mapper.createObjectNode();
+                            ObjectNode cals = mapper.createObjectNode();
+                            ObjectNode veg = mapper.createObjectNode();
+
+                            //add jsonnode to object
+                            name.set("name", miName);
+                            halal.set("isHalal", miHalal);
+                            vegan.set("isVegan", miVegan);
+                            cals.set("total-calories", miCals);
+                            veg.set("isVegetarian", miVeg);
+
+                            //add object to parent array
+                            miArray.add(name);
+                            miArray.add(halal);
+                            miArray.add(vegan);
+                            miArray.add(cals);
+                            miArray.add(veg);
 
                             //Set function overrides the previous, so using count variable to change name of object
-                            catObj.set("Menu-Item-" + count + "", miObj);
-                            count++;
+                            ObjectNode miObj = mapper.createObjectNode();
+                            miObj.set("Food-Item", miArray);
+                            catArray.add(miObj);
                         }
-                        mDObj.set("Categories-" + count1 + "", catObj);
-                        count1++;
+                        ObjectNode catObj = mapper.createObjectNode();
+                        catObj.set("Food-Type", catArray);
+                        mDArray.add(catObj);
                     }
-                    rowObj.set("Section-" + count3 + "", mDSection);
-                    rowObj.set("Menu-Display-" + count2 + "", mDObj);
-                    count2++;
+                    ObjectNode mdObj = mapper.createObjectNode();
+                    mdObj.set("Menu-Display", mDArray);
+                    rowArray.add(mDSection);
+                    rowArray.add(mdObj);
                 }
+                ObjectNode rowObj = mapper.createObjectNode();
+                rowObj.set("Section", rowArray);
                 menuArray.add(rowObj);
                 //Stringify catArray
                 String stringObj = menuArray.toString();
@@ -101,8 +112,8 @@ public class PopCategory {
                 currRow.setClearMenus(stringObj);
                 mr.save(currRow);
             }
-            catArray.add(menuArray);
+            parentArray.add(menuArray);
         }
-        return catArray;
+        return parentArray;
     }
 }

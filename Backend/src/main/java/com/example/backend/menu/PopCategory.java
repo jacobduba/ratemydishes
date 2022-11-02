@@ -114,6 +114,7 @@ public class PopCategory {
             }
             parentArray.add(menuArray);
         }
+        //Parent Array is what is stored in the menu repository
         return parentArray;
     }
 }

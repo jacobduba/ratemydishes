@@ -1,6 +1,7 @@
 package com.example.backend;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,15 @@ public class ApiError {
         this.message = message;
     }
 
+    public static ResponseEntity<ApiError> buildRes(HttpStatus status, String message, Exception ex) {
+        ApiError err = new ApiError(
+                status,
+                message,
+                ex
+        );
+        return new ResponseEntity<>(err, err.getStatus());
+    }
+
     public HttpStatus getStatus() {
         return status;
     }
@@ -41,14 +51,5 @@ public class ApiError {
 
     public String getMessage() {
         return message;
-    }
-
-    public static ResponseEntity<ApiError> buildRes(HttpStatus status, String message, Exception ex) {
-        ApiError err = new ApiError(
-                status,
-                message,
-                ex
-        );
-        return new ResponseEntity<>(err, err.getStatus());
     }
 }

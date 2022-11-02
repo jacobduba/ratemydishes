@@ -1,6 +1,9 @@
 package com.example.backend.role;
 
 import com.example.backend.user.User;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
+@Getter @Setter
 public class Role {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -28,19 +32,11 @@ public class Role {
         this.name = name;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Set<User> getUsersInRole() {
-        return users;
-    }
-
     public void addUser(User user) {
         this.users.add(user);
+    }
+
+    public boolean equals(Role role) {
+        return true;
     }
 }

@@ -57,7 +57,7 @@ public class UserController {
         return res;
     }
 
-    @DeleteMapping("delete")
+    @PostMapping("delete")
     public LinkedHashMap<String, Object> delete(@RequestBody DeleteRequestPayload deleteRequestPayload) {
         String netId = userService.deleteUser(deleteRequestPayload);
 
@@ -78,51 +78,5 @@ public class UserController {
         res.put("status", HttpStatus.ACCEPTED);
         res.put("token", changePasswordPayload.getToken());
         return res;
-    }
-
-    // Error handling
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiError> httpNotReadableException(HttpMessageNotReadableException ex) {
-        return ApiError.buildRes(
-                HttpStatus.UNAUTHORIZED,
-                "No payload sent.",
-                ex
-        );
-    }
-
-    @ExceptionHandler(InvalidPayloadException.class)
-    public ResponseEntity<ApiError> invalidPayloadException(InvalidPayloadException ex) {
-        return ApiError.buildRes(
-                HttpStatus.UNAUTHORIZED,
-                "Payload does not contain expected properties.",
-                ex
-        );
-    }
-
-    @ExceptionHandler(IncorrectUsernameOrPasswordException.class)
-    public ResponseEntity<ApiError> incorrectException(IncorrectUsernameOrPasswordException ex) {
-        return ApiError.buildRes(
-                HttpStatus.UNAUTHORIZED,
-                "Incorrect username or password",
-                ex
-        );
-    }
-
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ApiError> invalidTokenException(InvalidTokenException ex) {
-        return ApiError.buildRes(
-                HttpStatus.UNAUTHORIZED,
-                "Token is invalid.",
-                ex
-        );
-    }
-
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ApiError> userAlreadyExistsException(UserAlreadyExistsException ex) {
-        return ApiError.buildRes(
-                HttpStatus.UNAUTHORIZED,
-                "User already exists.",
-                ex
-        );
     }
 }

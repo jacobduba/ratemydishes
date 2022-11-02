@@ -2,6 +2,7 @@ package com.example.backend.user;
 
 import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
+import com.example.backend.user.exceptions.InvalidTokenException;
 import com.example.backend.user.exceptions.UserAlreadyExistsException;
 import com.example.backend.user.payload.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,9 @@ public class UserService {
     }
 
     public User getUserFromAuthPayload(AuthRequestPayload payload) {
-        return userRepository.findByNetId(jwtTokenHelper.parseAccessToken(payload.getToken()));
+        User user = userRepository.findByNetId(jwtTokenHelper.parseAccessToken(payload.getToken()));
+        if (user == null) throw new InvalidTokenException();
+        return user;
     }
 
     public void loginValidatePayload(LoginRequestPayload payload) {

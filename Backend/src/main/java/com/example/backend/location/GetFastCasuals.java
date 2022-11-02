@@ -1,5 +1,7 @@
 package com.example.backend.location;
 
+import com.example.backend.admin.LocationSettingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -13,23 +15,28 @@ public class GetFastCasuals {
     @Autowired
     public LocationRepository lr;
 
-    public ArrayNode getFastCas() {
+    @Autowired
+    public LocationSettingService lss;
+
+    public ArrayNode getFastCas() throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
-        ArrayList<Locations> fastLoc = lr.findByResType("[\"fast-casual\"]");
+        ArrayList<Location> fastLoc = lr.findByResType("[\"fast-casual\"]");
         ArrayNode returnList = mapper.createArrayNode();
 
         //Return everything but ID to Frontend
         for (int i = 0; i < fastLoc.size(); i++) {
-            ObjectNode locationNode = mapper.createObjectNode();
+            if (lss.getEnabled(fastLoc.get(i).getTitle())) {
+                ObjectNode locationNode = mapper.createObjectNode();
 
-            locationNode.put("Title", fastLoc.get(i).getTitle());
-            locationNode.put("Slug", fastLoc.get(i).getSlug());
-            locationNode.put("Restaurant_type", fastLoc.get(i).getResType());
-            locationNode.put("facility", fastLoc.get(i).getFacility());
-            locationNode.put("Dietary_type", fastLoc.get(i).getDietType());
+                locationNode.put("title", fastLoc.get(i).getTitle());
+                locationNode.put("slug", fastLoc.get(i).getSlug());
+                locationNode.set("restaurant_type", mapper.readTree(fastLoc.get(i).getResType()));
+                locationNode.put("facility", fastLoc.get(i).getFacility());
+                locationNode.set("dietary_type", mapper.readTree(fastLoc.get(i).getDietType()));
 
-            returnList.add(locationNode);
+                returnList.add(locationNode);
+            }
         }
 
         return returnList;

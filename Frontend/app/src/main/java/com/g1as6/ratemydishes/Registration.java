@@ -81,7 +81,7 @@ public class Registration extends AppCompatActivity {
                 String passText = pswd.getText().toString();
 
                 // Check to see if everything is valid
-                if (netText.length() > 3 && netText.length() < 8 && netText.matches("^[a-zA-Z0-9]*$")) {
+                if(netText.length() >= 3 && netText.length() <= 8 && netText.matches("^[a-zA-Z0-9]*$")){
                     netStatus.setText("");
                     validNet = true;
                 } else {
@@ -89,8 +89,8 @@ public class Registration extends AppCompatActivity {
                     validNet = false;
                 }
 
-                if (passText.equals(pswdConf.getText().toString())) {
-                    if (passText.length() > 6) {
+                if(passText.equals(pswdConf.getText().toString())) {
+                    if(passText.length() >= 6){
                         passStat.setText("");
                         validPass = true;
                     } else {
@@ -116,18 +116,20 @@ public class Registration extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        String tokenString = response.get("token").toString();
+                                        String token = response.get("token").toString();
+                                        boolean isAdmin = response.getJSONObject("user").getBoolean("isAdmin");
+                                        AppVars.isAdmin = isAdmin;
 
                                         // If I understand tokens correctly, no token means auth failed
-                                        if (!tokenString.toString().equals("{}")) {
+                                        if (!token.toString().equals("{}")) {
                                             try {
                                                 BufferedWriter writer = new BufferedWriter(new FileWriter(token));
-                                                writer.write(tokenString);
+                                                writer.write(token);
 
                                                 writer.close();
                                             } catch (Exception e) {
                                             }
-                                            AppVars.userToken = tokenString;
+                                            AppVars.userToken = token;
 
                                             Intent intent = new Intent(Registration.this, RestaurantList.class);
                                             startActivity(intent);

@@ -26,7 +26,7 @@
             android:name=".DiningCentersList"
             android:exported="false" />
         <activity
-            android:name=".RestaurantList"
+            android:name=".WelcomePage"
             android:exported="false">
         </activity>
         <activity
@@ -40,6 +40,12 @@
         </activity>
         <activity
             android:name=".Registration"
+            android:exported="false" />
+        <activity
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".AdminSettings"
             android:exported="false" />
     </application>
 

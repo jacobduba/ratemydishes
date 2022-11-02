@@ -1,5 +1,4 @@
 package com.example.backend.menu;
-import com.example.backend.admin.CategorySettingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,15 +9,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
+
 @Service
 @Component
 public class PopCategory {
     @Autowired
     MenuRepository mr;
+
     @Autowired
     Menu m;
-    @Autowired
-    CategorySettingService css;
 
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -34,6 +33,7 @@ public class PopCategory {
             JsonNode row = mapper.readTree(menuList.get(i).getMenus());
             String location = menuList.get(i).getTitle();
 
+            int count3 = 1;
             for (int j = 0; j < row.size(); j++) {
                 ObjectNode rowObj = mapper.createObjectNode();
                 //Parse for categories
@@ -51,7 +51,7 @@ public class PopCategory {
                     JsonNode mDName = mDNode.get("name");
                     JsonNode catVals = mDNode.get("categories");
                     //put into child object
-                    mDObj.set("Menu-Display", mDName);
+                    mDObj.set("Menu-Display-" + count2 + "", mDName);
 
                     int count1 = 1;
                     for (int l = 0; l < catVals.size(); l++) {
@@ -59,13 +59,8 @@ public class PopCategory {
                         JsonNode catNode = catVals.get(l);
                         JsonNode catName = catNode.get("category");
                         JsonNode menuItems = catNode.get("menuItems");
-
-                        // Store category as category setting!
-                        css.getEnabled(catName.asText());
-
                         //put into child object
-                        mDObj.set("Menu-Display-" + count2 + "", mDName);
-
+                        catObj.set("Category-" + count2 + "", catName);
                         int count = 1;
                         for (int m = 0; m < menuItems.size(); m++) {
                             ObjectNode miObj = mapper.createObjectNode();
@@ -91,19 +86,21 @@ public class PopCategory {
                         mDObj.set("Categories-" + count1 + "", catObj);
                         count1++;
                     }
-                    menuArray.add(rowObj);
-                    //Stringify catArray
-                    String stringObj = menuArray.toString();
-                    //grab current title
-                    String title = menuList.get(i).getTitle();
-                    //grab current row
-                    Menu currRow = mr.findByTitle(title);
-                    //save catArray string to currRow
-                    currRow.setClearMenus(stringObj);
-                    mr.save(currRow);
+                    rowObj.set("Section-" + count3 + "", mDSection);
+                    rowObj.set("Menu-Display-" + count2 + "", mDObj);
+                    count2++;
                 }
+                menuArray.add(rowObj);
+                //Stringify catArray
+                String stringObj = menuArray.toString();
+                //grab current title
+                String title = menuList.get(i).getTitle();
+                //grab current row
+                Menu currRow = mr.findByTitle(title);
+                //save catArray string to currRow
+                currRow.setClearMenus(stringObj);
+                mr.save(currRow);
             }
-            //Adding Menu array to parent array
             catArray.add(menuArray);
         }
         return catArray;

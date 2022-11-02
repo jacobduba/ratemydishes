@@ -28,7 +28,7 @@ public class PopCategory {
         //For loop to each row, grab menu, parse for categories
         for (int i = 0; i < menuList.size(); i++) {
             //Create master Object
-            ObjectNode menuObj = mapper.createObjectNode();
+            ArrayNode menuArray = mapper.createArrayNode();
             //Find current menu
             JsonNode row = mapper.readTree(menuList.get(i).getMenus());
             String location = menuList.get(i).getTitle();
@@ -90,10 +90,10 @@ public class PopCategory {
                         rowObj.set("Menu-Display-" + count2 + "", mDObj);
                         count2++;
                     }
-                    menuObj.set("Menu-" + count3 + "", rowObj);
+                    menuArray.add(rowObj);
                     count3++;
                     //Stringify catArray
-                    String stringObj = menuObj.toString();
+                    String stringObj = menuArray.toString();
                     //grab current title
                     String title = menuList.get(i).getTitle();
                     //grab current row
@@ -102,7 +102,7 @@ public class PopCategory {
                     currRow.setClearMenus(stringObj);
                     mr.save(currRow);
                 }
-                catArray.add(menuObj);
+                catArray.add(menuArray);
             }
         return catArray;
     }

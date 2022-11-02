@@ -103,6 +103,7 @@ public class PopCategory {
                     mr.save(currRow);
                 }
             }
+            //Adding Menu array to parent array
             catArray.add(menuArray);
         }
         return catArray;

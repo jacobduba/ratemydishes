@@ -4,6 +4,7 @@ stages:
   - androidbuild
   - androidtest
   - mavenDeploy
+  - michaelStage
 
 maven-build:
   stage: mavenbuild
@@ -64,4 +65,7 @@ autoDeploy:
   only:
     refs:
       - main
+
+michaelStage: 
+  stage: michaelStage
 

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AdminSettings extends AppCompatActivity {
 
     ImageButton backToSettings;
+    Button switchWhirlyBirds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

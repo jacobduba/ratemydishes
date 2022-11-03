@@ -18,6 +18,7 @@ public class PopCategory {
 
     @Autowired
     Menu m;
+    private JsonNode jsonNode;
 
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -71,7 +72,7 @@ public class PopCategory {
                             ObjectNode cals = mapper.createObjectNode();
                             ObjectNode veg = mapper.createObjectNode();
 
-                            //add jsonnode to object
+                            //add json-node to object
                             name.set("name", miName);
                             halal.set("isHalal", miHalal);
                             vegan.set("isVegan", miVegan);
@@ -96,8 +97,44 @@ public class PopCategory {
                     }
                     ObjectNode mdObj = mapper.createObjectNode();
                     mdObj.set("Menu-Display", mDArray);
-                    rowArray.add(mDSection);
-                    rowArray.add(mdObj);
+                    //Create object in section array that holds Lunch array. Lunch array holds lunch Mds
+
+                    //Check where to place mdObject
+
+                    //First check: Is rowArray empty? If so, create new object to populate it
+                    if (rowArray.isEmpty()) {
+                        ObjectNode sectObj = mapper.createObjectNode();
+                        ArrayNode sectArray = mapper.createArrayNode();
+                        sectObj.set("title", mDSection);
+                        sectArray.add(mdObj);
+                        sectObj.set("array", sectArray);
+                        rowArray.add(sectObj);
+                    }
+                    //When row array is not empty
+                    else {
+                        for (int y = 0; y < rowArray.size();) {
+                            JsonNode sectObj1 = rowArray.get(y);
+                            JsonNode currArray1 = sectObj1.get("array");
+                            //What I am doing here is getting rid of double quotes for comparison between Object title and current menu section
+                            String sect = mDSection.textValue();
+                            String title = sectObj1.get("title").textValue();
+                            //If rowArray has an object, does the object title match the current menu section? If so, add it to this object
+                            if (sect.equals(title)) {
+                                ArrayNode currArray = (ArrayNode) currArray1;
+                                currArray.add(mdObj);
+                            //Else create a new object with the new menu section as its title
+                            } else {
+                                ObjectNode sectObj = mapper.createObjectNode();
+                                ArrayNode sectArray = mapper.createArrayNode();
+                                sectObj.put("title", title);
+                                sectArray.add(mdObj);
+                                sectObj.set("array", sectArray);
+                                rowArray.add(sectObj);
+                            }
+                            //Break to avoid infinite loop
+                            break;
+                        }
+                    }
                 }
                 ObjectNode rowObj = mapper.createObjectNode();
                 rowObj.set("Section", rowArray);
@@ -114,6 +151,7 @@ public class PopCategory {
             }
             parentArray.add(menuArray);
         }
+        //Parent Array is what is stored in the menu repository
         return parentArray;
     }
 }

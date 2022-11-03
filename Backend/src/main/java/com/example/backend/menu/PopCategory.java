@@ -116,19 +116,17 @@ public class PopCategory {
                             JsonNode sectObj1 = rowArray.get(y);
                             JsonNode currArray1 = sectObj1.get("array");
                             //What I am doing here is getting rid of double quotes for comparison between Object title and current menu section
-                            String title = String.valueOf(mDSection);
-                            String resTitle= title.substring(1, title.length() - 1);
-                            String sect = sectObj1.get("title").toString();
-                            String resSect = sect.substring(1, sect.length() - 1);
+                            String sect = mDSection.textValue();
+                            String title = sectObj1.get("title").textValue();
                             //If rowArray has an object, does the object title match the current menu section? If so, add it to this object
-                            if (resSect.equals(resTitle)) {
+                            if (sect.equals(title)) {
                                 ArrayNode currArray = (ArrayNode) currArray1;
                                 currArray.add(mdObj);
                             //Else create a new object with the new menu section as its title
                             } else {
                                 ObjectNode sectObj = mapper.createObjectNode();
                                 ArrayNode sectArray = mapper.createArrayNode();
-                                sectObj.put("title", resTitle);
+                                sectObj.put("title", title);
                                 sectArray.add(mdObj);
                                 sectObj.set("array", sectArray);
                                 rowArray.add(sectObj);

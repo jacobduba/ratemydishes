@@ -1,5 +1,6 @@
 package com.example.backend.admin;
 
+import com.example.backend.admin.exceptions.CategoryDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,15 @@ public class CategorySettingService {
 
     private void createNewCategorySetting(String name) {
         CategorySetting categorySetting = new CategorySetting(name, true);
+        categorySettingRepository.save(categorySetting);
+    }
+
+    public void setEnabled(String name, boolean enabled) {
+        CategorySetting categorySetting = categorySettingRepository.findByName(name);
+
+        if (categorySetting == null) throw new CategoryDoesNotExistException();
+
+        categorySetting.setEnabled(enabled);
         categorySettingRepository.save(categorySetting);
     }
 }

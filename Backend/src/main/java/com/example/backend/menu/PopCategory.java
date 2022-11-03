@@ -1,4 +1,5 @@
 package com.example.backend.menu;
+import com.example.backend.admin.CategorySettingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,9 @@ public class PopCategory {
     @Autowired
     Menu m;
     private JsonNode jsonNode;
+
+    @Autowired
+    CategorySettingService css;
 
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -56,6 +60,8 @@ public class PopCategory {
                         JsonNode menuItems = catNode.get("menuItems");
                         //put into child object
                         catArray.add(catName);
+                        css.getEnabled(catName.textValue());
+
                         for (int m = 0; m < menuItems.size(); m++) {
                             ArrayNode miArray = mapper.createArrayNode();
                             JsonNode miNode = menuItems.get(m);

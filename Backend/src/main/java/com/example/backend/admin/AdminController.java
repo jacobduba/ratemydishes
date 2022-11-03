@@ -1,6 +1,7 @@
 package com.example.backend.admin;
 
 import com.example.backend.admin.exceptions.UserNotPrivilegedException;
+import com.example.backend.admin.payload.ToggleCategoryRequestPayload;
 import com.example.backend.admin.payload.ToggleLocationRequestPayload;
 import com.example.backend.user.User;
 import com.example.backend.user.UserService;
@@ -18,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     private ObjectMapper mapper = new ObjectMapper();
     private LocationSettingService lss;
-    private CategorySettingRepository csr;
+    private CategorySettingService css;
     private UserService us;
 
     @Autowired
-    public AdminController(LocationSettingService lss, CategorySettingRepository csr, UserService us) {
+    public AdminController(LocationSettingService lss, CategorySettingService css, UserService us) {
         this.lss = lss;
-        this.csr = csr;
+        this.css = css;
         this.us = us;
     }
 
@@ -48,7 +49,7 @@ public class AdminController {
         returnNode.set("locations", locationNode);
 
         ArrayNode categoryNode = mapper.createArrayNode();
-        for (CategorySetting cs : csr.findAll()) {
+        for (CategorySetting cs : css.findAll()) {
             ObjectNode category = mapper.createObjectNode();
 
             category.put("title", cs.getName());
@@ -68,6 +69,21 @@ public class AdminController {
         if (!user.hasRole("admin")) throw new UserNotPrivilegedException();
 
         lss.setEnabled(payload.getName(), payload.isEnabled());
+
+        ObjectNode returnNode = mapper.createObjectNode();
+        returnNode.put("name", payload.getName());
+        returnNode.put("enabled", payload.isEnabled());
+
+        return returnNode;
+    }
+
+    @PostMapping("toggle-category")
+    public ObjectNode toggleCategory(@RequestBody ToggleCategoryRequestPayload payload) {
+        User user = us.getUserFromAuthPayload(payload);
+
+        if (!user.hasRole("admin")) throw new UserNotPrivilegedException();
+
+        css.setEnabled(payload.getName(), payload.isEnabled());
 
         ObjectNode returnNode = mapper.createObjectNode();
         returnNode.put("name", payload.getName());

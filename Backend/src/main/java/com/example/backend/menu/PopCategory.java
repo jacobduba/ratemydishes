@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 @Service
@@ -73,7 +72,7 @@ public class PopCategory {
                             ObjectNode cals = mapper.createObjectNode();
                             ObjectNode veg = mapper.createObjectNode();
 
-                            //add jsonnode to object
+                            //add json-node to object
                             name.set("name", miName);
                             halal.set("isHalal", miHalal);
                             vegan.set("isVegan", miVegan);
@@ -99,9 +98,10 @@ public class PopCategory {
                     ObjectNode mdObj = mapper.createObjectNode();
                     mdObj.set("Menu-Display", mDArray);
                     //Create object in section array that holds Lunch array. Lunch array holds lunch Mds
-                    //load menu display object into lunch array
-                    //sectArray.add(mdObj);
-                    //check where to place
+
+                    //Check where to place mdObject
+
+                    //First check: Is rowArray empty? If so, create new object to populate it
                     if (rowArray.isEmpty()) {
                         ObjectNode sectObj = mapper.createObjectNode();
                         ArrayNode sectArray = mapper.createArrayNode();
@@ -110,25 +110,30 @@ public class PopCategory {
                         sectObj.set("array", sectArray);
                         rowArray.add(sectObj);
                     }
+                    //When row array is not empty
                     else {
-                        for (int y = 0; y < rowArray.size();y++) {
+                        for (int y = 0; y < rowArray.size();) {
                             JsonNode sectObj1 = rowArray.get(y);
                             JsonNode currArray1 = sectObj1.get("array");
-                            String dq = String.valueOf(mDSection);
-                            String resDq = dq.substring(1, dq.length() - 1);
-                            String test = sectObj1.get("title").toString();
-                            String test1 = test.substring(1, test.length() - 1);
-                            if (test1.equals(resDq)) {
+                            //What I am doing here is getting rid of double quotes for comparison between Object title and current menu section
+                            String title = String.valueOf(mDSection);
+                            String resTitle= title.substring(1, title.length() - 1);
+                            String sect = sectObj1.get("title").toString();
+                            String resSect = sect.substring(1, sect.length() - 1);
+                            //If rowArray has an object, does the object title match the current menu section? If so, add it to this object
+                            if (resSect.equals(resTitle)) {
                                 ArrayNode currArray = (ArrayNode) currArray1;
                                 currArray.add(mdObj);
+                            //Else create a new object with the new menu section as its title
                             } else {
                                 ObjectNode sectObj = mapper.createObjectNode();
                                 ArrayNode sectArray = mapper.createArrayNode();
-                                sectObj.put("title", resDq);
+                                sectObj.put("title", resTitle);
                                 sectArray.add(mdObj);
                                 sectObj.set("array", sectArray);
                                 rowArray.add(sectObj);
                             }
+                            //Break to avoid infinite loop
                             break;
                         }
                     }

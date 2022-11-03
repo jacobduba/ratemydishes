@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 @Service
@@ -18,6 +19,7 @@ public class PopCategory {
 
     @Autowired
     Menu m;
+    private JsonNode jsonNode;
 
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -96,8 +98,40 @@ public class PopCategory {
                     }
                     ObjectNode mdObj = mapper.createObjectNode();
                     mdObj.set("Menu-Display", mDArray);
-                    rowArray.add(mDSection);
-                    rowArray.add(mdObj);
+                    //Create object in section array that holds Lunch array. Lunch array holds lunch Mds
+                    //load menu display object into lunch array
+                    //sectArray.add(mdObj);
+                    //check where to place
+                    if (rowArray.isEmpty()) {
+                        ObjectNode sectObj = mapper.createObjectNode();
+                        ArrayNode sectArray = mapper.createArrayNode();
+                        sectObj.set("title", mDSection);
+                        sectArray.add(mdObj);
+                        sectObj.set("array", sectArray);
+                        rowArray.add(sectObj);
+                    }
+                    else {
+                        for (int y = 0; y < rowArray.size();y++) {
+                            JsonNode sectObj1 = rowArray.get(y);
+                            JsonNode currArray1 = sectObj1.get("array");
+                            String dq = String.valueOf(mDSection);
+                            String resDq = dq.substring(1, dq.length() - 1);
+                            String test = sectObj1.get("title").toString();
+                            String test1 = test.substring(1, test.length() - 1);
+                            if (test1.equals(resDq)) {
+                                ArrayNode currArray = (ArrayNode) currArray1;
+                                currArray.add(mdObj);
+                            } else {
+                                ObjectNode sectObj = mapper.createObjectNode();
+                                ArrayNode sectArray = mapper.createArrayNode();
+                                sectObj.put("title", resDq);
+                                sectArray.add(mdObj);
+                                sectObj.set("array", sectArray);
+                                rowArray.add(sectObj);
+                            }
+                            break;
+                        }
+                    }
                 }
                 ObjectNode rowObj = mapper.createObjectNode();
                 rowObj.set("Section", rowArray);

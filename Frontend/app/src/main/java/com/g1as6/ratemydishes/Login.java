@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Login extends AppCompatActivity {
+    static File token;
+    static File admin;
     Button loginButton;
     Button registrationButton;
     EditText usrName;
@@ -52,8 +54,8 @@ public class Login extends AppCompatActivity {
         AppController.getInstance().getRequestQueue().start();
         setContentView(R.layout.login);
         ProgressDialog pDialog = new ProgressDialog(this);
-        File token = new File(this.getFilesDir(), "token.txt");
-        File admin = new File(this.getFilesDir(), "admin.txt");
+        token = new File(this.getFilesDir(), "token.txt");
+        admin = new File(this.getFilesDir(), "admin.txt");
 
         // Check if user previously logged in
         // If file exists, then user is logged in
@@ -121,23 +123,23 @@ public class Login extends AppCompatActivity {
                                 pDialog.hide();
 
                                 try {
-                                    String tokenString = response.get("token").toString();
+                                    String tkn = response.get("token").toString();
                                     boolean isAdmin = response.getJSONObject("user").getBoolean("isAdmin");
+                                    AppVars.isAdmin = isAdmin;
 
                                     // If I understand tokens correctly, no token means auth failed
-                                    if (!tokenString.equals("{}")) {
+                                    if (!tkn.equals("{}")) {
                                         try {
                                             // Token file should already exist
+                                            //File tokenFile = new File(this.getFilesDir(), "token.txt");
+                                            AppVars.userToken = tkn;
                                             AppVars.isAdmin = isAdmin;
-                                            AppVars.userToken = tokenString;
 
-                                            Intent intent = new Intent(Login.this, WelcomePage.class);
-                                            startActivity(intent);
-                                            BufferedWriter writer = new BufferedWriter(new FileWriter(token));
-                                            writer.write(tokenString);
+                                            BufferedWriter writer = new BufferedWriter(new FileWriter(Login.token));
+                                            writer.write(tkn);
                                             writer.close();
 
-                                            BufferedWriter writer1 = new BufferedWriter(new FileWriter(admin));
+                                            BufferedWriter writer1 = new BufferedWriter(new FileWriter(Login.admin));
                                             writer1.write(String.valueOf(isAdmin));
                                             writer1.close();
 
@@ -151,6 +153,8 @@ public class Login extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                Intent intent = new Intent(Login.this, WelcomePage.class);
+                                startActivity(intent);
                             }
                         }, new Response.ErrorListener() {
                             @Override

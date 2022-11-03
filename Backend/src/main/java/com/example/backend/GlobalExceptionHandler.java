@@ -1,5 +1,6 @@
 package com.example.backend;
 
+import com.example.backend.admin.exceptions.CategoryDoesNotExistException;
 import com.example.backend.admin.exceptions.LocationDoesNotExistException;
 import com.example.backend.admin.exceptions.UserNotPrivilegedException;
 import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
@@ -73,6 +74,15 @@ public class GlobalExceptionHandler {
         return ApiError.buildRes(
                 HttpStatus.NOT_FOUND,
                 "Location does not exist.",
+                ex
+        );
+    }
+
+    @ExceptionHandler(CategoryDoesNotExistException.class)
+    public ResponseEntity<ApiError> categoryDoesNotExistException(CategoryDoesNotExistException ex) {
+        return ApiError.buildRes(
+                HttpStatus.NOT_FOUND,
+                "Category does not exist.",
                 ex
         );
     }

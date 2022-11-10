@@ -22,14 +22,18 @@ public class CollectionDemoFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        TabLayout tabLayout = container.findViewById(R.id.tab_layout);
-        new TabLayoutMediator(tabLayout, viewPager,(tab, position) -> tab.setText("OBJECT " + (position + 1))).attach();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.menu_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText("OBJECT " + (position + 1))
+        ).attach();
+
         demoCollectionAdapter = new DemoCollectionAdapter(this);
         viewPager = view.findViewById(R.id.pager);
         viewPager.setAdapter(demoCollectionAdapter);

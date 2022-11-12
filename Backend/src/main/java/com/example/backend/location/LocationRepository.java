@@ -9,8 +9,9 @@ import java.util.ArrayList;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
     Location findById(long id);
+    Location findByTitle(String title);
+    Location findBySlug(String slug);
     boolean existsByTitle(String title);
-
     ArrayList<Location> findByResType(String resType);
     @Transactional
     Location deleteById(long i);

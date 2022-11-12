@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-import java.lang.reflect.Field;
 import java.time.Instant;
 import java.util.List;
 
@@ -50,6 +49,7 @@ public class MenuController {
             getSingleLocation.populateTable(an);
         }
     }
+
     //Finished
     //Call is to retrieve menu information from webserver. Only for locations that are open
     @RequestMapping("/get-menu/{slug}")

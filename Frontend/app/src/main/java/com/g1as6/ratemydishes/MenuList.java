@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -27,6 +28,7 @@ public class MenuList extends AppCompatActivity {
     private String url = "http://coms-309-006.class.las.iastate.edu:8080/menu/get-menu/";
     private TabLayout tabs;
     private ViewPager2 viewPager;
+    protected JSONObject curMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +64,30 @@ public class MenuList extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            TabLayoutMediator med;
                             JSONArray menus = response.getJSONArray("menu");
 
                             DemoCollectionAdapter demoCollectionAdapter = new DemoCollectionAdapter(app, menus.length());
                             viewPager.setAdapter(demoCollectionAdapter);
 
+                            new TabLayoutMediator(tabs, viewPager, (TabLayout.Tab tab, int position) -> {
+                            }).attach();
+
                             for (int i = 0; i < menus.length(); i++){
+                                // The tab is always the one displayed first
+                                if(i == 0){
+
+                                }
+
                                 JSONObject individualMenu =  menus.getJSONObject(i);
                                 JSONArray section = individualMenu.getJSONArray("Section");
                                 String title = section.getJSONObject(0).getString("title");
 
-//                                tabs.addTab(tabs.newTab().setText(title));
+                                tabs.getTabAt(i).setText(title);
 
-                                new TabLayoutMediator(tabs, viewPager, (TabLayout.Tab tab, int position) -> {
-                                    tab.setText(title);
-                                }).attach();
+                                // Create menu from fragment
+                                demoCollectionAdapter.setDataSend(section);
+                                demoCollectionAdapter.createFragment(i);
                             }
                         } catch (JSONException e){ }
 
@@ -89,6 +100,23 @@ public class MenuList extends AppCompatActivity {
                     }
                 }) {
         };
+
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest, "tag_json_obj");
     }

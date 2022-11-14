@@ -8,7 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class DemoCollectionAdapter extends FragmentStateAdapter {
+    // Brug, this interface makes this so much harder
+    private JSONArray dataSend;
     private int count;
 
     public DemoCollectionAdapter(FragmentActivity fragment, int count) {
@@ -23,11 +28,19 @@ public class DemoCollectionAdapter extends FragmentStateAdapter {
         Fragment fragment = new DemoObjectFragment();
         Bundle args = new Bundle();
 
+        args.putInt(DemoObjectFragment.ARG_OBJECT, position);
+        args.putString("json", dataSend.toString());
+        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public int getItemCount() {
         return count;
+    }
+
+    public void setDataSend(JSONArray dataSend) {
+        this.dataSend = dataSend;
     }
 }

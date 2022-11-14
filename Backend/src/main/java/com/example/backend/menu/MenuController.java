@@ -31,7 +31,7 @@ public class MenuController {
     //In-Progress
     //run every 10 minutes
     @Scheduled(initialDelay=200, fixedRate=600000)
-    @RequestMapping("/menu-data")
+    @GetMapping("/menu-data")
     public void menuData() throws Exception {
         //Delete previous vals in Repo so that I can now replace
         mr.deleteAll();
@@ -52,7 +52,7 @@ public class MenuController {
 
     //Finished
     //Call is to retrieve menu information from webserver. Only for locations that are open
-    @RequestMapping("/get-menu/{slug}")
+    @GetMapping("/get-menu/{slug}")
     @ResponseBody
     ObjectNode getMenu(@PathVariable("slug") String slug) throws Exception {
         ObjectNode singleMenu = getMenu.returnMenu(slug);
@@ -61,7 +61,7 @@ public class MenuController {
 
     //Scheduled to run every 10 minutes
     @Scheduled(initialDelay=300, fixedRate=600000)
-    @RequestMapping("/populate-categories")
+    @GetMapping("/populate-categories")
     @ResponseBody
     public void getCategories() throws Exception {
         popCat.popCats();

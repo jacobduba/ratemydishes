@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.adapter.FragmentViewHolder;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.Request;
@@ -74,16 +75,12 @@ public class MenuList extends AppCompatActivity {
                             }).attach();
 
                             for (int i = 0; i < menus.length(); i++){
-                                // The tab is always the one displayed first
-                                if(i == 0){
-
-                                }
-
                                 JSONObject individualMenu =  menus.getJSONObject(i);
                                 JSONArray section = individualMenu.getJSONArray("Section");
                                 String title = section.getJSONObject(0).getString("title");
 
                                 tabs.getTabAt(i).setText(title);
+
 
                                 // Create menu from fragment
                                 demoCollectionAdapter.setDataSend(section);
@@ -100,23 +97,6 @@ public class MenuList extends AppCompatActivity {
                     }
                 }) {
         };
-
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
         AppController.getInstance().addToRequestQueue(jsonObjectRequest, "tag_json_obj");
     }

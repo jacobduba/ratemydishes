@@ -27,6 +27,6 @@ public class DemoObjectFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = getArguments();
-        ((TextView) view.findViewById(R.id.fragText)).setText(Integer.toString(this.getId()));
+        ((TextView) view.findViewById(R.id.fragText)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
     }
 }

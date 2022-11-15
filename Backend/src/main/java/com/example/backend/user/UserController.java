@@ -1,60 +1,63 @@
 package com.example.backend.user;
 
-import com.example.backend.ApiError;
-import com.example.backend.user.exceptions.IncorrectUsernameOrPasswordException;
 import com.example.backend.user.exceptions.InvalidPayloadException;
-import com.example.backend.user.exceptions.InvalidTokenException;
-import com.example.backend.user.exceptions.UserAlreadyExistsException;
 import com.example.backend.user.payload.*;
+import io.swagger.annotations.Example;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.LinkedHashMap;
 
-@RestController @RequestMapping("user")
+@RestController
+@RequestMapping("user")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService/*, ObjectMapper objectMapper*/) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    // LinkedHashMap preserves order (https://stackoverflow.com/questions/68993015/how-to-set-the-order-of-json-properties-when-sending-a-map-object)
-    @PostMapping("login")
-    public LinkedHashMap<String, Object> login(@RequestBody LoginRequestPayload loginRequestPayload) {
-        LinkedHashMap<String, Object> res = new LinkedHashMap<>();
-
-        res.put("token", userService.loginGenerateJwtToken(loginRequestPayload));
-        // See UserResponsePayload to understand what is going on here
-        res.put("user", userService.getUserResponsePayload(loginRequestPayload.getNetId()));
-
-        return res;
+    @Operation(summary = "(Jacob) Given valid user creds, returns auth token and user miscellaneous information.",
+            responses = {@ApiResponse(
+                    responseCode = "200",
+                    description = "User information and token.")})
+    @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LoginResponsePayload login(@RequestBody LoginRequestPayload loginRequestPayload) {
+        return new LoginResponsePayload(
+                userService.loginGenerateJwtToken(loginRequestPayload),
+                userService.getUserResponsePayload(loginRequestPayload.getNetId())
+        );
     }
 
     @PostMapping("ping")
     public String pingPost(@RequestBody AuthRequestPayload authRequestPayload) {
-        User user = userService.getUserFromAuthPayload(authRequestPayload);
+        userService.getUserFromAuthPayload(authRequestPayload);
         return "pong";
     }
 
+    @Operation(summary = "(Jacob) Given valid netId and password, returns new user token and miscellaneous new user information.",
+            responses = {@ApiResponse(
+                    responseCode = "200",
+                    description = "User information and token.")})
     @PostMapping("register")
-    public LinkedHashMap<String, Object> register(@Valid @RequestBody RegisterRequestPayload registerRequestPayload, BindingResult br) {
+    public RegisterResponsePayload register(@Valid @RequestBody RegisterRequestPayload registerRequestPayload, BindingResult br) {
         if (br.hasErrors()) throw new InvalidPayloadException();
         userService.registerUser(registerRequestPayload);
 
-        LinkedHashMap<String, Object> res = new LinkedHashMap<>();
-
-        res.put("status", "Registration for user '" + registerRequestPayload.getNetId() + "' successful.");
-        res.put("token", userService.registrationGenerateJwtToken(registerRequestPayload));
-        res.put("user", userService.getUserResponsePayload(registerRequestPayload.getNetId()));
-
-        return res;
+        return new RegisterResponsePayload(
+                userService.registrationGenerateJwtToken(registerRequestPayload),
+                userService.getUserResponsePayload(registerRequestPayload.getNetId())
+        );
     }
 
     @PostMapping("delete")

@@ -2,6 +2,7 @@ package com.example.backend.menu;
 import com.example.backend.location.*;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -30,6 +31,7 @@ public class MenuController {
 
     //In-Progress
     //run every 10 minutes
+    @Operation(summary = "This endpoint is a Scheduled Task that runs every 10 minutes on the Prod Server. It calls the Location Repository; for every location, a GET request is sent to ISU Dining to return with the current day's menu.")
     @Scheduled(initialDelay=200, fixedRate=600000)
     @GetMapping("/menu-data")
     public void menuData() throws Exception {
@@ -52,6 +54,7 @@ public class MenuController {
 
     //Finished
     //Call is to retrieve menu information from webserver. Only for locations that are open
+    @Operation(summary = "This endpoint allows the Android Client to request a specific location's menu. It will return a complex, but organized Json Array of the specific location menu.")
     @GetMapping("/get-menu/{slug}")
     @ResponseBody
     ObjectNode getMenu(@PathVariable("slug") String slug) throws Exception {
@@ -60,6 +63,7 @@ public class MenuController {
     }
 
     //Scheduled to run every 10 minutes
+    @Operation(summary = "This endpoint is Scheduled Task running every 10 minutes on the Prod Server. It calls the Menu Repository and organizes each location menu into a parsable Json Array for the Android Client to utilize.")
     @Scheduled(initialDelay=300, fixedRate=600000)
     @GetMapping("/populate-categories")
     @ResponseBody

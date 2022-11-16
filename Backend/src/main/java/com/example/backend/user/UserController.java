@@ -27,10 +27,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "(Jacob) Given valid user creds, returns auth token and user miscellaneous information.",
-            responses = {@ApiResponse(
-                    responseCode = "200",
-                    description = "User information and token.")})
+    @Operation(summary = "(Jacob) Given valid user creds, returns auth token and user miscellaneous information.")
     @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
     public LoginResponsePayload login(@RequestBody LoginRequestPayload loginRequestPayload) {
         return new LoginResponsePayload(
@@ -39,16 +36,14 @@ public class UserController {
         );
     }
 
+    @Operation(summary = "(Jacob) Returns 'pong' is the token is valid.")
     @PostMapping("ping")
     public String pingPost(@RequestBody AuthRequestPayload authRequestPayload) {
         userService.getUserFromAuthPayload(authRequestPayload);
         return "pong";
     }
 
-    @Operation(summary = "(Jacob) Given valid netId and password, returns new user token and miscellaneous new user information.",
-            responses = {@ApiResponse(
-                    responseCode = "200",
-                    description = "User information and token.")})
+    @Operation(summary = "(Jacob) Given valid netId and password, returns new user token and miscellaneous new user information.")
     @PostMapping("register")
     public RegisterResponsePayload register(@Valid @RequestBody RegisterRequestPayload registerRequestPayload, BindingResult br) {
         if (br.hasErrors()) throw new InvalidPayloadException();
@@ -60,6 +55,7 @@ public class UserController {
         );
     }
 
+    @Operation(summary = "(Jacob) Given valid token and user password, delete account")
     @PostMapping("delete")
     public LinkedHashMap<String, Object> delete(@RequestBody DeleteRequestPayload deleteRequestPayload) {
         String netId = userService.deleteUser(deleteRequestPayload);
@@ -72,6 +68,7 @@ public class UserController {
         return res;
     }
 
+    @Operation(summary = "(Jacob) Given valid token, current password, and new password, change User's password")
     @PostMapping("changepw")
     public LinkedHashMap<String, Object> changePassword(@Valid @RequestBody ChangePasswordPayload changePasswordPayload, BindingResult br) {
         if (br.hasErrors()) throw new InvalidPayloadException();

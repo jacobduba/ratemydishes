@@ -1,6 +1,7 @@
 package com.example.backend.user;
 
 import com.example.backend.role.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 

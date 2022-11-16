@@ -3,6 +3,7 @@ package com.example.backend.user.payload;
 import com.example.backend.role.Role;
 import com.example.backend.user.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.Set;
  */
 @Data
 public class UserResponsePayload {
+    @ApiModelProperty(example = "admin")
     private String netId;
     @JsonProperty("isAdmin")
     private boolean isAdmin;

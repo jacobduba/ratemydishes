@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import io.swagger.v3.oas.annotations.Operation;
 
 @Service
 public class GetCafes {
@@ -24,7 +25,7 @@ public class GetCafes {
         ArrayList<Location> cafeLoc = lr.findByResType("[\"cafe\"]");
         ArrayNode returnList = mapper.createArrayNode();
 
-        //Return everything but ID to Frontend
+        // Return everything but ID to Frontend
         for (int i = 0; i < cafeLoc.size(); i++) {
             if (lss.getEnabled(cafeLoc.get(i).getTitle())) {
                 ObjectNode locationNode = mapper.createObjectNode();

@@ -15,6 +15,8 @@ import java.net.*;
 public class GetSingleLocation {
     @Autowired
     public MenuRepository mr;
+    @Autowired
+    public LocationRepository lr;
 
     public ArrayNode getHTML(String slug, Long timestamp, String urlToRead) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
@@ -33,6 +35,7 @@ public class GetSingleLocation {
             return response;
         }
     }
+
     @Modifying
     public void populateTable(ArrayNode arr) {  //Parse JSON Array
         for (int i = 0; i < arr.size(); i++) {
@@ -47,11 +50,17 @@ public class GetSingleLocation {
             try {
                 Menu oldM = mr.findByTitle(title1);
                 Menu m = new Menu(slug1, title1, menu1, null);
-                if (!mr.existsByTitle(title1))
+                Location l = lr.findBySlug(slug1);
+                m.setLocation(l);
+                l.setMenu(m);
+                if (!mr.existsByTitle(title1)) {
                     mr.save(m);
-                else if (mr.existsByTitle(title1))
+                    lr.save(l);
+                } else if (mr.existsByTitle(title1)) {
                     mr.delete(oldM);
-                mr.save(m);
+                    lr.save(l);
+                    mr.save(m);
+                }
             } catch (Exception e) {
                 // TODO (Jacob) running into exceptions when running update on local
                 // This is my hacked ass solution to get it working... everything seems to working

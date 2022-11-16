@@ -9,6 +9,7 @@ import com.example.backend.user.payload.AuthRequestPayload;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,7 @@ public class AdminController {
         this.us = us;
     }
 
+    @Operation(summary = "(Jacob) Given valid admin token, return location settings and category settings.")
     @PostMapping("/get-settings")
     public ObjectNode getSettings(@RequestBody AuthRequestPayload payload) {
         User user = us.getUserFromAuthPayload(payload);
@@ -62,6 +64,7 @@ public class AdminController {
         return returnNode;
     }
 
+    @Operation(summary = "(Jacob) Given location name and valid admin token, set location on or off.")
     @PostMapping("toggle-location")
     public ObjectNode toggleLocation(@RequestBody ToggleLocationRequestPayload payload) {
         User user = us.getUserFromAuthPayload(payload);
@@ -77,6 +80,7 @@ public class AdminController {
         return returnNode;
     }
 
+    @Operation(summary = "(Jacob) Given category name and valid admin token, set category on or off.")
     @PostMapping("toggle-category")
     public ObjectNode toggleCategory(@RequestBody ToggleCategoryRequestPayload payload) {
         User user = us.getUserFromAuthPayload(payload);

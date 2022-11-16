@@ -1,5 +1,6 @@
 package com.example.backend.menu;
 
+import com.example.backend.location.Location;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
@@ -27,6 +28,10 @@ public class Menu {
 
     @Column(name = "clear_menus", columnDefinition = "longblob")
     private String clearMenus;
+
+    @OneToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     public Menu(String slug, String title, String menus, String clearMenus) {
         this.title = title;

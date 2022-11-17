@@ -8,4 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="poopfart" />
+
+    <TextView
+        android:id="@+id/fragText2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fragText"
+        android:layout_marginTop="19dp"
+        android:text="TextView" />
 </RelativeLayout>

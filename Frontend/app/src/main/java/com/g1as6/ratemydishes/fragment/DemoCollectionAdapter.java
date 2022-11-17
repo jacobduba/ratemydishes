@@ -2,11 +2,15 @@ package com.g1as6.ratemydishes.fragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.g1as6.ratemydishes.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,10 +31,11 @@ public class DemoCollectionAdapter extends FragmentStateAdapter {
         // Return a NEW fragment instance in createFragment(int)
         Fragment fragment = new DemoObjectFragment();
         Bundle args = new Bundle();
+        View view = fragment.getView();
 
         args.putInt(DemoObjectFragment.ARG_OBJECT, position);
-        args.putString("json", dataSend.toString());
         fragment.setArguments(args);
+        ((DemoObjectFragment) fragment).json = dataSend;
 
         return fragment;
     }

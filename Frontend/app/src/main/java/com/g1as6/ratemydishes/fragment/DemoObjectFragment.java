@@ -12,15 +12,21 @@ import androidx.fragment.app.Fragment;
 
 import com.g1as6.ratemydishes.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 // Instances of this class are fragments representing a single
 // object in our collection.
 public class DemoObjectFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
+    public static JSONArray json;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Bundle args = getArguments();
+
         return inflater.inflate(R.layout.menu_fragment, container, false);
     }
 
@@ -28,5 +34,7 @@ public class DemoObjectFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = getArguments();
         ((TextView) view.findViewById(R.id.fragText)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
+
+        ((TextView) view.findViewById(R.id.fragText2)).setText(json.toString());
     }
 }

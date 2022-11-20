@@ -31,7 +31,6 @@ public class DemoCollectionAdapter extends FragmentStateAdapter {
         // Return a NEW fragment instance in createFragment(int)
         Fragment fragment = new DemoObjectFragment();
         Bundle args = new Bundle();
-        View view = fragment.getView();
 
         args.putInt(DemoObjectFragment.ARG_OBJECT, position);
         fragment.setArguments(args);

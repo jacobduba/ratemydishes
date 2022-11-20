@@ -87,6 +87,9 @@ public class MenuList extends AppCompatActivity {
                                 if (i == 0){
                                     secOne = section;
                                 }
+
+                                demoCollectionAdapter.setDataSend(section);
+                                demoCollectionAdapter.createFragment(i);
                             }
 
                             demoCollectionAdapter.setDataSend(secOne);

@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 public class DemoCollectionAdapter extends FragmentStateAdapter {
     // Brug, this interface makes this so much harder
-    private JSONArray dataSend;
+    private JSONArray menus;
     private int count;
 
     public DemoCollectionAdapter(FragmentActivity fragment, int count) {
@@ -33,8 +33,8 @@ public class DemoCollectionAdapter extends FragmentStateAdapter {
         Bundle args = new Bundle();
 
         args.putInt(DemoObjectFragment.ARG_OBJECT, position);
+        args.putString("menus", menus.toString());
         fragment.setArguments(args);
-        ((DemoObjectFragment) fragment).json = dataSend;
 
         return fragment;
     }
@@ -44,7 +44,7 @@ public class DemoCollectionAdapter extends FragmentStateAdapter {
         return count;
     }
 
-    public void setDataSend(JSONArray dataSend) {
-        this.dataSend = dataSend;
+    public void setMenus(JSONArray menus) {
+        this.menus = menus;
     }
 }

@@ -74,7 +74,7 @@ public class MenuList extends AppCompatActivity {
                             new TabLayoutMediator(tabs, viewPager, (TabLayout.Tab tab, int position) -> {
                             }).attach();
 
-                            JSONArray secOne = null;
+                            demoCollectionAdapter.setMenus(menus);
                             for (int i = 0; i < menus.length(); i++){
                                 JSONObject individualMenu =  menus.getJSONObject(i);
                                 JSONArray section = individualMenu.getJSONArray("Section");
@@ -83,51 +83,9 @@ public class MenuList extends AppCompatActivity {
                                 tabs.getTabAt(i).setText(title);
 
 
-                                // Nab the first view
-                                if (i == 0){
-                                    secOne = section;
-                                }
-
-                                demoCollectionAdapter.setDataSend(section);
                                 demoCollectionAdapter.createFragment(i);
                             }
 
-                            demoCollectionAdapter.setDataSend(secOne);
-                            demoCollectionAdapter.createFragment(0);
-
-                            tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                                @Override
-                                public void onTabSelected(TabLayout.Tab tab) {
-                                    // TODO: Create tab here somehow
-                                    try {
-                                        JSONObject tmp = menus.getJSONObject(tab.getPosition());
-                                        JSONArray section = tmp.getJSONArray("Section");
-
-                                        demoCollectionAdapter.setDataSend(section);
-                                        demoCollectionAdapter.createFragment(tab.getPosition());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                @Override
-                                public void onTabUnselected(TabLayout.Tab tab) {
-
-                                }
-
-                                @Override
-                                public void onTabReselected(TabLayout.Tab tab) {
-                                    try {
-                                        JSONObject tmp = menus.getJSONObject(tab.getPosition());
-                                        JSONArray section = tmp.getJSONArray("Section");
-
-                                        demoCollectionAdapter.setDataSend(section);
-                                        demoCollectionAdapter.createFragment(tab.getPosition());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
                         } catch (JSONException e){ }
 
                     }

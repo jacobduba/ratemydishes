@@ -2,12 +2,7 @@ package com.example.backend.user;
 
 import com.example.backend.user.exceptions.InvalidPayloadException;
 import com.example.backend.user.payload.*;
-import io.swagger.annotations.Example;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,26 +52,18 @@ public class UserController {
 
     @Operation(summary = "(Jacob) Given valid token and user password, delete account")
     @PostMapping("delete")
-    public LinkedHashMap<String, Object> delete(@RequestBody DeleteRequestPayload deleteRequestPayload) {
-        String netId = userService.deleteUser(deleteRequestPayload);
+    public UserResponsePayload delete(@RequestBody DeleteRequestPayload deleteRequestPayload) {
+        User user = userService.deleteUser(deleteRequestPayload);
 
-        LinkedHashMap<String, Object> res = new LinkedHashMap<>();
-
-        res.put("status", HttpStatus.ACCEPTED);
-        res.put("netId", netId);
-
-        return res;
+        return new UserResponsePayload(user);
     }
 
     @Operation(summary = "(Jacob) Given valid token, current password, and new password, change User's password")
     @PostMapping("changepw")
-    public LinkedHashMap<String, Object> changePassword(@Valid @RequestBody ChangePasswordPayload changePasswordPayload, BindingResult br) {
+    public ChangePasswordResponsePayload changePassword(@Valid @RequestBody ChangePasswordRequestPayload changePasswordRequestPayload, BindingResult br) {
         if (br.hasErrors()) throw new InvalidPayloadException();
-        userService.changeUserPW(changePasswordPayload);
+        userService.changeUserPW(changePasswordRequestPayload);
 
-        LinkedHashMap<String, Object> res = new LinkedHashMap<>();
-        res.put("status", HttpStatus.ACCEPTED);
-        res.put("token", changePasswordPayload.getToken());
-        return res;
+        return new ChangePasswordResponsePayload(HttpStatus.ACCEPTED, changePasswordRequestPayload.getToken());
     }
 }

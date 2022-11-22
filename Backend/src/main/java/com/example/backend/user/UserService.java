@@ -13,8 +13,8 @@ import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
-    private JwtTokenHelper jwtTokenHelper;
+    private final UserRepository userRepository;
+    private final JwtTokenHelper jwtTokenHelper;
 
     @Autowired
     public UserService(UserRepository userRepository, JwtTokenHelper jwtTokenHelper) {
@@ -61,35 +61,31 @@ public class UserService {
         return jwtTokenHelper.generateAccessToken(user);
     }
 
-    /**
-     * This method checks to make sure that user does not exist, password is valid.
-     * @param registerRequestPayload
-     * @return
-     */
+    // This method checks to make sure that user does not exist, password is valid.
     public User registerUser(RegisterRequestPayload registerRequestPayload) {
         User user = userRepository.findByNetId(registerRequestPayload.getNetId());
         if (user != null) throw new UserAlreadyExistsException();
         return createNewUser(registerRequestPayload.getNetId(), registerRequestPayload.getPassword());
     }
 
-    public String deleteUser(DeleteRequestPayload deleteRequestPayload) {
+    public User deleteUser(DeleteRequestPayload deleteRequestPayload) {
         User user = getUserFromAuthPayload(deleteRequestPayload);
         if (!BCrypt.checkpw(deleteRequestPayload.getPassword(), user.getHashedPassword())) throw new IncorrectUsernameOrPasswordException();
 
         userRepository.deleteById(user.getId());
 
-        return user.getNetId();
+        return user;
     }
 
     // TODO refactor to not use these payload objects... code quality suffering
-    public void changeUserPW(ChangePasswordPayload changePasswordPayload) {
-        User user = getUserFromAuthPayload(changePasswordPayload);
+    public void changeUserPW(ChangePasswordRequestPayload changePasswordRequestPayload) {
+        User user = getUserFromAuthPayload(changePasswordRequestPayload);
 
-        if (!BCrypt.checkpw(changePasswordPayload.getOldPassword(), user.getHashedPassword())) {
+        if (!BCrypt.checkpw(changePasswordRequestPayload.getOldPassword(), user.getHashedPassword())) {
             throw new IncorrectUsernameOrPasswordException();
         }
 
-        user.setHashedPassword(BCrypt.hashpw(changePasswordPayload.getNewPassword(), BCrypt.gensalt()));
+        user.setHashedPassword(BCrypt.hashpw(changePasswordRequestPayload.getNewPassword(), BCrypt.gensalt()));
 
         userRepository.save(user);
     }

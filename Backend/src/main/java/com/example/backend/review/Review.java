@@ -35,7 +35,7 @@ public class Review {
         private LocationSetting locationSetting;
 
         @OneToOne
-        private Menu menu;*/
+        private Review review;*/
 
         public Review(long rating, String comment, long menuID, long userID) {
             this.rating = rating;

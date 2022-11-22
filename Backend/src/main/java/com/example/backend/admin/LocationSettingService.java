@@ -1,7 +1,7 @@
 package com.example.backend.admin;
 
 import com.example.backend.admin.exceptions.LocationDoesNotExistException;
-import com.example.backend.admin.payload.LocationSettingResponse;
+import com.example.backend.admin.payload.AdminSettingResponse;
 import com.example.backend.location.Location;
 import com.example.backend.location.LocationRepository;
 
@@ -21,7 +21,7 @@ public class LocationSettingService {
         this.locationRepository = locationRepository;
     }
 
-    public List<LocationSettingResponse> getResponses() {
+    public List<AdminSettingResponse> getResponses() {
         return locationSettingRepository.findAllProjectedBy();
     }
 

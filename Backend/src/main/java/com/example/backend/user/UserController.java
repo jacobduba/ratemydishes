@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping("user")
@@ -24,46 +23,46 @@ public class UserController {
 
     @Operation(summary = "(Jacob) Given valid user creds, returns auth token and user miscellaneous information.")
     @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LoginResponsePayload login(@RequestBody LoginRequestPayload loginRequestPayload) {
-        return new LoginResponsePayload(
-                userService.loginGenerateJwtToken(loginRequestPayload),
-                userService.getUserResponsePayload(loginRequestPayload.getNetId())
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        return new LoginResponse(
+                userService.loginGenerateJwtToken(loginRequest),
+                userService.getUserResponsePayload(loginRequest.getNetId())
         );
     }
 
     @Operation(summary = "(Jacob) Returns 'pong' is the token is valid.")
     @PostMapping("ping")
-    public String pingPost(@RequestBody AuthRequestPayload authRequestPayload) {
+    public String pingPost(@RequestBody AuthRequest authRequestPayload) {
         userService.getUserFromAuthPayload(authRequestPayload);
         return "pong";
     }
 
     @Operation(summary = "(Jacob) Given valid netId and password, returns new user token and miscellaneous new user information.")
     @PostMapping("register")
-    public RegisterResponsePayload register(@Valid @RequestBody RegisterRequestPayload registerRequestPayload, BindingResult br) {
+    public RegisterResponse register(@Valid @RequestBody RegisterRequest registerRequest, BindingResult br) {
         if (br.hasErrors()) throw new InvalidPayloadException();
-        userService.registerUser(registerRequestPayload);
+        userService.registerUser(registerRequest);
 
-        return new RegisterResponsePayload(
-                userService.registrationGenerateJwtToken(registerRequestPayload),
-                userService.getUserResponsePayload(registerRequestPayload.getNetId())
+        return new RegisterResponse(
+                userService.registrationGenerateJwtToken(registerRequest),
+                userService.getUserResponsePayload(registerRequest.getNetId())
         );
     }
 
     @Operation(summary = "(Jacob) Given valid token and user password, delete account")
     @PostMapping("delete")
-    public UserResponsePayload delete(@RequestBody DeleteRequestPayload deleteRequestPayload) {
-        User user = userService.deleteUser(deleteRequestPayload);
+    public UserResponse delete(@RequestBody DeleteRequest deleteRequest) {
+        User user = userService.deleteUser(deleteRequest);
 
-        return new UserResponsePayload(user);
+        return new UserResponse(user);
     }
 
     @Operation(summary = "(Jacob) Given valid token, current password, and new password, change User's password")
     @PostMapping("changepw")
-    public ChangePasswordResponsePayload changePassword(@Valid @RequestBody ChangePasswordRequestPayload changePasswordRequestPayload, BindingResult br) {
+    public ChangePasswordResponse changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequestPayload, BindingResult br) {
         if (br.hasErrors()) throw new InvalidPayloadException();
         userService.changeUserPW(changePasswordRequestPayload);
 
-        return new ChangePasswordResponsePayload(HttpStatus.ACCEPTED, changePasswordRequestPayload.getToken());
+        return new ChangePasswordResponse(HttpStatus.ACCEPTED, changePasswordRequestPayload.getToken());
     }
 }

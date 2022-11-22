@@ -30,18 +30,18 @@ public class UserService {
         return user;
     }
 
-    public UserResponsePayload getUserResponsePayload(String netId) throws NoSuchElementException {
+    public UserResponse getUserResponsePayload(String netId) throws NoSuchElementException {
         // This method assumes the user exists.
-        return new UserResponsePayload(userRepository.findByNetId(netId));
+        return new UserResponse(userRepository.findByNetId(netId));
     }
 
-    public User getUserFromAuthPayload(AuthRequestPayload payload) {
+    public User getUserFromAuthPayload(AuthRequest payload) {
         User user = userRepository.findByNetId(jwtTokenHelper.parseAccessToken(payload.getToken()));
         if (user == null) throw new InvalidTokenException();
         return user;
     }
 
-    public void loginValidatePayload(LoginRequestPayload payload) {
+    public void loginValidatePayload(LoginRequest payload) {
         if (payload.isNull()) throw new InvalidPayloadException();
         User user = userRepository.findByNetId(payload.getNetId());
 
@@ -50,27 +50,27 @@ public class UserService {
         }
     }
 
-    public String loginGenerateJwtToken(LoginRequestPayload payload) {
+    public String loginGenerateJwtToken(LoginRequest payload) {
         loginValidatePayload(payload);
         User user = userRepository.findByNetId(payload.getNetId());
         return jwtTokenHelper.generateAccessToken(user);
     }
 
-    public String registrationGenerateJwtToken(RegisterRequestPayload registerRequestPayload) {
-        User user = userRepository.findByNetId(registerRequestPayload.getNetId());
+    public String registrationGenerateJwtToken(RegisterRequest registerRequest) {
+        User user = userRepository.findByNetId(registerRequest.getNetId());
         return jwtTokenHelper.generateAccessToken(user);
     }
 
     // This method checks to make sure that user does not exist, password is valid.
-    public User registerUser(RegisterRequestPayload registerRequestPayload) {
-        User user = userRepository.findByNetId(registerRequestPayload.getNetId());
+    public User registerUser(RegisterRequest registerRequest) {
+        User user = userRepository.findByNetId(registerRequest.getNetId());
         if (user != null) throw new UserAlreadyExistsException();
-        return createNewUser(registerRequestPayload.getNetId(), registerRequestPayload.getPassword());
+        return createNewUser(registerRequest.getNetId(), registerRequest.getPassword());
     }
 
-    public User deleteUser(DeleteRequestPayload deleteRequestPayload) {
-        User user = getUserFromAuthPayload(deleteRequestPayload);
-        if (!BCrypt.checkpw(deleteRequestPayload.getPassword(), user.getHashedPassword())) throw new IncorrectUsernameOrPasswordException();
+    public User deleteUser(DeleteRequest deleteRequest) {
+        User user = getUserFromAuthPayload(deleteRequest);
+        if (!BCrypt.checkpw(deleteRequest.getPassword(), user.getHashedPassword())) throw new IncorrectUsernameOrPasswordException();
 
         userRepository.deleteById(user.getId());
 
@@ -78,7 +78,7 @@ public class UserService {
     }
 
     // TODO refactor to not use these payload objects... code quality suffering
-    public void changeUserPW(ChangePasswordRequestPayload changePasswordRequestPayload) {
+    public void changeUserPW(ChangePasswordRequest changePasswordRequestPayload) {
         User user = getUserFromAuthPayload(changePasswordRequestPayload);
 
         if (!BCrypt.checkpw(changePasswordRequestPayload.getOldPassword(), user.getHashedPassword())) {

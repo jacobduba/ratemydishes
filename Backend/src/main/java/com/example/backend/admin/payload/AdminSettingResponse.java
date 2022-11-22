@@ -1,6 +1,6 @@
 package com.example.backend.admin.payload;
 
-public interface LocationSettingResponse {
+public interface AdminSettingResponse {
     String getName();
     boolean isEnabled();
 }

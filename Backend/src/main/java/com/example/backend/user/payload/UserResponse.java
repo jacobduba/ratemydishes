@@ -15,12 +15,12 @@ import java.util.Set;
  * share!
  */
 @Data
-public class UserResponsePayload {
+public class UserResponse {
     private String netId;
     @JsonProperty("isAdmin")
     private boolean isAdmin;
 
-    public UserResponsePayload(User user) {
+    public UserResponse(User user) {
         netId = user.getNetId();
 
         isAdmin = false;

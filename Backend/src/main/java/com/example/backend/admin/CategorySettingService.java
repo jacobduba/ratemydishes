@@ -1,7 +1,7 @@
 package com.example.backend.admin;
 
 import com.example.backend.admin.exceptions.CategoryDoesNotExistException;
-import com.example.backend.admin.payload.CategorySettingResponse;
+import com.example.backend.admin.payload.AdminSettingResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class CategorySettingService {
         this.categorySettingRepository = csr;
     }
 
-    public List<CategorySettingResponse> getResponses() {
+    public List<AdminSettingResponse> getResponses() {
         return categorySettingRepository.findAllProjectedBy();
     }
 

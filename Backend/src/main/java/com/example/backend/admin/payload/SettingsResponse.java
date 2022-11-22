@@ -7,8 +7,8 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter @Setter @AllArgsConstructor
-public class SettingsResponsePayload {
-    private List<LocationSettingResponse> locations;
-    private List<CategorySettingResponse> categories;
+public class SettingsResponse {
+    private List<AdminSettingResponse> locations;
+    private List<AdminSettingResponse> categories;
 }
 

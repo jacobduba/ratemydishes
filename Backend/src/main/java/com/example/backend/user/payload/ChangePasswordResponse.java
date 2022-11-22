@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter @Setter @AllArgsConstructor
-public class ChangePasswordResponsePayload {
+public class ChangePasswordResponse {
     private HttpStatus status;
     private String token;
 }

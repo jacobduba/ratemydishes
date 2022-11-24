@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.g1as6.ratemydishes.R;
 
@@ -22,36 +24,51 @@ public class DemoObjectFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
     public static JSONArray menus;
 
+    private int position;
+
+    protected RecyclerView mRecyclerView;
+    protected CustomAdapter mAdapter;
+    protected RecyclerView.LayoutManager mLayoutManager;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         Bundle args = getArguments();
+        position = args.getInt(ARG_OBJECT);
+
+        View view = inflater.inflate(R.layout.menu_fragment, container, false);
         try {
             menus = reconstructJSON(args.getString("menus"));
+            JSONObject tmp = menus.getJSONObject(position);
+            JSONArray section = tmp.getJSONArray("Section");
+
+            mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+            mLayoutManager = new LinearLayoutManager(getActivity());
+            mAdapter = new CustomAdapter(section);
+
+            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return inflater.inflate(R.layout.menu_fragment, container, false);
+
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = getArguments();
-        int position = args.getInt(ARG_OBJECT);
         JSONObject tmp = null;
         try {
             tmp = menus.getJSONObject(position);
             JSONArray section = tmp.getJSONArray("Section");
 
-            ((TextView) view.findViewById(R.id.fragText2)).setText(section.toString());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        ((TextView) view.findViewById(R.id.fragText)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
-
     }
 
     private JSONArray reconstructJSON(String in) throws JSONException {

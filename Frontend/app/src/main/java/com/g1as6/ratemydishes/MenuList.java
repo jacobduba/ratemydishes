@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.g1as6.ratemydishes.app.AppController;
+import com.g1as6.ratemydishes.fragment.CustomAdapter;
 import com.g1as6.ratemydishes.fragment.DemoCollectionAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -29,7 +30,6 @@ public class MenuList extends AppCompatActivity {
     private String url = "http://coms-309-006.class.las.iastate.edu:8080/menu/get-menu/";
     private TabLayout tabs;
     private ViewPager2 viewPager;
-    protected JSONArray curMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,6 @@ public class MenuList extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            TabLayoutMediator med;
                             JSONArray menus = response.getJSONArray("menu");
 
                             DemoCollectionAdapter demoCollectionAdapter = new DemoCollectionAdapter(app, menus.length());
@@ -83,7 +82,9 @@ public class MenuList extends AppCompatActivity {
                                 tabs.getTabAt(i).setText(title);
 
 
+
                                 demoCollectionAdapter.createFragment(i);
+
                             }
 
                         } catch (JSONException e){ }

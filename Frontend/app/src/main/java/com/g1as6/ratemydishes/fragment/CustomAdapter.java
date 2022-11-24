@@ -12,6 +12,7 @@ import com.g1as6.ratemydishes.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
@@ -48,8 +49,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
      * @param dataSet JSONArray containing the data to populate views to be used
      * by RecyclerView.
      */
-    public CustomAdapter(JSONArray dataSet) {
-        localDataSet = dataSet;
+    public CustomAdapter(JSONArray dataSet) throws JSONException {
+        // Damn I really should have complained about how the JSON is received
+        JSONObject tmp = dataSet.getJSONObject(0);
+        JSONArray realDataSet = tmp.getJSONArray("array");
+        localDataSet = realDataSet;
     }
 
     // Create new views (invoked by the layout manager)

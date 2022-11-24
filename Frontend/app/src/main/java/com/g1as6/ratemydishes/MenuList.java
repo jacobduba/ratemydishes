@@ -81,10 +81,7 @@ public class MenuList extends AppCompatActivity {
 
                                 tabs.getTabAt(i).setText(title);
 
-
-
                                 demoCollectionAdapter.createFragment(i);
-
                             }
 
                         } catch (JSONException e){ }

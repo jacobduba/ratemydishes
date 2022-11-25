@@ -26,7 +26,7 @@ public class RestaurantList extends AppCompatActivity {
 
     private ImageButton backToDining;
     private String url = "http://coms-309-006.class.las.iastate.edu:8080/location/";
-    //private String url = "https://ce96178b-dd5e-4c1b-80e8-def480aa7eb4.mock.pstmn.io/location/get-cafe";
+    //private String url = "https://ce96178b-dd5e-4c1b-80e8-def480aa7eb4.mock.pstmn.io/location/";
     private Button lastButton;
     protected static AppVars.Restaurant loc;
 

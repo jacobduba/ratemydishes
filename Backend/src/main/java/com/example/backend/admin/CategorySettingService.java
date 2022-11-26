@@ -1,6 +1,7 @@
 package com.example.backend.admin;
 
 import com.example.backend.admin.exceptions.CategoryDoesNotExistException;
+import com.example.backend.admin.payload.AdminSettingResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,15 +9,15 @@ import java.util.List;
 
 @Service
 public class CategorySettingService {
-    private CategorySettingRepository categorySettingRepository;
+    private final CategorySettingRepository categorySettingRepository;
 
     @Autowired
     public CategorySettingService(CategorySettingRepository csr) {
         this.categorySettingRepository = csr;
     }
 
-    public List<CategorySetting> findAll() {
-        return categorySettingRepository.findAll();
+    public List<AdminSettingResponse> getResponses() {
+        return categorySettingRepository.findAllProjectedBy();
     }
 
     public boolean getEnabled(String name) {

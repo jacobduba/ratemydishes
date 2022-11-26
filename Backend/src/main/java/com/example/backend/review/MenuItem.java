@@ -1,13 +1,18 @@
 package com.example.backend.review;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "menu_items")
+@Component
+@NoArgsConstructor
 public class MenuItem {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long menuItemID;
+    private long id;
 
     @Column(name = "cached_rating", columnDefinition = "FLOAT")
     private float rating;
@@ -20,17 +25,11 @@ public class MenuItem {
     private String title;
 
     //Determined by slug + location ID number from menus obj
-    @Column(name = "api_location_id", columnDefinition = "VARCHAR")
+    @Column(name = "api_location_id", columnDefinition = "VARCHAR(50)")
     private String locID;
 
-    @Column(name = "menuID", columnDefinition = "BIGINT")
+    @Column(name = "menu_id", columnDefinition = "BIGINT")
     private long menuID;
-
-       /* @OneToOne
-        private LocationSetting locationSetting;
-
-        @OneToOne
-        private Review review;*/
 
     public MenuItem(float rating, int numRatings, String title, String locID, long menuID) {
         this.rating = rating;
@@ -39,7 +38,5 @@ public class MenuItem {
         this.locID = locID;
         this.menuID = menuID;
     }
-
-    public MenuItem() {}
 }
 

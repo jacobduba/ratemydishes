@@ -1,14 +1,28 @@
 package com.g1as6.ratemydishes.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.g1as6.ratemydishes.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class DemoCollectionAdapter extends FragmentStateAdapter {
-    public DemoCollectionAdapter(Fragment fragment) {
+    // Brug, this interface makes this so much harder
+    private JSONArray menus;
+    private int count;
+
+    public DemoCollectionAdapter(FragmentActivity fragment, int count) {
         super(fragment);
+        this.count = count;
     }
 
     @NonNull
@@ -18,11 +32,19 @@ public class DemoCollectionAdapter extends FragmentStateAdapter {
         Fragment fragment = new DemoObjectFragment();
         Bundle args = new Bundle();
 
+        args.putInt(DemoObjectFragment.ARG_OBJECT, position);
+        args.putString("menus", menus.toString());
+        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public int getItemCount() {
-        return 100;
+        return count;
+    }
+
+    public void setMenus(JSONArray menus) {
+        this.menus = menus;
     }
 }

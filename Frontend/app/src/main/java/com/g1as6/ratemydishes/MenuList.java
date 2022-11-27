@@ -4,15 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.adapter.FragmentViewHolder;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.g1as6.ratemydishes.app.AppController;
+import com.g1as6.ratemydishes.fragment.CustomAdapter;
+import com.g1as6.ratemydishes.fragment.DemoCollectionAdapter;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +29,7 @@ public class MenuList extends AppCompatActivity {
     private ImageButton backToDining;
     private String url = "http://coms-309-006.class.las.iastate.edu:8080/menu/get-menu/";
     private TabLayout tabs;
+    private ViewPager2 viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,8 @@ public class MenuList extends AppCompatActivity {
 
         backToDining = findViewById(R.id.backToDining);
         tabs= findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.pager);
+        AppCompatActivity app = this;
 
         backToDining.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,13 +67,23 @@ public class MenuList extends AppCompatActivity {
                         try {
                             JSONArray menus = response.getJSONArray("menu");
 
-                            for(int i = 0; i < menus.length(); i++){
+                            DemoCollectionAdapter demoCollectionAdapter = new DemoCollectionAdapter(app, menus.length());
+                            viewPager.setAdapter(demoCollectionAdapter);
+
+                            new TabLayoutMediator(tabs, viewPager, (TabLayout.Tab tab, int position) -> {
+                            }).attach();
+
+                            demoCollectionAdapter.setMenus(menus);
+                            for (int i = 0; i < menus.length(); i++){
                                 JSONObject individualMenu =  menus.getJSONObject(i);
                                 JSONArray section = individualMenu.getJSONArray("Section");
                                 String title = section.getJSONObject(0).getString("title");
 
-                                tabs.addTab(tabs.newTab().setText(title));
+                                tabs.getTabAt(i).setText(title);
+
+                                demoCollectionAdapter.createFragment(i);
                             }
+
                         } catch (JSONException e){ }
 
                     }

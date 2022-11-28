@@ -1,6 +1,5 @@
 package com.example.backend.user.payload;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LoginResponsePayload {
-    @ApiModelProperty(example = "mock_token")
+public class LoginResponse {
     public String token;
-    public UserResponsePayload user;
+    public UserResponse user;
 }

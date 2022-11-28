@@ -3,8 +3,8 @@ package com.example.backend.user.payload;
 import lombok.Data;
 
 @Data
-public class AuthRequestPayload {
+public class AuthRequest {
     private String token;
 
-    public AuthRequestPayload() {}
+    public AuthRequest() {}
 }

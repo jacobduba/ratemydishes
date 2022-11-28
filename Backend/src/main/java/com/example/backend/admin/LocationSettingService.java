@@ -1,6 +1,7 @@
 package com.example.backend.admin;
 
 import com.example.backend.admin.exceptions.LocationDoesNotExistException;
+import com.example.backend.admin.payload.AdminSettingResponse;
 import com.example.backend.location.Location;
 import com.example.backend.location.LocationRepository;
 
@@ -11,8 +12,8 @@ import java.util.List;
 
 @Service
 public class LocationSettingService {
-    private LocationSettingRepository locationSettingRepository;
-    private LocationRepository locationRepository;
+    private final LocationSettingRepository locationSettingRepository;
+    private final LocationRepository locationRepository;
 
     @Autowired
     public LocationSettingService(LocationSettingRepository locationSettingRepository, LocationRepository locationRepository) {
@@ -20,8 +21,8 @@ public class LocationSettingService {
         this.locationRepository = locationRepository;
     }
 
-    public List<LocationSetting> findAll() {
-        return locationSettingRepository.findAll();
+    public List<AdminSettingResponse> getResponses() {
+        return locationSettingRepository.findAllProjectedBy();
     }
 
     public boolean getEnabled(String name) {

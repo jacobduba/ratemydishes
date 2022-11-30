@@ -1,6 +1,9 @@
 package com.example.backend.review;
 
+import com.example.backend.menu.Menu;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -8,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "menu_items")
 @Component
-@NoArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,18 +28,19 @@ public class MenuItem {
     private String title;
 
     //Determined by slug + location ID number from menus obj
-    @Column(name = "api_location_id", columnDefinition = "VARCHAR(50)")
-    private String locID;
+    // Why did we need this?
+//    @Column(name = "api_location_id", columnDefinition = "VARCHAR(50)")
+//    private String apiLocationId;
 
-    @Column(name = "menu_id", columnDefinition = "BIGINT")
-    private long menuID;
+    @ManyToOne
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 
-    public MenuItem(float rating, int numRatings, String title, String locID, long menuID) {
-        this.rating = rating;
-        this.numRatings = numRatings;
+    // TODO One to many relationship between menu, reivews
+
+    public MenuItem(String title, Menu menu) {
         this.title = title;
-        this.locID = locID;
-        this.menuID = menuID;
+        this.menu = menu;
     }
 }
 

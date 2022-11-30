@@ -1,5 +1,7 @@
 package com.example.backend.menu;
 import com.example.backend.admin.CategorySettingService;
+import com.example.backend.review.MenuItem;
+import com.example.backend.review.MenuItemRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +22,12 @@ public class PopCategory {
     @Autowired
     Menu m;
     private JsonNode jsonNode;
+
+    @Autowired
+    MenuItemRepository mir;
+
+    @Autowired
+    MenuItem mi;
 
     @Autowired
     CategorySettingService css;
@@ -49,6 +57,7 @@ public class PopCategory {
                     ArrayNode mDArray = mapper.createArrayNode();
                     JsonNode mDNode = menuDisplays.get(k);
                     JsonNode mDName = mDNode.get("name");
+                    JsonNode mDid = mDNode.get("id");
                     JsonNode catVals = mDNode.get("categories");
                     //put into child object
                     mDArray.add(mDName);
@@ -71,6 +80,21 @@ public class PopCategory {
                             JsonNode miCals = miNode.get("totalCal");
                             JsonNode miVeg = miNode.get("isVegetarian");
 
+                            //Add Menuitem to MenuItem Repo
+                            //Grab title
+                            String title = String.valueOf(miName);
+                            //Grab location Id: menuDisplayId + Location Slug
+                            //This will help separate identical food items that exist in more than one location
+                            String id = mDid + menuList.get(i).getSlug();
+                            //Grab Menu ID from Menu in MenuRepo
+                            Menu currMenu = mr.findByTitle(title);
+                            long menuId = currMenu.getId();
+                            MenuItem menuItem = new MenuItem(0,0,title,id,menuId);
+                            //Save MenuItem to Repo
+                            //Quick Check to prevent duplication
+                            if (!mir.existsByTitle(title)) {
+                                mir.save(menuItem);
+                            }
                             //create json Objects to map json nodes to
                             ObjectNode name = mapper.createObjectNode();
                             ObjectNode halal = mapper.createObjectNode();

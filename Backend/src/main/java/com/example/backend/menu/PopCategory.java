@@ -32,9 +32,6 @@ public class PopCategory {
     @Autowired
     CategorySettingService css;
 
-    @Autowired
-    MenuItemRepository mir;
-
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode parentArray = mapper.createArrayNode();
@@ -63,7 +60,7 @@ public class PopCategory {
                     ArrayNode mDArray = mapper.createArrayNode();
                     JsonNode mDNode = menuDisplays.get(k);
                     JsonNode mDName = mDNode.get("name");
-                    JsonNode mDid = mDNode.get("id");
+                    //JsonNode mDid = mDNode.get("id");
                     JsonNode catVals = mDNode.get("categories");
                     //put into child object
                     mDArray.add(mDName);
@@ -89,13 +86,7 @@ public class PopCategory {
                             //Add Menuitem to MenuItem Repo
                             //Grab title
                             String title = String.valueOf(miName);
-                            //Grab location Id: menuDisplayId + Location Slug
-                            //This will help separate identical food items that exist in more than one location
-                            String id = mDid + menuList.get(i).getSlug();
-                            //Grab Menu ID from Menu in MenuRepo
-                            Menu currMenu = mr.findByTitle(title);
-                            long menuId = currMenu.getId();
-                            MenuItem menuItem = new MenuItem(0,0,title,id,menuId);
+                            MenuItem menuItem = new MenuItem(title, menu);
                             //Save MenuItem to Repo
                             //Quick Check to prevent duplication
                             if (!mir.existsByTitle(title)) {
@@ -115,7 +106,7 @@ public class PopCategory {
                             cals.set("total-calories", miCals);
                             veg.set("isVegetarian", miVeg);
 
-                            MenuItem menuItem = new MenuItem(miName.textValue(), menu);
+                            //MenuItem menuItem = new MenuItem(miName.textValue(), menu);
                             mir.save(menuItem);
 
                             //add object to parent array

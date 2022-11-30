@@ -29,8 +29,9 @@ public class MenuItem {
 
     //Determined by slug + location ID number from menus obj
     // Why did we need this?
-//    @Column(name = "api_location_id", columnDefinition = "VARCHAR(50)")
-//    private String apiLocationId;
+    // We need this to identify menu items that may exist in more than one, or we could just do that with Menu_id?
+    //@Column(name = "api_location_id", columnDefinition = "VARCHAR(50)")
+    //private String apiLocationId;
 
     @ManyToOne
     @JoinColumn(name = "menu_id")

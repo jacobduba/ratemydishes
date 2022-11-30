@@ -1,5 +1,7 @@
 package com.example.backend.menu;
 import com.example.backend.admin.CategorySettingService;
+import com.example.backend.review.MenuItem;
+import com.example.backend.review.MenuItemRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +26,9 @@ public class PopCategory {
     @Autowired
     CategorySettingService css;
 
+    @Autowired
+    MenuItemRepository mir;
+
     public ArrayNode popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode parentArray = mapper.createArrayNode();
@@ -34,8 +39,11 @@ public class PopCategory {
         for (int i = 0; i < menuList.size(); i++) {
             //Create master Array
             ArrayNode menuArray = mapper.createArrayNode();
+
+            Menu menu = menuList.get(i);
+
             //Find current menu
-            JsonNode row = mapper.readTree(menuList.get(i).getMenus());
+            JsonNode row = mapper.readTree(menu.getMenus());
 
             for (int j = 0; j < row.size(); j++) {
                 ArrayNode rowArray = mapper.createArrayNode();
@@ -84,6 +92,9 @@ public class PopCategory {
                             vegan.set("isVegan", miVegan);
                             cals.set("total-calories", miCals);
                             veg.set("isVegetarian", miVeg);
+
+                            MenuItem menuItem = new MenuItem(miName.textValue(), menu);
+                            mir.save(menuItem);
 
                             //add object to parent array
                             miArray.add(name);

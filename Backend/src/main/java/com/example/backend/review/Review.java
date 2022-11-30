@@ -21,17 +21,11 @@ public class Review {
     @Column(name = "comment", columnDefinition = "TINYTEXT")
     private String comment;
 
-    @Column(name = "menu_item_id", columnDefinition = "BIGINT")
-    private long menuID;
+    // TODO one to many relationships with users and Menu items
 
-    @Column(name = "user_id", columnDefinition = "BIGINT")
-    private long userID;
-
-    public Review(long rating, String comment, long menuID, long userID) {
+    public Review(long rating, String comment) {
         this.rating = rating;
         this.comment = comment;
-        this.menuID = menuID;
-        this.userID = userID;
     }
 }
 

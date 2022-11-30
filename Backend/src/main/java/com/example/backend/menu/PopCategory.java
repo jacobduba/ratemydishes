@@ -1,4 +1,5 @@
 package com.example.backend.menu;
+
 import com.example.backend.admin.CategorySettingService;
 import com.example.backend.review.MenuItem;
 import com.example.backend.review.MenuItemRepository;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 
 
@@ -20,10 +22,6 @@ public class PopCategory {
     MenuRepository mr;
 
     @Autowired
-    Menu m;
-    private JsonNode jsonNode;
-
-    @Autowired
     MenuItemRepository mir;
 
     @Autowired
@@ -32,7 +30,7 @@ public class PopCategory {
     @Autowired
     CategorySettingService css;
 
-    public ArrayNode popCats() throws JsonProcessingException {
+    public void popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode parentArray = mapper.createArrayNode();
         //Query Entire Table
@@ -86,13 +84,13 @@ public class PopCategory {
                             //Add Menuitem to MenuItem Repo
                             //Grab title
                             String title = String.valueOf(miName);
-                            MenuItem menuItem = new MenuItem(title, menu);
+                            MenuItem menuItem = new MenuItem(title, menu.getSlug());
                             //Save MenuItem to Repo
                             //Quick Check to prevent duplication
                             if (!mir.existsByTitle(title)) {
                                 mir.save(menuItem);
                             }
-                            
+
                             //create json Objects to map json nodes to
                             ObjectNode name = mapper.createObjectNode();
                             ObjectNode halal = mapper.createObjectNode();
@@ -140,7 +138,7 @@ public class PopCategory {
                     }
                     //When row array is not empty
                     else {
-                        for (int y = 0; y < rowArray.size();) {
+                        for (int y = 0; y < rowArray.size(); ) {
                             JsonNode sectObj1 = rowArray.get(y);
                             JsonNode currArray1 = sectObj1.get("array");
                             //What I am doing here is getting rid of double quotes for comparison between Object title and current menu section
@@ -150,7 +148,7 @@ public class PopCategory {
                             if (sect.equals(title)) {
                                 ArrayNode currArray = (ArrayNode) currArray1;
                                 currArray.add(mdObj);
-                            //Else create a new object with the new menu section as its title
+                                //Else create a new object with the new menu section as its title
                             } else {
                                 ObjectNode sectObj = mapper.createObjectNode();
                                 ArrayNode sectArray = mapper.createArrayNode();
@@ -179,7 +177,5 @@ public class PopCategory {
             }
             parentArray.add(menuArray);
         }
-        //Parent Array is what is stored in the menu repository
-        return parentArray;
     }
 }

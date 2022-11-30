@@ -1,6 +1,5 @@
 package com.example.backend.review;
 
-import com.example.backend.menu.Menu;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "menu_items")
 @Component
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class MenuItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,21 +28,18 @@ public class MenuItem {
     @Column(name = "title", columnDefinition = "TINYTEXT")
     private String title;
 
-    //Determined by slug + location ID number from menus obj
-    // Why did we need this?
-    // We need this to identify menu items that may exist in more than one, or we could just do that with Menu_id?
-    //@Column(name = "api_location_id", columnDefinition = "VARCHAR(50)")
-    //private String apiLocationId;
+    // Location slug
+    @Column
+    private String slug;
 
-    @ManyToOne
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
+//    Because Menu is deleted, it's not a smart idea to link it one-to-one
+//    @ManyToOne
+//    @JoinColumn(name = "menu_id")
+//    private Menu menu;
 
-    // TODO One to many relationship between menu, reivews
-
-    public MenuItem(String title, Menu menu) {
+    public MenuItem(String title, String slug) {
         this.title = title;
-        this.menu = menu;
+        this.slug = slug;
     }
 }
 

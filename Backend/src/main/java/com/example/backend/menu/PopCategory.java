@@ -92,6 +92,7 @@ public class PopCategory {
                             if (!mir.existsByTitle(title)) {
                                 mir.save(menuItem);
                             }
+                            
                             //create json Objects to map json nodes to
                             ObjectNode name = mapper.createObjectNode();
                             ObjectNode halal = mapper.createObjectNode();
@@ -105,9 +106,6 @@ public class PopCategory {
                             vegan.set("isVegan", miVegan);
                             cals.set("total-calories", miCals);
                             veg.set("isVegetarian", miVeg);
-
-                            //MenuItem menuItem = new MenuItem(miName.textValue(), menu);
-                            mir.save(menuItem);
 
                             //add object to parent array
                             miArray.add(name);

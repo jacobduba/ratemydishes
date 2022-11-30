@@ -1,6 +1,5 @@
 package com.example.backend.location;
 
-import com.example.backend.admin.LocationSetting;
 import com.example.backend.menu.Menu;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -30,10 +29,10 @@ public class Location {
     @Column(name = "dietary_type")
     private String dietType;
 
-    @OneToOne
-    private LocationSetting locationSetting;
+//    @OneToOne
+//    private LocationSetting locationSetting;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Menu menu;
 
     public Location(String dietType, String facility, String resType, String slug, String title) {

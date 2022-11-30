@@ -1,6 +1,5 @@
 package com.example.backend.admin;
 
-import com.example.backend.location.Location;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,9 +21,9 @@ public class LocationSetting {
     @Column(nullable = false)
     private boolean enabled;
 
-    @OneToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
+//    @OneToOne
+//    @JoinColumn(name = "location_id")
+//    private Location location;
 
     public LocationSetting(String name, boolean enabled) {
         this.name = name;

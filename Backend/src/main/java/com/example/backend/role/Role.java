@@ -1,7 +1,6 @@
 package com.example.backend.role;
 
 import com.example.backend.user.User;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +10,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@Getter @Setter
+@Getter
+@Setter
 public class Role {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @ManyToMany
@@ -26,7 +27,8 @@ public class Role {
     @Column
     private String name;
 
-    public Role() {}
+    public Role() {
+    }
 
     public Role(String name) {
         this.name = name;

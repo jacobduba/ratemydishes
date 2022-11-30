@@ -8,7 +8,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "location_settings")
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class LocationSetting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

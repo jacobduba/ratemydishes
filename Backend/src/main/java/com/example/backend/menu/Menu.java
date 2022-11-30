@@ -46,5 +46,6 @@ public class Menu {
         this.clearMenus = clearMenus;
     }
 
-    public Menu() {}
+    public Menu() {
+    }
 }

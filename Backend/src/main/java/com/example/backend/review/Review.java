@@ -10,9 +10,12 @@ import javax.persistence.*;
 @DynamicUpdate
 @Entity
 @Table(name = "reviews")
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Review {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "rating", columnDefinition = "SMALLINT")

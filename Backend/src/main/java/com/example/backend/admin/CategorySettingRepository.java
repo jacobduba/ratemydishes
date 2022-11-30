@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface CategorySettingRepository extends JpaRepository<CategorySetting, Long> {
     List<CategorySetting> findAll();
+
     List<AdminSettingResponse> findAllProjectedBy();
+
     CategorySetting findByName(String name);
 }

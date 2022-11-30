@@ -83,7 +83,7 @@ public class PopCategory {
 
                             //Add Menuitem to MenuItem Repo
                             //Grab title
-                            String title = String.valueOf(miName);
+                            String title = miName.textValue();
                             MenuItem menuItem = new MenuItem(title, menu.getSlug());
                             //Save MenuItem to Repo
                             //Quick Check to prevent duplication

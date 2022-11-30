@@ -24,10 +24,10 @@ public class BackendApplication {
 
     @Bean
     CommandLineRunner init(UserService userService, RoleService roleService) {
-       return args -> {
-           Role adminRole = roleService.createNewRole("admin");
-           User adminUser = userService.createNewUser("admin", "admin");
-           roleService.giveRole(adminUser, adminRole);
+        return args -> {
+            Role adminRole = roleService.createNewRole("admin");
+            User adminUser = userService.createNewUser("admin", "admin");
+            roleService.giveRole(adminUser, adminRole);
         };
     }
 

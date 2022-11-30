@@ -33,7 +33,9 @@ public class ReviewServer {
         usernameSessionMap.put(state, session);
     }
 
-    @Getter @Setter @AllArgsConstructor
+    @Getter
+    @Setter
+    @AllArgsConstructor
     private class UserState {
         public String netId;
         public String menuItemName;

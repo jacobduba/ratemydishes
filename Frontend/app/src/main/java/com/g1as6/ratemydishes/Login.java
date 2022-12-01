@@ -54,8 +54,8 @@ public class Login extends AppCompatActivity {
         File token = new File(this.getFilesDir(), "token.txt");
         File admin = new File(this.getFilesDir(), "admin.txt");
 
-        Intent remove = new Intent(Login.this, AdminSetting.class);
-        startActivity(remove);
+        /*Intent remove = new Intent(Login.this, AdminSetting.class);
+        startActivity(remove);*/
 
 
         // Check if user previously logged in

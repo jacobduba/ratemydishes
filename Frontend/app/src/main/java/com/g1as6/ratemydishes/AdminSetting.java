@@ -49,41 +49,8 @@ public class AdminSetting extends AppCompatActivity {
         });
 
     }
+
     protected void populateScreen(){
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        // Access each element in the jsonarray
-                        //int lastId = findViewById(R.id.welcomeText4).getId();
-                        try {
-                            JSONArray locations = response.getJSONArray(Integer.parseInt("name"));
-
-
-                            for(int i = 0; i < locations.length(); i++){
-                                JSONObject inLocation = locations.getJSONObject(i);
-                                JSONArray
-
-                            }
-                        }
-                        catch(JSONException e){
-
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        System.out.print(error.toString());
-                    }
-                });
-
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest, "tag_json_array");
-    }
-
-    /*protected void populateScreen(){
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
@@ -144,5 +111,5 @@ public class AdminSetting extends AppCompatActivity {
                 });
 
         AppController.getInstance().addToRequestQueue(jsonArrayRequest, "tag_json_array");
-    }*/
+    }
 }

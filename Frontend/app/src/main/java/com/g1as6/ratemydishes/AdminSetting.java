@@ -46,68 +46,69 @@ public class AdminSetting extends AppCompatActivity {
 
         });
 
-        protected void populateScreen(){
-            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+    }
 
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            // Access each element in the jsonarray
-                            int lastId = findViewById(R.id.welcomeText4).getId();
-                            for(int i = 0; i < response.length(); i++){
-                                try { // Rip readability
-                                    // Lots of definitions
-                                    final ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.parent);
-                                    final ConstraintSet set = new ConstraintSet();
-                                    final Button btn = new Button(RestaurantList.this);
-                                    DisplayMetrics displayMetrics = new DisplayMetrics();
-                                    JSONObject object = (JSONObject)response.get(i);
-                                    String title = object.getString("title");
+    protected void populateScreen(){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
-                                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Access each element in the jsonarray
+                        int lastId = findViewById(R.id.welcomeText4).getId();
+                        for(int i = 0; i < response.length(); i++){
+                            try { // Rip readability
+                                // Lots of definitions
+                                final ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.parent);
+                                final ConstraintSet set = new ConstraintSet();
+                                final Switch swt = new Switch(AdminSetting.this);
+                                DisplayMetrics displayMetrics = new DisplayMetrics();
+                                JSONObject object = (JSONObject)response.get(i);
+                                String title = object.getString("title");
 
-                                    btn.setId(View.generateViewId());
-                                    btn.setText(title);
-                                    btn.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                    btn.setTextSize(24);
-                                    btn.setWidth(displayMetrics.widthPixels);
-                                    btn.setBackgroundColor(0xFFF4F4D4);
-                                    btn.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v){
-                                            // Destruct slug then send it as string for a much better life experience
-                                            Intent intent = new Intent(RestaurantList.this, MenuList.class);
-                                            try {
-                                                intent.putExtra("slug", object.getString("slug"));
-                                                startActivity(intent);
-                                            }catch (JSONException e){   }
+                                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-                                        }
-                                    });
+                                swt.setId(View.generateViewId());
+                                swt.setText(title);
+                                swt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                swt.setTextSize(24);
+                                swt.setWidth(displayMetrics.widthPixels);
+                                swt.setBackgroundColor(0xFFF4F4D4);
+                                swt.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v){
+                                        // Destruct slug then send it as string for a much better life experience
+                                        Intent intent = new Intent(AdminSetting.this, MenuList.class);
+                                        try {
+                                            intent.putExtra("slug", object.getString("slug"));
+                                            startActivity(intent);
+                                        }catch (JSONException e){   }
 
-                                    set.constrainHeight(btn.getId(), ConstraintSet.WRAP_CONTENT);
-                                    set.constrainWidth(btn.getId(), ConstraintSet.WRAP_CONTENT);
+                                    }
+                                });
 
-                                    layout.addView(btn,0);
+                                set.constrainHeight(swt.getId(), ConstraintSet.WRAP_CONTENT);
+                                set.constrainWidth(swt.getId(), ConstraintSet.WRAP_CONTENT);
 
-                                    set.clone(layout);
-                                    set.connect(btn.getId(), 3, lastId, 4);
-                                    set.applyTo(layout);
+                                layout.addView(swt,0);
 
-                                    lastId = btn.getId();
-                                }catch(JSONException e){  /* lol you expect this to get handled? lol */  }
-                            }
+                                set.clone(layout);
+                                set.connect(swt.getId(), 3, lastId, 4);
+                                set.applyTo(layout);
+
+                                lastId = swt.getId();
+                            }catch(JSONException e){  /* lol you expect this to get handled? lol */  }
                         }
-                    }, new Response.ErrorListener() {
+                    }
+                }, new Response.ErrorListener() {
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            System.out.print(error.toString());
-                        }
-                    });
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        System.out.print(error.toString());
+                    }
+                });
 
-            AppController.getInstance().addToRequestQueue(jsonArrayRequest, "tag_json_array");
-        }
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest, "tag_json_array");
     }
 }

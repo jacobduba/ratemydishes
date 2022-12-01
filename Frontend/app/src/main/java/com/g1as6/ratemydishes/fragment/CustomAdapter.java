@@ -1,6 +1,7 @@
 package com.g1as6.ratemydishes.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.g1as6.ratemydishes.MenuList;
 import com.g1as6.ratemydishes.R;
 import com.g1as6.ratemydishes.RestaurantList;
+import com.g1as6.ratemydishes.Review;
+import com.g1as6.ratemydishes.WelcomePage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -122,7 +125,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
-                    // TODO: Implement
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, Review.class);
+                    context.startActivity(intent);
                 }
             });
 

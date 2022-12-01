@@ -20,7 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-/*public class AdminSettings extends AppCompatActivity {
+public class AdminSettings extends AppCompatActivity {
 
     ImageButton backToSettings;
     Switch switchSeasons;
@@ -129,6 +129,6 @@ import org.json.JSONObject;
 
         });
     }
-}*/
+}
 
 

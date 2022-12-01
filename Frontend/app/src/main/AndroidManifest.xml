@@ -47,6 +47,9 @@
         <activity
             android:name=".AdminSettings"
             android:exported="false" />
+        <activity
+            android:name=".AdminSetting"
+            android:exported="false" />
     </application>
 
 </manifest>

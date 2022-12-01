@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.android.volley.Request;
@@ -27,7 +28,7 @@ import org.json.JSONObject;
 public class AdminSetting extends AppCompatActivity {
 
     private ImageButton backToSettings;
-    private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/";
+    private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-category";
     //protected static AppVars.isEnabled locations;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +56,16 @@ public class AdminSetting extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         // Access each element in the jsonarray
-                        int lastId = findViewById(R.id.welcomeText4).getId();
+                        //int lastId = findViewById(R.id.welcomeText4).getId();
                         for(int i = 0; i < response.length(); i++){
                             try { // Rip readability
                                 // Lots of definitions
-                                final ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.parent);
+                                final ScrollView layout = (ScrollView) findViewById(R.id.adminParent);
                                 final ConstraintSet set = new ConstraintSet();
                                 final Switch swt = new Switch(AdminSetting.this);
                                 DisplayMetrics displayMetrics = new DisplayMetrics();
                                 JSONObject object = (JSONObject)response.get(i);
-                                String title = object.getString("title");
+                                String title = object.getString("name");
 
                                 getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -78,7 +79,7 @@ public class AdminSetting extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v){
                                         // Destruct slug then send it as string for a much better life experience
-                                        Intent intent = new Intent(AdminSetting.this, MenuList.class);
+                                        Intent intent = new Intent(AdminSetting.this, Settings.class);
                                         try {
                                             intent.putExtra("slug", object.getString("slug"));
                                             startActivity(intent);
@@ -86,17 +87,16 @@ public class AdminSetting extends AppCompatActivity {
 
                                     }
                                 });
-
                                 set.constrainHeight(swt.getId(), ConstraintSet.WRAP_CONTENT);
                                 set.constrainWidth(swt.getId(), ConstraintSet.WRAP_CONTENT);
 
                                 layout.addView(swt,0);
 
-                                set.clone(layout);
-                                set.connect(swt.getId(), 3, lastId, 4);
-                                set.applyTo(layout);
+                                //set.clone(layout);
+                                //set.connect(swt.getId(), 3, lastId, 4);
+                                //set.applyTo(layout);
 
-                                lastId = swt.getId();
+                                //lastId = swt.getId();
                             }catch(JSONException e){  /* lol you expect this to get handled? lol */  }
                         }
                     }

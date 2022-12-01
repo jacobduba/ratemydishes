@@ -7,9 +7,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Switch;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.g1as6.ratemydishes.app.AppController;
 import com.g1as6.ratemydishes.app.AppVars;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AdminSettings extends AppCompatActivity {
 
@@ -73,6 +81,52 @@ public class AdminSettings extends AppCompatActivity {
                 Intent intent = new Intent(AdminSettings.this, Settings.class);
                 startActivity(intent);
             }
+
+        });
+
+        switchSeasons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject body = new JSONObject();
+                try {
+                    body.put("token",AppVars.userToken);
+                    body.put("enabled", false);
+                    body.put("name" , "Seasons Marketplace");
+                } catch (JSONException e) {
+                }
+
+            }
+        });
+
+        switchUnion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject body = new JSONObject();
+                try {
+                    body.put("token",AppVars.userToken);
+                    body.put("enabled", false);
+                    body.put("name" , "Union Drive Marketplace");
+                } catch (JSONException e) {
+                }
+
+            }
+
+        });
+
+        switchConversations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject body = new JSONObject();
+                try {
+                    body.put("token",AppVars.userToken);
+                    body.put("enabled", false);
+                    body.put("name" , "Conversations Dining");
+                } catch (JSONException e) {
+                }
+
+            }
+
         });
     }
 }
+

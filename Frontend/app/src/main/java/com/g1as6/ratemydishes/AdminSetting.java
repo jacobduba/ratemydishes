@@ -53,7 +53,6 @@ public class AdminSetting extends AppCompatActivity {
     protected void populateScreen(){
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
                     @Override
                     public void onResponse(JSONArray response) {
                         // Access each element in the jsonarray

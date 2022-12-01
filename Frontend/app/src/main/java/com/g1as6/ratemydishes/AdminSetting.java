@@ -20,6 +20,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AdminSetting extends AppCompatActivity {
+
+    private ImageButton backtoSettings;
+    private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/";
+    protected static AppVars.admin locations;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

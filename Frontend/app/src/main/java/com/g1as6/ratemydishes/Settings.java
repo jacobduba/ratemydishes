@@ -117,7 +117,10 @@ public class Settings extends AppCompatActivity {
             toAdmin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Settings.this, AdminSettings.class);
+                    Intent intent = new Intent(Settings.this, AdminSetting.class);
+                    intent.putExtra("token" , AppVars.admin.GET_SETTINGS);
+                    intent.putExtra("token" , AppVars.admin.TOGGLE_LOCATION);
+                    intent.putExtra("token" , AppVars.admin.TOGGLE_CATEGORY);
                     startActivity(intent);
 
                 }

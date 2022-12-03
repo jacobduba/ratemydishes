@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 @EnableScheduling
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
-    boolean existsByTitle(String title);
+    boolean existsByTitleAndSlug(String title, String slug);
+    MenuItem findByTitleAndSlug(String title, String slug);
 }
 
 

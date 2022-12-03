@@ -42,6 +42,7 @@ public class PopCategory {
             ArrayNode menuArray = mapper.createArrayNode();
 
             Menu menu = menuList.get(i);
+            String menuSlug = menu.getSlug();
 
             //Find current menu
             JsonNode row = mapper.readTree(menu.getMenus());
@@ -81,14 +82,16 @@ public class PopCategory {
                             JsonNode miCals = miNode.get("totalCal");
                             JsonNode miVeg = miNode.get("isVegetarian");
 
-                            //Add Menuitem to MenuItem Repo
-                            //Grab title
+                            // Grab title
                             String title = miName.textValue();
-                            MenuItem menuItem = new MenuItem(title, menu.getSlug());
-                            //Save MenuItem to Repo
-                            //Quick Check to prevent duplication
-                            if (!mir.existsByTitle(title)) {
+                            MenuItem menuItem;
+                            if (!mir.existsByTitleAndSlug(title, menuSlug)) {
+                                // If Menu Item does not exist create a new one/
+                                menuItem = new MenuItem(title, menuSlug);
                                 mir.save(menuItem);
+                            } else {
+                                //If MenuItem exists, find the menuitem in the Repo
+                                menuItem = mir.findByTitleAndSlug(title, menuSlug);
                             }
 
                             //create json Objects to map json nodes to
@@ -104,6 +107,7 @@ public class PopCategory {
                             vegan.set("isVegan", miVegan);
                             cals.set("total-calories", miCals);
                             veg.set("isVegetarian", miVeg);
+                            id.put("id", menuItem.getId());
 
                             //add object to parent array
                             miArray.add(name);
@@ -111,6 +115,7 @@ public class PopCategory {
                             miArray.add(vegan);
                             miArray.add(cals);
                             miArray.add(veg);
+                            miArray.add(id);
 
                             //Set function overrides the previous, so using count variable to change name of object
                             ObjectNode miObj = mapper.createObjectNode();

@@ -100,6 +100,7 @@ public class PopCategory {
                             ObjectNode vegan = mapper.createObjectNode();
                             ObjectNode cals = mapper.createObjectNode();
                             ObjectNode veg = mapper.createObjectNode();
+                            ObjectNode id = mapper.createObjectNode();
 
                             //add json-node to object
                             name.set("name", miName);

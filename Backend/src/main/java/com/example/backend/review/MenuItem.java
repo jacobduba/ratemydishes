@@ -19,7 +19,7 @@ public class MenuItem {
     private long id;
 
     @Column(name = "cached_rating", columnDefinition = "FLOAT")
-    private float rating;
+    private float cachedRating;
 
     //will need to create scheduled logic to count number of review objects linked to one menu item
     @Column(name = "cached_num_of_ratings", columnDefinition = "INT")
@@ -40,6 +40,10 @@ public class MenuItem {
     public MenuItem(String title, String slug) {
         this.title = title;
         this.slug = slug;
+    }
+
+    public void incrementNumRatings() {
+        this.numRatings++;
     }
 }
 

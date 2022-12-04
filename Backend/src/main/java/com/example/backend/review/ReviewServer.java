@@ -15,14 +15,15 @@ import org.springframework.stereotype.Controller;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 @ServerEndpoint(value = "/review/{netId}/{id}")
 public class ReviewServer {
-    private static Map<Session, SessionState> sessionUserMap = new HashMap<>();
-    private static Map<SessionState, Session> usernameSessionMap = new HashMap<>();
+    private static Map<Session, SessionState> sessionStateMap = new HashMap<>();
+    private static Map<SessionState, Session> stateSessionMap = new HashMap<>();
 
     private final Logger logger = LoggerFactory.getLogger(ReviewServer.class);
 
@@ -44,27 +45,75 @@ public class ReviewServer {
         logger.info("(" + session.getId() + ") " + netId + " connected to review server");
 
         mir.findById(Long.parseLong(id));
-        SessionState state = new SessionState(ur.findByNetId(netId), mir.findById(Long.parseLong(id)));
-        sessionUserMap.put(session, state);
-        usernameSessionMap.put(state, session);
+        User user = ur.findByNetId(netId);
+        MenuItem menuItem = mir.findById(Long.parseLong(id));
+
+        if (user == null || menuItem == null) {
+            logger.info("(" + session.getId() + ") " + netId + " failed to connect to review server");
+            throw new IllegalArgumentException("User or menu item not found");
+        }
+
+        SessionState state = new SessionState(user, menuItem);
+        sessionStateMap.put(session, state);
+        stateSessionMap.put(state, session);
+
+        ArrayList<Review> reviews = rr.findAllByMenuItem(menuItem);
+        reviews.forEach((review) -> {
+            try {
+                session.getBasicRemote().sendText(objectMapper.writeValueAsString(new ReviewResponse(review)));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @OnMessage
     public void onMessage(Session session, String message) throws JsonProcessingException {
-        SessionState state = sessionUserMap.get(session);
+        SessionState state = sessionStateMap.get(session);
         logger.info("(" + session.getId() + ") " + state.getUser().getNetId() + " sent message: " + message);
 
-        Review review = objectMapper.readValue(message, Review.class);
-        review.setUser(state.getUser());
+        MenuItem menuItem = state.getMenuItem();
+        Review review = rr.findByUserAndMenuItem(state.getUser(), state.getMenuItem());
+        Review payload = objectMapper.readValue(message, Review.class);
+        if (review == null) { // Review does not exist
+            review = payload;
+            review.setUser(state.getUser());
+            review.setMenuItem(state.getMenuItem());
+            menuItem.incrementNumRatings(); // Only increase num of ratings if review is new
+        } else { // Review exists
+            review.setComment(payload.getComment());
+            review.setRating(payload.getRating());
+        }
         rr.save(review);
+
+        ArrayList<Review> allReviews = rr.findAllByMenuItem(menuItem);
+        int totalCount = 0;
+        for (Review r : allReviews) {
+            totalCount += r.getRating();
+        }
+        menuItem.setCachedRating((float) totalCount / menuItem.getNumRatings());
+        mir.save(menuItem);
+
+        // Broadcast review to all clients
+        final ReviewResponse reviewResponse = new ReviewResponse(review);
+        sessionStateMap.forEach((s, ss) -> {
+            try {
+                s.getBasicRemote().sendText(objectMapper.writeValueAsString(reviewResponse));
+            } catch (Exception e) {
+                logger.error("Failed to send message to client", e);
+                e.printStackTrace();
+            }
+        });
     }
 
     @OnClose
     public void onClose(Session session) {
-        SessionState state = sessionUserMap.get(session);
+        SessionState state = sessionStateMap.get(session);
 
-        usernameSessionMap.remove(state);
-        sessionUserMap.remove(session);
+        stateSessionMap.remove(state);
+        sessionStateMap.remove(session);
 
         logger.info("(" + session.getId() + ") " + state.user.getNetId() + " disconnected from review server");
     }

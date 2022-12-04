@@ -20,7 +20,7 @@ public class Review {
     private long id;
 
     @Column(name = "rating", columnDefinition = "SMALLINT")
-    private long rating;
+    private int rating;
 
     @Column(name = "comment", columnDefinition = "TINYTEXT")
     private String comment;
@@ -31,13 +31,13 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "menu_item_id")
-    private MenuItem mi;
+    private MenuItem menuItem;
 
-    public Review(long rating, String comment, User user, MenuItem mi) {
+    public Review(int rating, String comment, User user, MenuItem menuItem) {
         this.rating = rating;
         this.comment = comment;
         this.user = user;
-        this.mi = mi;
+        this.menuItem = menuItem;
     }
 }
 

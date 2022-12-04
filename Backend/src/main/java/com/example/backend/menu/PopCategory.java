@@ -1,5 +1,8 @@
 package com.example.backend.menu;
+
 import com.example.backend.admin.CategorySettingService;
+import com.example.backend.review.MenuItem;
+import com.example.backend.review.MenuItemRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 
 
@@ -18,13 +22,15 @@ public class PopCategory {
     MenuRepository mr;
 
     @Autowired
-    Menu m;
-    private JsonNode jsonNode;
+    MenuItemRepository mir;
+
+    @Autowired
+    MenuItem mi;
 
     @Autowired
     CategorySettingService css;
 
-    public ArrayNode popCats() throws JsonProcessingException {
+    public void popCats() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode parentArray = mapper.createArrayNode();
         //Query Entire Table
@@ -34,8 +40,12 @@ public class PopCategory {
         for (int i = 0; i < menuList.size(); i++) {
             //Create master Array
             ArrayNode menuArray = mapper.createArrayNode();
+
+            Menu menu = menuList.get(i);
+            String menuSlug = menu.getSlug();
+
             //Find current menu
-            JsonNode row = mapper.readTree(menuList.get(i).getMenus());
+            JsonNode row = mapper.readTree(menu.getMenus());
 
             for (int j = 0; j < row.size(); j++) {
                 ArrayNode rowArray = mapper.createArrayNode();
@@ -49,6 +59,7 @@ public class PopCategory {
                     ArrayNode mDArray = mapper.createArrayNode();
                     JsonNode mDNode = menuDisplays.get(k);
                     JsonNode mDName = mDNode.get("name");
+                    //JsonNode mDid = mDNode.get("id");
                     JsonNode catVals = mDNode.get("categories");
                     //put into child object
                     mDArray.add(mDName);
@@ -71,12 +82,27 @@ public class PopCategory {
                             JsonNode miCals = miNode.get("totalCal");
                             JsonNode miVeg = miNode.get("isVegetarian");
 
+                            // Grab title
+                            String title = miName.textValue();
+                            MenuItem menuItem;
+                            if (!mir.existsByTitleAndSlug(title, menuSlug)) {
+                                // If Menu Item does not exist create a new one/
+                                menuItem = new MenuItem(title, menuSlug);
+                                mir.save(menuItem);
+                            } else {
+                                //If MenuItem exists, find the menuitem in the Repo
+                                menuItem = mir.findByTitleAndSlug(title, menuSlug);
+                            }
+
                             //create json Objects to map json nodes to
                             ObjectNode name = mapper.createObjectNode();
                             ObjectNode halal = mapper.createObjectNode();
                             ObjectNode vegan = mapper.createObjectNode();
                             ObjectNode cals = mapper.createObjectNode();
                             ObjectNode veg = mapper.createObjectNode();
+                            ObjectNode id = mapper.createObjectNode();
+                            ObjectNode cRating = mapper.createObjectNode();
+                            ObjectNode numRating = mapper.createObjectNode();
 
                             //add json-node to object
                             name.set("name", miName);
@@ -84,6 +110,9 @@ public class PopCategory {
                             vegan.set("isVegan", miVegan);
                             cals.set("total-calories", miCals);
                             veg.set("isVegetarian", miVeg);
+                            id.put("id", menuItem.getId());
+                            cRating.put("average-rating", menuItem.getCachedRating());
+                            numRating.put("number-of-ratings", menuItem.getNumRatings());
 
                             //add object to parent array
                             miArray.add(name);
@@ -91,6 +120,9 @@ public class PopCategory {
                             miArray.add(vegan);
                             miArray.add(cals);
                             miArray.add(veg);
+                            miArray.add(id);
+                            miArray.add(cRating);
+                            miArray.add(numRating);
 
                             //Set function overrides the previous, so using count variable to change name of object
                             ObjectNode miObj = mapper.createObjectNode();
@@ -118,7 +150,7 @@ public class PopCategory {
                     }
                     //When row array is not empty
                     else {
-                        for (int y = 0; y < rowArray.size();) {
+                        for (int y = 0; y < rowArray.size(); ) {
                             JsonNode sectObj1 = rowArray.get(y);
                             JsonNode currArray1 = sectObj1.get("array");
                             //What I am doing here is getting rid of double quotes for comparison between Object title and current menu section
@@ -128,7 +160,7 @@ public class PopCategory {
                             if (sect.equals(title)) {
                                 ArrayNode currArray = (ArrayNode) currArray1;
                                 currArray.add(mdObj);
-                            //Else create a new object with the new menu section as its title
+                                //Else create a new object with the new menu section as its title
                             } else {
                                 ObjectNode sectObj = mapper.createObjectNode();
                                 ArrayNode sectArray = mapper.createArrayNode();
@@ -157,7 +189,5 @@ public class PopCategory {
             }
             parentArray.add(menuArray);
         }
-        //Parent Array is what is stored in the menu repository
-        return parentArray;
     }
 }

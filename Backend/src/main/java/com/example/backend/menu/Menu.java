@@ -1,11 +1,14 @@
 package com.example.backend.menu;
 
 import com.example.backend.location.Location;
+import com.example.backend.review.MenuItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,6 +36,9 @@ public class Menu {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @OneToMany
+    private Set<MenuItem> menuItems;
+
     public Menu(String slug, String title, String menus, String clearMenus) {
         this.title = title;
         this.slug = slug;
@@ -40,5 +46,6 @@ public class Menu {
         this.clearMenus = clearMenus;
     }
 
-    public Menu() {}
+    public Menu() {
+    }
 }

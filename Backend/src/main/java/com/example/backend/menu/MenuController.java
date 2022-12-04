@@ -1,4 +1,5 @@
 package com.example.backend.menu;
+
 import com.example.backend.location.*;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class MenuController {
     //In-Progress
     //run every 10 minutes
     @Operation(summary = "(Karthik) This endpoint is a Scheduled Task that runs every 10 minutes on the Prod Server. It calls the Location Repository; for every location, a GET request is sent to ISU Dining to return with the current day's menu.")
-    @Scheduled(initialDelay=200, fixedRate=600000)
+    @Scheduled(initialDelay = 200, fixedRate = 600000)
     @GetMapping("/menu-data")
     public void menuData() throws Exception {
         //Delete previous vals in Repo so that I can now replace
@@ -64,7 +66,7 @@ public class MenuController {
 
     //Scheduled to run every 10 minutes
     @Operation(summary = "(Karthik) This endpoint is Scheduled Task running every 10 minutes on the Prod Server. It calls the Menu Repository and organizes each location menu into a parsable Json Array for the Android Client to utilize.")
-    @Scheduled(initialDelay=300, fixedRate=600000)
+    @Scheduled(initialDelay = 300, fixedRate = 600000)
     @GetMapping("/populate-categories")
     @ResponseBody
     public void getCategories() throws Exception {

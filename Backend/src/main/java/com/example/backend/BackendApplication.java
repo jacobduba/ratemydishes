@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -17,6 +18,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableJpaRepositories
 public class BackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
@@ -24,10 +26,10 @@ public class BackendApplication {
 
     @Bean
     CommandLineRunner init(UserService userService, RoleService roleService) {
-       return args -> {
-           Role adminRole = roleService.createNewRole("admin");
-           User adminUser = userService.createNewUser("admin", "admin");
-           roleService.giveRole(adminUser, adminRole);
+        return args -> {
+            Role adminRole = roleService.createNewRole("admin");
+            User adminUser = userService.createNewUser("admin", "admin");
+            roleService.giveRole(adminUser, adminRole);
         };
     }
 

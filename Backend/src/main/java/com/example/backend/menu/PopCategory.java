@@ -101,6 +101,8 @@ public class PopCategory {
                             ObjectNode cals = mapper.createObjectNode();
                             ObjectNode veg = mapper.createObjectNode();
                             ObjectNode id = mapper.createObjectNode();
+                            ObjectNode cRating = mapper.createObjectNode();
+                            ObjectNode numRating = mapper.createObjectNode();
 
                             //add json-node to object
                             name.set("name", miName);
@@ -109,6 +111,8 @@ public class PopCategory {
                             cals.set("total-calories", miCals);
                             veg.set("isVegetarian", miVeg);
                             id.put("id", menuItem.getId());
+                            cRating.put("average-rating", menuItem.getCachedRating());
+                            numRating.put("number-of-ratings", menuItem.getNumRatings());
 
                             //add object to parent array
                             miArray.add(name);
@@ -117,6 +121,8 @@ public class PopCategory {
                             miArray.add(cals);
                             miArray.add(veg);
                             miArray.add(id);
+                            miArray.add(cRating);
+                            miArray.add(numRating);
 
                             //Set function overrides the previous, so using count variable to change name of object
                             ObjectNode miObj = mapper.createObjectNode();

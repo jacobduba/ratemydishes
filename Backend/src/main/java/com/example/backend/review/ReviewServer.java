@@ -93,7 +93,9 @@ public class ReviewServer {
         for (Review r : allReviews) {
             totalCount += r.getRating();
         }
-        menuItem.setCachedRating((float) totalCount / menuItem.getNumRatings());
+        float rating = (float) totalCount / menuItem.getNumRatings();
+        float roundedRating = Math.round(rating * 2) / (float) 2.0;
+        menuItem.setCachedRating(roundedRating);
         mir.save(menuItem);
 
         // Broadcast review to all clients

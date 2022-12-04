@@ -1,5 +1,6 @@
 package com.example.backend.review;
 
+import com.example.backend.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,11 +25,19 @@ public class Review {
     @Column(name = "comment", columnDefinition = "TINYTEXT")
     private String comment;
 
-    // TODO one to many relationships with users and Menu items
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Review(long rating, String comment) {
+    @ManyToOne
+    @JoinColumn(name = "menu_item_id")
+    private MenuItem mi;
+
+    public Review(long rating, String comment, User user, MenuItem mi) {
         this.rating = rating;
         this.comment = comment;
+        this.user = user;
+        this.mi = mi;
     }
 }
 

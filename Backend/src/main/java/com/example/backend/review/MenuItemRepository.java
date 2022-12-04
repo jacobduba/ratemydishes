@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
     boolean existsByTitleAndSlug(String title, String slug);
     MenuItem findByTitleAndSlug(String title, String slug);
+    MenuItem findById(long id);
 }
 
 

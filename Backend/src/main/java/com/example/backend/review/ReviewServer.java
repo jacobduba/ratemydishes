@@ -101,11 +101,14 @@ public class ReviewServer {
         // Broadcast review to all clients
         final ReviewResponse reviewResponse = new ReviewResponse(review);
         sessionStateMap.forEach((s, ss) -> {
-            try {
-                s.getBasicRemote().sendText(objectMapper.writeValueAsString(reviewResponse));
-            } catch (Exception e) {
-                logger.error("Failed to send message to client", e);
-                e.printStackTrace();
+            if (ss.getMenuItem().getId() == menuItem.getId()) {
+                try {
+                    s.getBasicRemote().sendText(objectMapper.writeValueAsString(reviewResponse));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -127,6 +127,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 public void onClick(View v){
                     Context context = v.getContext();
                     Intent intent = new Intent(context, Review.class);
+
+                    intent.putExtra("food", foodReal.toString());
                     context.startActivity(intent);
                 }
             });

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -24,12 +25,19 @@ import org.json.JSONObject;
 public class Review extends AppCompatActivity {
 
     private ImageButton backToDining;
+    private JSONArray food;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.review_page);
 
+        try {
+            food = new JSONArray(getIntent().getExtras().getString("food"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         backToDining = findViewById(R.id.backToDining);
 
         backToDining.setOnClickListener(new View.OnClickListener() {

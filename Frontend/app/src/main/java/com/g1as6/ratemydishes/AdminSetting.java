@@ -62,7 +62,7 @@ public class AdminSetting extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         // Access each element in the jsonarray
-                        int lastId = findViewById(R.id.welcomeText5).getId();
+                        //int lastId = findViewById(R.id.welcomeText5).getId();
                         for(int i = 0; i < response.length(); i++){
                             try { // Rip readability
                                 // Lots of definitions
@@ -99,10 +99,10 @@ public class AdminSetting extends AppCompatActivity {
                                 layout.addView(swt,0);
 
                                 //set.clone(layout);
-                                set.connect(swt.getId(), 3, lastId, 4);
+                                //set.connect(swt.getId(), 3, lastId, 4);
                                 //set.applyTo(layout);
 
-                                lastId = swt.getId();
+                                //lastId = swt.getId();
                             }catch(JSONException e){  }
                         }
                     }

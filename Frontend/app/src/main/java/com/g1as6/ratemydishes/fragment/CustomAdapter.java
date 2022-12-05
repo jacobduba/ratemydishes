@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -122,6 +124,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             btn.setTextSize(24);
             btn.setWidth(displayMetrics.widthPixels);
             btn.setBackgroundColor(0xFFF4F4D4);
+            btn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
@@ -139,7 +142,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             layout.addView(btn,0);
 
             set.clone(layout);
-            set.connect(btn.getId(), 3, last, 4);
+            set.connect(btn.getId(), ConstraintSet.TOP, last, ConstraintSet.BOTTOM);
             set.applyTo(layout);
 
             last = btn.getId();

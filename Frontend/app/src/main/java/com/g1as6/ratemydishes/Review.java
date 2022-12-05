@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,5 +49,32 @@ public class Review extends AppCompatActivity {
             }
         });
 
+        try {
+            setupPage(food);
+        } catch (JSONException e) { e.printStackTrace(); }
+    }
+
+    private void setupPage(JSONArray food) throws JSONException {
+        ((RatingBar) findViewById(R.id.avgRatings)).setNumStars(food.getJSONObject(6).getInt("average-rating"));
+        ((TextView) findViewById(R.id.foodTitle)).setText(food.getJSONObject(0).getString("name"));
+        ((TextView) findViewById(R.id.cal)).setText(food.getJSONObject(3).getString("total-calories") + " calories");
+
+        if(food.getJSONObject(1).getInt("isHalal") == 0) {
+            ((TextView) findViewById(R.id.hala)).setText("Not Halal Friendly");
+        }else{
+            ((TextView) findViewById(R.id.hala)).setText("Halal Friendly");
+        }
+
+        if(food.getJSONObject(2).getInt("isVegan") == 0) {
+            ((TextView) findViewById(R.id.vega)).setText("Not Vegan Friendly");
+        }else{
+            ((TextView) findViewById(R.id.vega)).setText("Vegan Friendly");
+        }
+
+        if(food.getJSONObject(4).getInt("isVegetarian") == 0) {
+            ((TextView) findViewById(R.id.vege)).setText("Not Vegetarian Friendly");
+        }else{
+            ((TextView) findViewById(R.id.vege)).setText("Vegetarian Friendly");
+        }
     }
 }

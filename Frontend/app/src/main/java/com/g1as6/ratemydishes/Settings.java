@@ -225,17 +225,6 @@ public class Settings extends AppCompatActivity {
 
                                         pDialog.hide();
 
-                                        /*try {
-                                            String status = response.get("status").toString();
-                                            if (status.toString().equals("ACCEPTED")) {
-                                                deleteStatus.setText("Account deleted");
-
-                                            }else{
-                                                deleteStatus.setText("Error Deleting!");
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }*/
                                     }
 
                                 }, new Response.ErrorListener() {

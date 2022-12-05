@@ -30,6 +30,7 @@ public class AdminSetting extends AppCompatActivity {
 
     private ImageButton backToSettings;
     private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-category";
+    private String urlTwo = "http://coms-309-006.class.las.iastate.edu:8080/admin/get-settings";
     //protected static AppVars.isEnabled locations;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +52,15 @@ public class AdminSetting extends AppCompatActivity {
     }
 
     protected void populateScreen(){
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JSONObject body = new JSONObject();
+        try {
+            body.put("token",AppVars.userToken);
+        } catch (JSONException e) {
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, urlTwo, body, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         // Access each element in the jsonarray
                         int lastId = findViewById(R.id.welcomeText5).getId();
                         for(int i = 0; i < response.length(); i++){
@@ -64,7 +70,7 @@ public class AdminSetting extends AppCompatActivity {
                                 final ConstraintSet set = new ConstraintSet();
                                 final Switch swt = new Switch(AdminSetting.this);
                                 DisplayMetrics displayMetrics = new DisplayMetrics();
-                                JSONObject object = (JSONObject)response.get(i);
+                                JSONObject object = (JSONObject)response.get(String.valueOf(i));
                                 String title = object.getString("name");
 
                                 getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -100,6 +106,7 @@ public class AdminSetting extends AppCompatActivity {
                             }catch(JSONException e){  }
                         }
                     }
+
                 }, new Response.ErrorListener() {
 
                     @Override
@@ -109,6 +116,6 @@ public class AdminSetting extends AppCompatActivity {
                     }
                 });
 
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest, "tag_json_array");
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "tag_json_array");
     }
 }

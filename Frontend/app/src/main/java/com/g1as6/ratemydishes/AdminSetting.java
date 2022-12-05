@@ -57,12 +57,10 @@ public class AdminSetting extends AppCompatActivity {
             body.put("token",AppVars.userToken);
         } catch (JSONException e) {
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, urlTwo, body, new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, urlTwo, null, new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        // Access each element in the jsonarray
-                        //int lastId = findViewById(R.id.welcomeText5).getId();
+                    public void onResponse(JSONArray response) {
                         for(int i = 0; i < response.length(); i++){
                             try { // Rip readability
                                 // Lots of definitions
@@ -70,7 +68,7 @@ public class AdminSetting extends AppCompatActivity {
                                 final ConstraintSet set = new ConstraintSet();
                                 final Switch swt = new Switch(AdminSetting.this);
                                 DisplayMetrics displayMetrics = new DisplayMetrics();
-                                JSONObject object = (JSONObject)response.get(String.valueOf(i));
+                                JSONObject object = (JSONObject)response.get(i);
                                 String title = object.getString("name");
 
                                 getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -106,7 +104,6 @@ public class AdminSetting extends AppCompatActivity {
                             }catch(JSONException e){  }
                         }
                     }
-
                 }, new Response.ErrorListener() {
 
                     @Override
@@ -116,6 +113,6 @@ public class AdminSetting extends AppCompatActivity {
                     }
                 });
 
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "tag_json_array");
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest, "tag_json_array");
     }
 }

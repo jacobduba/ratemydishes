@@ -33,6 +33,7 @@ public class AdminSetting extends AppCompatActivity {
     private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-location";
     private String urlTwo = "http://coms-309-006.class.las.iastate.edu:8080/admin/get-settings";
     private String urlThree = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-category";
+
     //protected static AppVars.isEnabled locations;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,7 @@ public class AdminSetting extends AppCompatActivity {
 
         backToSettings.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 //Edit so that this goes back to welcome instead of main
                 Intent intent = new Intent(AdminSetting.this, Settings.class);
                 startActivity(intent);
@@ -53,39 +53,39 @@ public class AdminSetting extends AppCompatActivity {
         populateScreen();
     }
 
-    protected void switchOnOrOff(boolean state , String title)throws JSONException{
+    protected void switchOnOrOff(boolean state, String title) throws JSONException {
         JSONObject body = new JSONObject();
         try {
-            body.put("token",AppVars.userToken);
-            body.put("name" , title);
-            body.put("enabled" , state);
+            body.put("token", AppVars.userToken);
+            body.put("name", title);
+            body.put("enabled", state);
         } catch (JSONException e) {
         }
         JsonObjectRequest request = new JsonObjectRequest
-        (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.print(response.toString());
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.print(response.toString());
 
-            }
-        }, new Response.ErrorListener() {
+                    }
+                }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO: Handle error
-                System.out.print(error.toString());
-            }
-        });
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        System.out.print(error.toString());
+                    }
+                });
         AppController.getInstance().addToRequestQueue(request, "tag_json_array");
     }
 
-    protected void switchOnOrOffCategories(boolean state , String title)throws JSONException{
+    protected void switchOnOrOffCategories(boolean state, String title) throws JSONException {
         JSONObject body = new JSONObject();
         try {
-            body.put("token",AppVars.userToken);
-            body.put("name" , title);
-            body.put("enabled" , state);
+            body.put("token", AppVars.userToken);
+            body.put("name", title);
+            body.put("enabled", state);
         } catch (JSONException e) {
         }
         JsonObjectRequest request = new JsonObjectRequest
@@ -107,10 +107,10 @@ public class AdminSetting extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request, "tag_json_array");
     }
 
-    protected void populateScreen(){
+    protected void populateScreen() {
         JSONObject body = new JSONObject();
         try {
-            body.put("token",AppVars.userToken);
+            body.put("token", AppVars.userToken);
         } catch (JSONException e) {
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -123,14 +123,14 @@ public class AdminSetting extends AppCompatActivity {
                             array = response.getJSONArray("locations");
                             categories = response.getJSONArray("categories");
                             int lastId = (R.id.welcomeText5);
-                            for(int i = 0; i < array.length(); i++){
+                            for (int i = 0; i < array.length(); i++) {
                                 try { // Rip readability
                                     // Lots of definitions
                                     final ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.layoutId);
                                     final ConstraintSet set = new ConstraintSet();
                                     final Switch swt = new Switch(AdminSetting.this);
                                     DisplayMetrics displayMetrics = new DisplayMetrics();
-                                    JSONObject object = (JSONObject)array.get((i));
+                                    JSONObject object = (JSONObject) array.get((i));
                                     String title = object.getString("name");
                                     Boolean enabled = object.getBoolean("enabled");
 
@@ -151,23 +151,24 @@ public class AdminSetting extends AppCompatActivity {
                                     set.constrainHeight(swt.getId(), ConstraintSet.WRAP_CONTENT);
                                     set.constrainWidth(swt.getId(), ConstraintSet.WRAP_CONTENT);
 
-                                    layout.addView(swt,0);
+                                    layout.addView(swt, 0);
 
                                     set.clone(layout);
                                     set.connect(swt.getId(), 3, lastId, 4);
                                     set.applyTo(layout);
 
                                     lastId = swt.getId();
-                                }catch(JSONException e){  }
+                                } catch (JSONException e) {
+                                }
 
-                                for(int j = 0; j < categories.length(); j= j + 80){
+                                for (int j = 0; j < categories.length(); j = j + 80) {
                                     try { // Rip readability
                                         // Lots of definitions
                                         final ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.layoutId);
                                         final ConstraintSet set = new ConstraintSet();
                                         final Switch swt = new Switch(AdminSetting.this);
                                         DisplayMetrics displayMetrics = new DisplayMetrics();
-                                        JSONObject object = (JSONObject)categories.get((i));
+                                        JSONObject object = (JSONObject) categories.get((i));
                                         String title = object.getString("name");
                                         Boolean enabled = object.getBoolean("enabled");
 
@@ -188,14 +189,15 @@ public class AdminSetting extends AppCompatActivity {
                                         set.constrainHeight(swt.getId(), ConstraintSet.WRAP_CONTENT);
                                         set.constrainWidth(swt.getId(), ConstraintSet.WRAP_CONTENT);
 
-                                        layout.addView(swt,0);
+                                        layout.addView(swt, 0);
 
                                         set.clone(layout);
                                         set.connect(swt.getId(), 3, lastId, 4);
                                         set.applyTo(layout);
 
                                         lastId = swt.getId();
-                                    }catch(JSONException e){  }
+                                    } catch (JSONException e) {
+                                    }
 
                                 }
 

@@ -40,6 +40,7 @@ import java.util.Map;
 public class Login extends AppCompatActivity {
     static File token;
     static File admin;
+    static File netId;
     Button loginButton;
     Button registrationButton;
     EditText usrName;
@@ -56,21 +57,29 @@ public class Login extends AppCompatActivity {
         ProgressDialog pDialog = new ProgressDialog(this);
         token = new File(this.getFilesDir(), "token.txt");
         admin = new File(this.getFilesDir(), "admin.txt");
+        netId = new File(this.getFilesDir(), "netId.txt");
 
         // Check if user previously logged in
         // If file exists, then user is logged in
         // Otherwise, create the file and delete it on logout
         if (token.exists()) {
             try {
+                // The fact that this still worked after my commit is astounding
                 BufferedReader reader = new BufferedReader(new FileReader(token));
                 String t = reader.readLine();
                 reader.close();
+
                 BufferedReader adminReader = new BufferedReader(new FileReader(admin));
                 String t1 = adminReader.readLine();
                 adminReader.close();
 
+                BufferedReader netIdReader = new BufferedReader(new FileReader(netId));
+                String n = netIdReader.readLine();
+                netIdReader.close();
+
                 AppVars.userToken = t;
                 AppVars.isAdmin = t1.equals("true");
+                AppVars.netId = n;
                 Intent intent = new Intent(Login.this, WelcomePage.class);
                 startActivity(intent);
             } catch (Exception e) {
@@ -82,6 +91,7 @@ public class Login extends AppCompatActivity {
         } else {
             try {
                 token.createNewFile();
+                netId.createNewFile();
             } catch (IOException e) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
                 builder.setMessage("Could not create token file! You should probably contact a developer!")
@@ -134,6 +144,7 @@ public class Login extends AppCompatActivity {
                                             //File tokenFile = new File(this.getFilesDir(), "token.txt");
                                             AppVars.userToken = tkn;
                                             AppVars.isAdmin = isAdmin;
+                                            AppVars.netId = body.getString("netId");
 
                                             BufferedWriter writer = new BufferedWriter(new FileWriter(Login.token));
                                             writer.write(tkn);
@@ -142,6 +153,10 @@ public class Login extends AppCompatActivity {
                                             BufferedWriter writer1 = new BufferedWriter(new FileWriter(Login.admin));
                                             writer1.write(String.valueOf(isAdmin));
                                             writer1.close();
+
+                                            BufferedWriter netIdWriter = new BufferedWriter(new FileWriter(Login.netId));
+                                            netIdWriter.write(AppVars.netId);
+                                            netIdWriter.close();
 
                                         } catch (Exception e) {
                                         }

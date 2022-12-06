@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 public class AdminSetting extends AppCompatActivity {
 
     private ImageButton backToSettings;
-    private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-category";
+    private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-location";
     private String urlTwo = "http://coms-309-006.class.las.iastate.edu:8080/admin/get-settings";
     //protected static AppVars.isEnabled locations;
     @Override
@@ -51,57 +52,86 @@ public class AdminSetting extends AppCompatActivity {
         populateScreen();
     }
 
+    protected void switchOnOrOff(boolean state , String title)throws JSONException{
+        JSONObject body = new JSONObject();
+        try {
+            body.put("token",AppVars.userToken);
+            body.put("name" , title);
+            body.put("enabled" , state);
+        } catch (JSONException e) {
+        }
+        JsonObjectRequest request = new JsonObjectRequest
+        (Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.print(response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                System.out.print(error.toString());
+            }
+        });
+        AppController.getInstance().addToRequestQueue(request, "tag_json_array");
+    }
+
     protected void populateScreen(){
         JSONObject body = new JSONObject();
         try {
             body.put("token",AppVars.userToken);
         } catch (JSONException e) {
         }
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, urlTwo, null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, urlTwo, body, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        for(int i = 0; i < response.length(); i++){
-                            try { // Rip readability
-                                // Lots of definitions
-                                final ScrollView layout = (ScrollView) findViewById(R.id.adminParent);
-                                final ConstraintSet set = new ConstraintSet();
-                                final Switch swt = new Switch(AdminSetting.this);
-                                DisplayMetrics displayMetrics = new DisplayMetrics();
-                                JSONObject object = (JSONObject)response.get(i);
-                                String title = object.getString("name");
+                    public void onResponse(JSONObject response) {
+                        JSONArray array = new JSONArray();
+                        try {
+                            array = response.getJSONArray("locations");
+                            int lastId = (R.id.welcomeText5);
+                            for(int i = 0; i < array.length(); i++){
+                                try { // Rip readability
+                                    // Lots of definitions
+                                    final ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.layoutId);
+                                    final ConstraintSet set = new ConstraintSet();
+                                    final Switch swt = new Switch(AdminSetting.this);
+                                    DisplayMetrics displayMetrics = new DisplayMetrics();
+                                    JSONObject object = (JSONObject)array.get((i));
+                                    String title = object.getString("name");
+                                    Boolean enabled = object.getBoolean("enabled");
 
-                                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-                                swt.setId(View.generateViewId());
-                                swt.setText(title);
-                                swt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                swt.setTextSize(24);
-                                swt.setWidth(displayMetrics.widthPixels);
-                                swt.setBackgroundColor(0xFFF4F4D4);
-                                swt.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v){
-                                        // Destruct slug then send it as string for a much better life experience
-                                        Intent intent = new Intent(AdminSetting.this, Settings.class);
-                                        try {
-                                            intent.putExtra("slug", object.getString("slug"));
-                                            startActivity(intent);
-                                        }catch (JSONException e){   }
+                                    swt.setId(View.generateViewId());
+                                    swt.setText(title);
+                                    swt.setChecked(enabled);
+                                    swt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            try {
+                                                switchOnOrOff(b, title);
+                                            } catch (JSONException e) {
+                                            }
+                                        }
+                                    });
+                                    set.constrainHeight(swt.getId(), ConstraintSet.WRAP_CONTENT);
+                                    set.constrainWidth(swt.getId(), ConstraintSet.WRAP_CONTENT);
 
-                                    }
-                                });
-                                set.constrainHeight(swt.getId(), ConstraintSet.WRAP_CONTENT);
-                                set.constrainWidth(swt.getId(), ConstraintSet.WRAP_CONTENT);
+                                    layout.addView(swt,0);
 
-                                layout.addView(swt,0);
+                                    set.clone(layout);
+                                    set.connect(swt.getId(), 3, lastId, 4);
+                                    set.applyTo(layout);
 
-                                //set.clone(layout);
-                                //set.connect(swt.getId(), 3, lastId, 4);
-                                //set.applyTo(layout);
-
-                                //lastId = swt.getId();
-                            }catch(JSONException e){  }
+                                    lastId = swt.getId();
+                                }catch(JSONException e){  }
+                            }
+                        } catch (JSONException e) {
+                            //e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -113,6 +143,6 @@ public class AdminSetting extends AppCompatActivity {
                     }
                 });
 
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest, "tag_json_array");
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "tag_json_array");
     }
 }

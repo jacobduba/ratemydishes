@@ -118,9 +118,7 @@ public class Settings extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Settings.this, AdminSetting.class);
-                    //intent.putExtra("token" , AppVars.admin.GET_SETTINGS);
-                    intent.putExtra("enables" , AppVars.isEnabled);
-                    //intent.putExtra("token" , AppVars.admin.TOGGLE_CATEGORY);
+                    //intent.putExtra("enabled" , AppVars.isEnabled);
                     startActivity(intent);
 
                 }

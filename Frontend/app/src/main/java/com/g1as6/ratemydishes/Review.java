@@ -173,7 +173,12 @@ public class Review extends AppCompatActivity {
                         messages.add(message);
                     }
 
-                    recycler.getAdapter().notifyDataSetChanged();
+                    recycler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                 }
 
                 @Override

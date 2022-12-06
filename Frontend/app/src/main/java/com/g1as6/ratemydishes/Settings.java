@@ -111,7 +111,8 @@ public class Settings extends AppCompatActivity {
             toAdmin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Settings.this, AdminSettings.class);
+                    Intent intent = new Intent(Settings.this, AdminSetting.class);
+                    //intent.putExtra("enabled" , AppVars.isEnabled);
                     startActivity(intent);
 
                 }
@@ -236,8 +237,7 @@ public class Settings extends AppCompatActivity {
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-
-                                        deleteStatus.setText("No response from server");
+                                        deleteStatus.setText("Something went wrong");
                                         pDialog.hide();
                                     }
                                 });

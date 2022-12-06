@@ -32,6 +32,7 @@ public class AdminSetting extends AppCompatActivity {
     private ImageButton backToSettings;
     private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-location";
     private String urlTwo = "http://coms-309-006.class.las.iastate.edu:8080/admin/get-settings";
+    private String urlThree = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-category";
     //protected static AppVars.isEnabled locations;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,33 @@ public class AdminSetting extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request, "tag_json_array");
     }
 
+    protected void switchOnOrOffCategories(boolean state , String title)throws JSONException{
+        JSONObject body = new JSONObject();
+        try {
+            body.put("token",AppVars.userToken);
+            body.put("name" , title);
+            body.put("enabled" , state);
+        } catch (JSONException e) {
+        }
+        JsonObjectRequest request = new JsonObjectRequest
+                (Request.Method.POST, urlThree, body, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.print(response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        System.out.print(error.toString());
+                    }
+                });
+        AppController.getInstance().addToRequestQueue(request, "tag_json_array");
+    }
+
     protected void populateScreen(){
         JSONObject body = new JSONObject();
         try {
@@ -90,8 +118,10 @@ public class AdminSetting extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         JSONArray array = new JSONArray();
+                        JSONArray categories = new JSONArray();
                         try {
                             array = response.getJSONArray("locations");
+                            categories = response.getJSONArray("categories");
                             int lastId = (R.id.welcomeText5);
                             for(int i = 0; i < array.length(); i++){
                                 try { // Rip readability
@@ -129,6 +159,46 @@ public class AdminSetting extends AppCompatActivity {
 
                                     lastId = swt.getId();
                                 }catch(JSONException e){  }
+
+                                for(int j = 0; j < categories.length(); j= j + 80){
+                                    try { // Rip readability
+                                        // Lots of definitions
+                                        final ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.layoutId);
+                                        final ConstraintSet set = new ConstraintSet();
+                                        final Switch swt = new Switch(AdminSetting.this);
+                                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                                        JSONObject object = (JSONObject)categories.get((i));
+                                        String title = object.getString("name");
+                                        Boolean enabled = object.getBoolean("enabled");
+
+                                        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+                                        swt.setId(View.generateViewId());
+                                        swt.setText(title);
+                                        swt.setChecked(enabled);
+                                        swt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                try {
+                                                    switchOnOrOffCategories(b, title);
+                                                } catch (JSONException e) {
+                                                }
+                                            }
+                                        });
+                                        set.constrainHeight(swt.getId(), ConstraintSet.WRAP_CONTENT);
+                                        set.constrainWidth(swt.getId(), ConstraintSet.WRAP_CONTENT);
+
+                                        layout.addView(swt,0);
+
+                                        set.clone(layout);
+                                        set.connect(swt.getId(), 3, lastId, 4);
+                                        set.applyTo(layout);
+
+                                        lastId = swt.getId();
+                                    }catch(JSONException e){  }
+
+                                }
+
                             }
                         } catch (JSONException e) {
                             //e.printStackTrace();

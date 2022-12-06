@@ -43,6 +43,7 @@ public class Login extends AppCompatActivity {
     static File netId;
     Button loginButton;
     Button registrationButton;
+    Button guestUser;
     EditText usrName;
     EditText pswd;
     TextView lginStatus;
@@ -103,6 +104,7 @@ public class Login extends AppCompatActivity {
         // Component Assignment
         loginButton = findViewById(R.id.loginBtn);
         lginStatus = findViewById(R.id.loginStatus);
+        guestUser = findViewById(R.id.guestUser);
         registrationButton = findViewById(R.id.registerBtn);
         usrName = findViewById(R.id.usrInput);
         pswd = findViewById(R.id.pswdInput);

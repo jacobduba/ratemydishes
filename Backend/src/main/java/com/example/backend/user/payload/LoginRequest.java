@@ -1,13 +1,17 @@
 package com.example.backend.user.payload;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginRequest {
     private String netId;
     private String password;
-
-    public LoginRequest() {}
 
     public boolean isNull() {
         return netId == null || password == null;

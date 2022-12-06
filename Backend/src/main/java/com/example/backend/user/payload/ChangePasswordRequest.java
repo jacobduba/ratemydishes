@@ -7,9 +7,12 @@ import lombok.Setter;
 
 import javax.validation.constraints.Size;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChangePasswordRequest extends AuthRequest {
     private String oldPassword;
-    @Size(min=5)
+    @Size(min = 5)
     private String newPassword;
 }

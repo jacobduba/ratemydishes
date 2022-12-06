@@ -105,7 +105,9 @@ public class Review extends AppCompatActivity {
         backToDining.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Review.this, WelcomePage.class);
+                Intent intent = new Intent(Review.this, MenuList.class);
+                intent.putExtra("slug", getIntent().getExtras().getString("slug"));
+
                 startActivity(intent);
             }
         });

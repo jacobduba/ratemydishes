@@ -30,6 +30,7 @@ import org.json.JSONObject;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     DisplayMetrics displayMetrics = new DisplayMetrics();
     private JSONArray localDataSet;
+    private String menuSlug;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -132,6 +133,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                     Intent intent = new Intent(context, Review.class);
 
                     intent.putExtra("food", foodReal.toString());
+                    intent.putExtra("slug", menuSlug);
                     context.startActivity(intent);
                 }
             });
@@ -148,4 +150,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             last = btn.getId();
         }
     }
+
+    public void setMenuSlug(String s) { this.menuSlug = s; }
 }

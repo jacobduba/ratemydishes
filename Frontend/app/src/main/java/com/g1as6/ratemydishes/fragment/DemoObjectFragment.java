@@ -46,10 +46,10 @@ public class DemoObjectFragment extends Fragment {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
             mLayoutManager = new LinearLayoutManager(getActivity());
             mAdapter = new CustomAdapter(section);
+            mAdapter.setMenuSlug(args.getString("slug"));
 
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(mLayoutManager);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

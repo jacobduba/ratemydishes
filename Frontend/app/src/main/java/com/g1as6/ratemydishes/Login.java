@@ -54,13 +54,6 @@ public class Login extends AppCompatActivity {
         File token = new File(this.getFilesDir(), "token.txt");
         File admin = new File(this.getFilesDir(), "admin.txt");
 
-        /*Intent remove = new Intent(Login.this, AdminSetting.class);
-        startActivity(remove);*/
-
-
-        // Check if user previously logged in
-        // If file exists, then user is logged in
-        // Otherwise, create the file and delete it on logout
         if (token.exists()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(token));

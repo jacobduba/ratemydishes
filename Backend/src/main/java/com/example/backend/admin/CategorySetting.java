@@ -8,7 +8,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "category_settings")
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class CategorySetting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

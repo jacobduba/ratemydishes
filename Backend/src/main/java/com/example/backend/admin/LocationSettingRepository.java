@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface LocationSettingRepository extends JpaRepository<LocationSetting, Long> {
     ArrayList<LocationSetting> findAll();
+
     List<AdminSettingResponse> findAllProjectedBy();
+
     LocationSetting findByName(String name);
 }

@@ -2,9 +2,7 @@ package com.example.backend.admin;
 
 import com.example.backend.admin.exceptions.LocationDoesNotExistException;
 import com.example.backend.admin.payload.AdminSettingResponse;
-import com.example.backend.location.Location;
 import com.example.backend.location.LocationRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +36,7 @@ public class LocationSettingService {
 
     private void createNewLocationSetting(String name) {
         LocationSetting locationSetting = new LocationSetting(name, true);
-        Location location = locationRepository.findByTitle(name);
-        locationSetting.setLocation(location);
-        location.setLocationSetting(locationSetting);
         locationSettingRepository.save(locationSetting);
-        locationRepository.save(location);
     }
 
     public void setEnabled(String name, boolean enabled) {

@@ -1,10 +1,12 @@
 package com.example.backend.menu;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 
 @Component
@@ -20,7 +22,7 @@ public class GetMenu {
 
 
         //For loop to return menu
-        for(int i=0;i < menusList.size(); i++) {
+        for (int i = 0; i < menusList.size(); i++) {
             JsonNode menusObj = mapper.readTree(menusList.get(i).getClearMenus());
 
             menuNode.put("title", menusList.get(i).getTitle());

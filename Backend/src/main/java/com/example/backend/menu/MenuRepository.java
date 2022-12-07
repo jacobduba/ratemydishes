@@ -15,7 +15,9 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     boolean existsByTitle(String title);
 
     ArrayList<Menu> findBySlug(String slug);
+
     Menu findByTitle(String title);
+
     @Transactional
     Menu deleteById(long i);
 }

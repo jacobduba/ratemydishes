@@ -60,9 +60,6 @@ public class Login extends AppCompatActivity {
         admin = new File(this.getFilesDir(), "admin.txt");
         netId = new File(this.getFilesDir(), "netId.txt");
 
-        // Check if user previously logged in
-        // If file exists, then user is logged in
-        // Otherwise, create the file and delete it on logout
         if (token.exists()) {
             try {
                 // The fact that this still worked after my commit is astounding

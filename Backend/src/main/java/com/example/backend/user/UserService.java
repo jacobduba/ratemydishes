@@ -70,7 +70,8 @@ public class UserService {
 
     public User deleteUser(DeleteRequest deleteRequest) {
         User user = getUserFromAuthPayload(deleteRequest);
-        if (!BCrypt.checkpw(deleteRequest.getPassword(), user.getHashedPassword())) throw new IncorrectUsernameOrPasswordException();
+        if (!BCrypt.checkpw(deleteRequest.getPassword(), user.getHashedPassword()))
+            throw new IncorrectUsernameOrPasswordException();
 
         userRepository.deleteById(user.getId());
 

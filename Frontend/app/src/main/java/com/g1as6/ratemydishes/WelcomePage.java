@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import com.g1as6.ratemydishes.app.AppVars;
 
 public class WelcomePage extends AppCompatActivity {
-    Button loginBtn;
+    ImageButton loginBtn;
     Button diningCenters;
     AlertDialog Alert;
     Button cafe;
@@ -25,12 +25,28 @@ public class WelcomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
 
+        loginBtn = findViewById(R.id.goToLogin);
         diningCenters = findViewById(R.id.toDiningCenters);
         cafe = findViewById(R.id.toCafe);
         fastCasual = findViewById(R.id.toFastCasual);
         cs = findViewById(R.id.toCS);
         getAndGo = findViewById(R.id.toGetAndGo);
         toSettings = findViewById(R.id.toSettings);
+
+        if (AppVars.userToken == null) {
+            toSettings.setVisibility(View.INVISIBLE);
+        } else {
+            loginBtn.setVisibility(View.INVISIBLE);
+        }
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomePage.this, Login.class);
+                startActivity(intent);
+            }
+        });
+
         diningCenters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)

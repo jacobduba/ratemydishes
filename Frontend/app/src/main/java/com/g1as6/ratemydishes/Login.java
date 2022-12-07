@@ -202,5 +202,13 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        guestUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, WelcomePage.class);
+                startActivity(intent);
+            }
+        });
     }
 }

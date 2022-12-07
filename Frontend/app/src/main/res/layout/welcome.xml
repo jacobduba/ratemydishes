@@ -61,7 +61,7 @@
         android:inputType="textPersonName"
         android:shadowColor="#FF0000"
         android:singleLine="false"
-        android:text="Welcome to Rate Your Dishes"
+        android:text="Welcome to Rate My Dishes"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textColorHighlight="#F44336"

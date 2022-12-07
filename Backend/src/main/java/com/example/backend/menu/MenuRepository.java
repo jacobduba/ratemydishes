@@ -20,4 +20,5 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     @Transactional
     Menu deleteById(long i);
+    Menu deleteByTitle(String title);
 }

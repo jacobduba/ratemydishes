@@ -39,7 +39,12 @@ public class KarthikTests {
     }
     @AfterAll
     public void AfterAll() {
-        lr.deleteByTitle("Windows");
+        try {
+            lr.deleteByTitle("Windows");
+            mr.deleteByTitle("Test");
+        }
+        catch (Exception e) {
+        }
     }
 
     @Test
@@ -60,6 +65,7 @@ public class KarthikTests {
             ObjectNode test = mapper.createObjectNode();
             test.put("This is a test", "Test");
             Menu menu = new Menu();
+            menu.setTitle("Test");
             menu.setClearMenus(test.textValue());
         }
 

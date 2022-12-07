@@ -3,7 +3,10 @@ package com.example.backend.user.payload;
 import com.example.backend.role.Role;
 import com.example.backend.user.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
@@ -13,8 +16,12 @@ import java.util.Set;
  * the hashed password. So this object takes a
  * user and "filters" out info we don't want to
  * share!
+ * TODO use projections
  */
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserResponse {
     private String netId;
     @JsonProperty("isAdmin")

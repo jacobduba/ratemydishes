@@ -15,4 +15,5 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     ArrayList<Location> findByResType(String resType);
     @Transactional
     Location deleteById(long i);
+    Location deleteByTitle(String title);
 }

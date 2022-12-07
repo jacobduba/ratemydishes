@@ -36,7 +36,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-// TODO: IMPORTANT! Dataset doesn't update unless scrolled by user!
 // Find a way to fix this
 public class Review extends AppCompatActivity {
 
@@ -60,6 +59,12 @@ public class Review extends AppCompatActivity {
 
         bar = findViewById(R.id.ratingBar);
         btn = findViewById(R.id.reviewBtn);
+        review = findViewById(R.id.reviewBox);
+        if (AppVars.userToken == null) {
+            bar.setVisibility(View.INVISIBLE);
+            btn.setVisibility(View.INVISIBLE);
+            review.setVisibility(View.INVISIBLE);
+        }
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +85,6 @@ public class Review extends AppCompatActivity {
             }
         });
 
-        review = findViewById(R.id.reviewBox);
 
         try {
             food = new JSONArray(getIntent().getExtras().getString("food"));

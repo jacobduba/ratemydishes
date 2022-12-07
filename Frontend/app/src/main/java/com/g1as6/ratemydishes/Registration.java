@@ -47,6 +47,7 @@ public class Registration extends AppCompatActivity {
         ProgressDialog pDialog = new ProgressDialog(this);
         File token = new File(this.getFilesDir(), "token.txt");
         File admin = new File(this.getFilesDir(), "admin.txt");
+        File nId = new File(this.getFilesDir(), "netId.txt");
 
         // Create widgets
         backBtn = findViewById(R.id.back);
@@ -127,6 +128,7 @@ public class Registration extends AppCompatActivity {
                                             try {
                                                 AppVars.isAdmin = isAdmin;
                                                 AppVars.userToken = tokenString;
+                                                AppVars.netId = netId.getText().toString();
 
                                                 Intent intent = new Intent(Registration.this, WelcomePage.class);
                                                 startActivity(intent);
@@ -137,6 +139,10 @@ public class Registration extends AppCompatActivity {
                                                 BufferedWriter writer1 = new BufferedWriter(new FileWriter(admin));
                                                 writer1.write(String.valueOf(isAdmin));
                                                 writer1.close();
+
+                                                BufferedWriter netWriter = new BufferedWriter(new FileWriter(nId));
+                                                netWriter.write(AppVars.netId);
+                                                netWriter.close();
                                             } catch (Exception e) {
                                             }
 

@@ -74,6 +74,7 @@ public class MenuList extends AppCompatActivity {
                             }).attach();
 
                             demoCollectionAdapter.setMenus(menus);
+                            demoCollectionAdapter.setMenuSlug(extras.getString("slug"));
                             for (int i = 0; i < menus.length(); i++){
                                 JSONObject individualMenu =  menus.getJSONObject(i);
                                 JSONArray section = individualMenu.getJSONArray("Section");

@@ -45,6 +45,9 @@
         <activity
             android:name=".MenuList"
             android:exported="false"/>
+        <activity
+            android:name=".Review"
+            android:exported="false"/>
     </application>
 
 

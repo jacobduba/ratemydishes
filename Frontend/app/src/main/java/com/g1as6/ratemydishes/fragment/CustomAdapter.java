@@ -1,13 +1,16 @@
 package com.g1as6.ratemydishes.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -17,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.g1as6.ratemydishes.MenuList;
 import com.g1as6.ratemydishes.R;
 import com.g1as6.ratemydishes.RestaurantList;
+import com.g1as6.ratemydishes.Review;
+import com.g1as6.ratemydishes.WelcomePage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +30,7 @@ import org.json.JSONObject;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     DisplayMetrics displayMetrics = new DisplayMetrics();
     private JSONArray localDataSet;
+    private String menuSlug;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -119,10 +125,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             btn.setTextSize(24);
             btn.setWidth(displayMetrics.widthPixels);
             btn.setBackgroundColor(0xFFF4F4D4);
+            btn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
-                    // TODO: Implement
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, Review.class);
+
+                    intent.putExtra("food", foodReal.toString());
+                    intent.putExtra("slug", menuSlug);
+                    context.startActivity(intent);
                 }
             });
 
@@ -132,10 +144,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             layout.addView(btn,0);
 
             set.clone(layout);
-            set.connect(btn.getId(), 3, last, 4);
+            set.connect(btn.getId(), ConstraintSet.TOP, last, ConstraintSet.BOTTOM);
             set.applyTo(layout);
 
             last = btn.getId();
         }
     }
+
+    public void setMenuSlug(String s) { this.menuSlug = s; }
 }

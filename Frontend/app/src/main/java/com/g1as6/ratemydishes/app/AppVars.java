@@ -2,6 +2,7 @@ package com.g1as6.ratemydishes.app;
 
 public class AppVars {
     public static String userToken;
+    public static String netId;
     public static boolean isAdmin;
     public static enum Restaurant{
         DINING_CENTER,

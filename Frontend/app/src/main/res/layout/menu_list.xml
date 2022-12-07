@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabTextColor="@color/black"
-                app:tabSelectedTextColor="#adf0f1"
+                app:tabSelectedTextColor="#7f0000"
 
                 />
 

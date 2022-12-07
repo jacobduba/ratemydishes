@@ -115,7 +115,7 @@ public class Review extends AppCompatActivity {
     }
 
     private void setupPage(JSONArray food) throws JSONException {
-        ((RatingBar) findViewById(R.id.avgRatings)).setRating(food.getJSONObject(6).getInt("average-rating"));
+        ((RatingBar) findViewById(R.id.avgRatings)).setRating((float) food.getJSONObject(6).getDouble("average-rating"));
         ((TextView) findViewById(R.id.foodTitle)).setText(food.getJSONObject(0).getString("name"));
         ((TextView) findViewById(R.id.cal)).setText(food.getJSONObject(3).getString("total-calories") + " calories");
 

@@ -60,7 +60,6 @@
             android:id="@+id/cal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="Calories"
             android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +79,7 @@
             android:id="@+id/hala"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="5dp"
             android:text="Halal???"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +98,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +108,7 @@
             android:id="@+id/ratingBar"
             android:layout_width="237dp"
             android:layout_height="42dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,14 +117,14 @@
         <EditText
             android:id="@+id/reviewBox"
             android:layout_width="223dp"
-            android:layout_height="85dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="172dp"
             android:ems="10"
+            android:gravity="bottom"
             android:hint="Leave a comment..."
             android:inputType="textPersonName"
             android:textSize="12sp"
-            android:gravity="bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
@@ -133,10 +132,11 @@
             android:id="@+id/reviewBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="252dp"
             android:text="Leave Review"
             app:layout_constraintBottom_toBottomOf="@+id/reviewBox"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
         <RatingBar
             android:id="@+id/avgRatings"

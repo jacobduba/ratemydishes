@@ -58,19 +58,19 @@ public class KarthikTests {
         RestAssured.get("/location/get-dining-centers").then().statusCode(200).assertThat().body("slug", hasItems("friley-windows-2-2"));
 
     }
-    @Test
-    public void testSingleMenuOfWindows() {
-        ObjectMapper mapper = new ObjectMapper();
-        if (!mr.existsByTitle("Friley Windows")) {
-            ObjectNode test = mapper.createObjectNode();
-            test.put("This is a test", "Test");
-            Menu menu = new Menu();
-            menu.setTitle("Test");
-            menu.setClearMenus(test.textValue());
-        }
+    // @Test
+    // public void testSingleMenuOfWindows() {
+    //     ObjectMapper mapper = new ObjectMapper();
+    //     if (!mr.existsByTitle("Friley Windows")) {
+    //         ObjectNode test = mapper.createObjectNode();
+    //         test.put("This is a test", "Test");
+    //         Menu menu = new Menu();
+    //         menu.setTitle("Test");
+    //         menu.setClearMenus(test.textValue());
+    //     }
 
-        RestAssured.get("/menu/get-menu/friley-windows-2-2").then().statusCode(200).assertThat().body("menu", hasItems());
-    }
+    //     RestAssured.get("/menu/get-menu/friley-windows-2-2").then().statusCode(200).assertThat().body("menu", hasItems());
+    // }
 
     @Test
     public void testPopCategories() {

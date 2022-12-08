@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GetSingleLocation</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.backend.location</a>
+</div>
+
+<h1>Coverage Summary for Class: GetSingleLocation (com.example.backend.location)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GetSingleLocation</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84.4%
+  </span>
+  <span class="absValue">
+    (27/32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.backend.location;
+&nbsp;
+&nbsp;import com.example.backend.menu.MenuRepository;
+&nbsp;import com.example.backend.menu.Menu;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import com.fasterxml.jackson.databind.node.ArrayNode;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.data.jpa.repository.Modifying;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import java.io.*;
+&nbsp;import java.net.*;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class GetSingleLocation {</b>
+&nbsp;    @Autowired
+&nbsp;    public MenuRepository mr;
+&nbsp;    @Autowired
+&nbsp;    public LocationRepository lr;
+&nbsp;
+&nbsp;    public ArrayNode getHTML(String slug, Long timestamp, String urlToRead) throws Exception {
+<b class="fc">&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+<b class="fc">&nbsp;        StringBuilder result = new StringBuilder();</b>
+&nbsp;        //Updating base url to accommodate time and slug params
+<b class="fc">&nbsp;        URL url = new URL(urlToRead + &quot;?slug=&quot; + slug + &quot;&amp;time=&quot; + timestamp);</b>
+<b class="fc">&nbsp;        HttpURLConnection conn = (HttpURLConnection) url.openConnection();</b>
+<b class="fc">&nbsp;        conn.setRequestMethod(&quot;GET&quot;);</b>
+<b class="fc">&nbsp;        try (BufferedReader reader = new BufferedReader(</b>
+<b class="fc">&nbsp;                new InputStreamReader(conn.getInputStream()))) {</b>
+<b class="fc">&nbsp;            for (String line; (line = reader.readLine()) != null; ) {</b>
+<b class="fc">&nbsp;                result.append(line);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            ArrayNode response = (ArrayNode) mapper.readTree(String.valueOf(result));</b>
+&nbsp;
+<b class="fc">&nbsp;            return response;</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Modifying
+&nbsp;    public void populateTable(ArrayNode arr) {  //Parse JSON Array
+<b class="fc">&nbsp;        for (int i = 0; i &lt; arr.size(); i++) {</b>
+&nbsp;            //Need to type cast array element to node
+<b class="fc">&nbsp;            JsonNode jsonNode = arr.get(i);</b>
+&nbsp;            //Query table data from each JsonObj
+<b class="fc">&nbsp;            String menu1 = jsonNode.get(&quot;menus&quot;).toString();</b>
+<b class="fc">&nbsp;            String title1 = jsonNode.get(&quot;title&quot;).textValue();</b>
+<b class="fc">&nbsp;            String slug1 = jsonNode.get(&quot;slug&quot;).textValue();</b>
+&nbsp;
+&nbsp;            //Check to prevent duplicates before input
+&nbsp;            try {
+<b class="fc">&nbsp;                Menu oldM = mr.findByTitle(title1);</b>
+<b class="fc">&nbsp;                Menu m = new Menu(slug1, title1, menu1, null);</b>
+<b class="fc">&nbsp;                Location l = lr.findBySlug(slug1);</b>
+<b class="fc">&nbsp;                m.setLocation(l);</b>
+<b class="fc">&nbsp;                l.setMenu(m);</b>
+<b class="fc">&nbsp;                if (!mr.existsByTitle(title1)) {</b>
+<b class="fc">&nbsp;                    mr.save(m);</b>
+<b class="fc">&nbsp;                    lr.save(l);</b>
+<b class="nc">&nbsp;                } else if (mr.existsByTitle(title1)) {</b>
+<b class="nc">&nbsp;                    mr.delete(oldM);</b>
+<b class="nc">&nbsp;                    lr.save(l);</b>
+<b class="nc">&nbsp;                    mr.save(m);</b>
+&nbsp;                }
+<b class="nc">&nbsp;            } catch (Exception e) {</b>
+&nbsp;                // TODO (Jacob) running into exceptions when running update on local
+&nbsp;                // This is my hacked ass solution to get it working... everything seems to working
+<b class="fc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-07 17:51</div>
+</div>
+</body>
+</html>

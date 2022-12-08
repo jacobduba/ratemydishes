@@ -1,0 +1,171 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.backend.user</a>
+</div>
+
+<h1>Coverage Summary for Class: UserController (com.example.backend.user)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.2%
+  </span>
+  <span class="absValue">
+    (15/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.backend.user;
+&nbsp;
+&nbsp;import com.example.backend.user.exceptions.InvalidPayloadException;
+&nbsp;import com.example.backend.user.payload.*;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.MediaType;
+&nbsp;import org.springframework.validation.BindingResult;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import javax.validation.Valid;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;user&quot;)
+&nbsp;public class UserController {
+&nbsp;    private final UserService userService;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public UserController(UserService userService) {</b>
+<b class="fc">&nbsp;        this.userService = userService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;(Jacob) Given valid user creds, returns auth token and user miscellaneous information.&quot;)
+&nbsp;    @PostMapping(value = &quot;login&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+&nbsp;    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+<b class="fc">&nbsp;        return new LoginResponse(</b>
+<b class="fc">&nbsp;                userService.loginGenerateJwtToken(loginRequest),</b>
+<b class="fc">&nbsp;                userService.getUserResponsePayload(loginRequest.getNetId())</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;(Jacob) Returns &#39;pong&#39; is the token is valid.&quot;)
+&nbsp;    @PostMapping(&quot;ping&quot;)
+&nbsp;    public String pingPost(@RequestBody AuthRequest authRequestPayload) {
+<b class="fc">&nbsp;        userService.getUserFromAuthPayload(authRequestPayload);</b>
+<b class="fc">&nbsp;        return &quot;pong&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;(Jacob) Given valid netId and password, returns new user token and miscellaneous new user information.&quot;)
+&nbsp;    @PostMapping(&quot;register&quot;)
+&nbsp;    public RegisterResponse register(@Valid @RequestBody RegisterRequest registerRequest, BindingResult br) {
+<b class="fc">&nbsp;        if (br.hasErrors()) throw new InvalidPayloadException();</b>
+<b class="fc">&nbsp;        userService.registerUser(registerRequest);</b>
+&nbsp;
+<b class="fc">&nbsp;        return new RegisterResponse(</b>
+<b class="fc">&nbsp;                userService.registrationGenerateJwtToken(registerRequest),</b>
+<b class="fc">&nbsp;                userService.getUserResponsePayload(registerRequest.getNetId())</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;(Jacob) Given valid token and user password, delete account&quot;)
+&nbsp;    @PostMapping(&quot;delete&quot;)
+&nbsp;    public UserResponse delete(@RequestBody DeleteRequest deleteRequest) {
+<b class="nc">&nbsp;        User user = userService.deleteUser(deleteRequest);</b>
+&nbsp;
+<b class="nc">&nbsp;        return new UserResponse(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;(Jacob) Given valid token, current password, and new password, change User&#39;s password&quot;)
+&nbsp;    @PostMapping(&quot;changepw&quot;)
+&nbsp;    public ChangePasswordResponse changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequestPayload, BindingResult br) {
+<b class="fc">&nbsp;        if (br.hasErrors()) throw new InvalidPayloadException();</b>
+<b class="fc">&nbsp;        userService.changeUserPW(changePasswordRequestPayload);</b>
+&nbsp;
+<b class="fc">&nbsp;        return new ChangePasswordResponse(HttpStatus.ACCEPTED, changePasswordRequestPayload.getToken());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-07 17:51</div>
+</div>
+</body>
+</html>

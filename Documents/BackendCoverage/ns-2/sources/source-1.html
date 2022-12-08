@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AdminController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.backend.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: AdminController (com.example.backend.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdminController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    26.7%
+  </span>
+  <span class="absValue">
+    (4/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.backend.admin;
+&nbsp;
+&nbsp;import com.example.backend.admin.exceptions.UserNotPrivilegedException;
+&nbsp;import com.example.backend.admin.payload.SettingsResponse;
+&nbsp;import com.example.backend.admin.payload.ToggleSettingRequest;
+&nbsp;import com.example.backend.admin.payload.ToggleSettingResponse;
+&nbsp;import com.example.backend.user.User;
+&nbsp;import com.example.backend.user.UserService;
+&nbsp;import com.example.backend.user.payload.AuthRequest;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/admin&quot;)
+&nbsp;public class AdminController {
+&nbsp;    private final LocationSettingService lss;
+&nbsp;    private final CategorySettingService css;
+&nbsp;    private final UserService us;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public AdminController(LocationSettingService lss, CategorySettingService css, UserService us) {</b>
+<b class="fc">&nbsp;        this.lss = lss;</b>
+<b class="fc">&nbsp;        this.css = css;</b>
+<b class="fc">&nbsp;        this.us = us;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;(Jacob) Given valid admin token, return location settings and category settings.&quot;)
+&nbsp;    @PostMapping(&quot;/get-settings&quot;)
+&nbsp;    public SettingsResponse getSettings(@RequestBody AuthRequest payload) {
+<b class="nc">&nbsp;        User user = us.getUserFromAuthPayload(payload);</b>
+&nbsp;
+<b class="nc">&nbsp;        if (!user.hasRole(&quot;admin&quot;)) throw new UserNotPrivilegedException();</b>
+&nbsp;
+<b class="nc">&nbsp;        return new SettingsResponse(lss.getResponses(), css.getResponses());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;(Jacob) Given location name and valid admin token, set location on or off.&quot;)
+&nbsp;    @PostMapping(&quot;toggle-location&quot;)
+&nbsp;    public ToggleSettingResponse toggleLocation(@RequestBody ToggleSettingRequest payload) {
+<b class="nc">&nbsp;        User user = us.getUserFromAuthPayload(payload);</b>
+<b class="nc">&nbsp;        if (!user.hasRole(&quot;admin&quot;)) throw new UserNotPrivilegedException();</b>
+&nbsp;
+<b class="nc">&nbsp;        lss.setEnabled(payload.getName(), payload.isEnabled());</b>
+&nbsp;
+<b class="nc">&nbsp;        return new ToggleSettingResponse(payload.getName(), payload.isEnabled());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;(Jacob) Given category name and valid admin token, set category on or off.&quot;)
+&nbsp;    @PostMapping(&quot;toggle-category&quot;)
+&nbsp;    public ToggleSettingResponse toggleCategory(@RequestBody ToggleSettingRequest payload) {
+<b class="nc">&nbsp;        User user = us.getUserFromAuthPayload(payload);</b>
+<b class="nc">&nbsp;        if (!user.hasRole(&quot;admin&quot;)) throw new UserNotPrivilegedException();</b>
+&nbsp;
+<b class="nc">&nbsp;        css.setEnabled(payload.getName(), payload.isEnabled());</b>
+&nbsp;
+<b class="nc">&nbsp;        return new ToggleSettingResponse(payload.getName(), payload.isEnabled());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-07 17:51</div>
+</div>
+</body>
+</html>

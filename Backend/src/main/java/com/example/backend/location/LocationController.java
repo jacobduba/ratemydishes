@@ -83,9 +83,9 @@ public class LocationController {
     @Operation(summary = "(Karthik) This endpoint is an Scheduled Task that runs every 10 minutes on the Production Server. A GET request is sent to ISU Dining to return with a JSON payload that includes currently open locations.")
     @GetMapping("/populate-db")
     @Scheduled(initialDelay = 100, fixedRate = 600000)
-    public void populateDB() throws Exception {
-        getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
+    public void populateDB() {
+        try {
+            getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
+        } catch (Exception e) {}
     }
 }
-
-

@@ -4,7 +4,8 @@ void main() {
   runApp(const MyApp());
 }
 
-Color cardinal = const Color(0xC8102E00);
+// https://www.brandmarketing.iastate.edu/brand-elements/color-palette/
+Color cardinal = const Color(0xC8102E);
 
 class MyApp extends StatelessWidget {
 
@@ -14,7 +15,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: cardinal,

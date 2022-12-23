@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Backend",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.backend.BackendApplication",
+            "projectName": "Backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

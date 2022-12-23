@@ -1,8 +1,6 @@
 package com.example.backend.menu;
 
 import com.example.backend.admin.CategorySettingService;
-import com.example.backend.review.MenuItem;
-import com.example.backend.review.MenuItemRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,17 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 
+// TODO: huge rewrite of this
 @Service
 @Component
 public class PopCategory {
     @Autowired
     MenuRepository mr;
-
-    @Autowired
-    MenuItemRepository mir;
-
-    @Autowired
-    MenuItem mi;
 
     @Autowired
     CategorySettingService css;
@@ -82,18 +75,6 @@ public class PopCategory {
                             JsonNode miCals = miNode.get("totalCal");
                             JsonNode miVeg = miNode.get("isVegetarian");
 
-                            // Grab title
-                            String title = miName.textValue();
-                            MenuItem menuItem;
-                            if (!mir.existsByTitleAndSlug(title, menuSlug)) {
-                                // If Menu Item does not exist create a new one/
-                                menuItem = new MenuItem(title, menuSlug);
-                                mir.save(menuItem);
-                            } else {
-                                //If MenuItem exists, find the menuitem in the Repo
-                                menuItem = mir.findByTitleAndSlug(title, menuSlug);
-                            }
-
                             //create json Objects to map json nodes to
                             ObjectNode name = mapper.createObjectNode();
                             ObjectNode halal = mapper.createObjectNode();
@@ -110,9 +91,6 @@ public class PopCategory {
                             vegan.set("isVegan", miVegan);
                             cals.set("total-calories", miCals);
                             veg.set("isVegetarian", miVeg);
-                            id.put("id", menuItem.getId());
-                            cRating.put("average-rating", menuItem.getCachedRating());
-                            numRating.put("number-of-ratings", menuItem.getNumRatings());
 
                             //add object to parent array
                             miArray.add(name);

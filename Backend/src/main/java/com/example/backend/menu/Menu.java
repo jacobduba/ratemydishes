@@ -1,7 +1,6 @@
 package com.example.backend.menu;
 
 import com.example.backend.location.Location;
-import com.example.backend.review.MenuItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
@@ -35,9 +34,6 @@ public class Menu {
     @OneToOne
     @JoinColumn(name = "location_id")
     private Location location;
-
-    @OneToMany
-    private Set<MenuItem> menuItems;
 
     public Menu(String slug, String title, String menus, String clearMenus) {
         this.title = title;

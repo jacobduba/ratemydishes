@@ -18,7 +18,7 @@ public class GetSingleLocation {
     @Autowired
     public LocationRepository lr;
 
-    public ArrayNode getHTML(String slug, Long timestamp, String urlToRead) throws Exception {
+    public ArrayNode getHTML(String urlToRead, String slug, Long timestamp) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         StringBuilder result = new StringBuilder();
         //Updating base url to accommodate time and slug params

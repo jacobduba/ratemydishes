@@ -23,9 +23,9 @@ public class GetLocations {
     @Autowired
     public LocationSettingService lss;
 
-    public void getHTML(String urlToRead) throws Exception {
+    public void getHTML(String urlToRead, long unixTime) throws Exception {
         StringBuilder result = new StringBuilder();
-        URL url = new URL(urlToRead);
+        URL url = new URL(urlToRead + "?time=" + unixTime);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         try (BufferedReader reader = new BufferedReader(

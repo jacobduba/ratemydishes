@@ -5,7 +5,11 @@ import com.example.backend.menu.MenuRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.swagger.v3.oas.annotations.Operation;
+
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,29 +22,25 @@ import org.springframework.web.bind.annotation.*;
 public class LocationController {
 
     @Autowired
-    LocationRepository lr;
-    @Autowired
-    MenuRepository mr;
-    @Autowired
-    GetLocations getLocations;
-    @Autowired
-    GetDiningCenters getDiningCenters;
-    @Autowired
-    GetCafes getCafes;
-    @Autowired
-    GetFastCasuals getFastCasual;
-    @Autowired
-    GetConvStores getConvStores;
-    @Autowired
-    GetGetGos getGetGo;
-    @Autowired
-    GetSingleLocation getSingleLocation;
+    private GetLocations getLocations;
 
     @Autowired
-    Location l;
+    private GetDiningCenters getDiningCenters;
+    
+    @Autowired
+    private GetCafes getCafes;
 
     @Autowired
-    GetMenu getMenu;
+    private GetFastCasuals getFastCasual;
+
+    @Autowired
+    private GetConvStores getConvStores;
+
+    @Autowired
+    private GetGetGos getGetGo;
+
+    @Value("${TIME_FETCH:}") // If TIME_FETCH does not exist, set it to empty string
+    private String time;
 
     //Finished
     @Operation(summary = "(Karthik) Received from Android Client. Will return JsonArray payload of currently open Dining Centers")
@@ -83,9 +83,13 @@ public class LocationController {
     @Operation(summary = "(Karthik) This endpoint is an Scheduled Task that runs every 10 minutes on the Production Server. A GET request is sent to ISU Dining to return with a JSON payload that includes currently open locations.")
     @GetMapping("/populate-db")
     @Scheduled(initialDelay = 100, fixedRate = 600000)
-    public void populateDB() {
-        try {
-            getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations/");
-        } catch (Exception e) {}
+    public void populateDB() throws Exception {
+        long unixTime;
+        if (time.equals("")) {
+            unixTime = Instant.now().getEpochSecond();
+        } else {
+            unixTime = Long.parseLong(time);
+        }
+        getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations", unixTime);
     }
 }

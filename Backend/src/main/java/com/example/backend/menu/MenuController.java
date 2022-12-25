@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,17 +20,22 @@ import java.util.List;
 @RequestMapping("/menu")
 public class MenuController {
     @Autowired
-    LocationRepository lr;
+    private LocationRepository lr;
+
     @Autowired
-    MenuRepository mr;
+    private MenuRepository mr;
+
     @Autowired
-    GetSingleLocation getSingleLocation;
+    private GetSingleLocation getSingleLocation;
+
     @Autowired
-    Location l;
+    private GetMenu getMenu;
+
     @Autowired
-    GetMenu getMenu;
-    @Autowired
-    PopCategory popCat;
+    private PopCategory popCat;
+
+    @Value("${TIME_FETCH:}") // If TIME_FETCH does not exist, set it to empty string
+    private String time;
 
     //In-Progress
     //run every 10 minutes
@@ -47,9 +53,13 @@ public class MenuController {
         for (Location loc : listLoc) {
             String slugVal = loc.getSlug();
 
-            //get current unix time stamp
-            long unixTime = Instant.now().getEpochSecond();
-            an = getSingleLocation.getHTML(slugVal, unixTime, "https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location/");
+            long unixTime;
+            if (time.equals(""))
+                unixTime = Instant.now().getEpochSecond();
+            else
+                unixTime = Long.parseLong(time);
+
+            an = getSingleLocation.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-single-location", slugVal, unixTime);
             getSingleLocation.populateTable(an);
         }
     }

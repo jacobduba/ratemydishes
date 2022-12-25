@@ -5,6 +5,9 @@ import com.example.backend.menu.MenuRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.swagger.v3.oas.annotations.Operation;
+
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -81,6 +84,12 @@ public class LocationController {
     @GetMapping("/populate-db")
     @Scheduled(initialDelay = 100, fixedRate = 600000)
     public void populateDB() throws Exception {
-        getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations?time=" + time);
+        long unixTime;
+        if (time.equals("")) {
+            unixTime = Instant.now().getEpochSecond();
+        } else {
+            unixTime = Long.parseLong(time);
+        }
+        getLocations.getHTML("https://dining.iastate.edu/wp-json/dining/menu-hours/get-locations", unixTime);
     }
 }

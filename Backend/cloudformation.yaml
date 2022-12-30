@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
+
 Parameters:
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
@@ -8,16 +9,22 @@ Parameters:
     Type: String
   InstanceType:
     Type: String
+
 Resources:
+  # First deploy the ECR repository, manually upload the image to ECR,
   ECRRepository:
     Type: AWS::ECR::Repository
+
+  # ... then deploy everything else. 
   ECSCluster:
     Type: AWS::ECS::Cluster
+
   EcsSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: ECS Security Group
       VpcId: !Ref VpcId
+
   EcsSecurityGroupHttpInbound:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -26,6 +33,7 @@ Resources:
       FromPort: 80
       ToPort: 80
       CidrIp: 0.0.0.0/0
+
   EcsSecurityGroupSshInbound:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -34,6 +42,7 @@ Resources:
       FromPort: 22
       ToPort: 22
       CidrIp: 0.0.0.0/0
+
   CloudwatchLogsGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -42,6 +51,7 @@ Resources:
         - - EcsLogGroup
           - !Ref AWS::StackName
       RetentionInDays: 14
+
   EC2Role:
     Type: AWS::IAM::Role
     Properties:
@@ -70,13 +80,19 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
+                  # TODO FIX PULL ERROR
+                  - ecr:BatchCheckLayerAvailability,
+                  - ecr:BatchGetImage
+                  - ecr:GetDownloadUrlForLayer
                 Resource: '*'
+
   EC2InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
         - !Ref EC2Role
+
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
@@ -104,4 +120,29 @@ Resources:
               - '         --region '
               - !Ref 'AWS::Region'
               - |+
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Name: rmd-backend
+          Image: !Ref ECRRepository
+          Cpu: 1536
+          Memory: 512
+          Essential: true
+          PortMappings:
+            - ContainerPort: 80
+              HostPort: 80
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref CloudwatchLogsGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
   
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSCluster
+      DesiredCount: 1
+      TaskDefinition: !Ref TaskDefinition

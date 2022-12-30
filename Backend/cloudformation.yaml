@@ -80,11 +80,9 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                  # TODO FIX PULL ERROR
-                  - ecr:BatchCheckLayerAvailability,
-                  - ecr:BatchGetImage
-                  - ecr:GetDownloadUrlForLayer
                 Resource: '*'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
 
   EC2InstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -126,8 +124,8 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Name: rmd-backend
-          Image: !Ref ECRRepository
-          Cpu: 1536
+          Image: !Join [ ":", [ !GetAtt ECRRepository.RepositoryUri, "latest" ] ]
+          Cpu: 1024
           Memory: 512
           Essential: true
           PortMappings:
@@ -140,9 +138,9 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: ecs
   
-  Service:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster: !Ref ECSCluster
-      DesiredCount: 1
-      TaskDefinition: !Ref TaskDefinition
+  # Service:
+  #   Type: AWS::ECS::Service
+  #   Properties:
+  #     Cluster: !Ref ECSCluster
+  #     DesiredCount: 1
+  #     TaskDefinition: !Ref TaskDefinition

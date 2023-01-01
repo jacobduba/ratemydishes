@@ -5,10 +5,6 @@ Parameters:
     Type: AWS::EC2::KeyPair::KeyName
   VpcId:
     Type: AWS::EC2::VPC::Id
-  ImageId:
-    Type: String
-  InstanceType:
-    Type: String
 
 Resources:
   # First deploy the ECR repository, manually upload the image to ECR,
@@ -32,6 +28,15 @@ Resources:
       IpProtocol: tcp
       FromPort: 80
       ToPort: 80
+      CidrIp: 0.0.0.0/0
+
+  EcsSecurityGroupHttpsInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref EcsSecurityGroup
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
       CidrIp: 0.0.0.0/0
 
   EcsSecurityGroupSshInbound:
@@ -94,10 +99,10 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: !Ref ImageId
+      ImageId: ami-0360083982fcb66ad
       SecurityGroupIds:
         - !GetAtt EcsSecurityGroup.GroupId
-      InstanceType: !Ref InstanceType
+      InstanceType: t3.micro
       IamInstanceProfile: !Ref EC2InstanceProfile
       KeyName: !Ref KeyName
       UserData: !Base64 
@@ -144,3 +149,34 @@ Resources:
   #     Cluster: !Ref ECSCluster
   #     DesiredCount: 1
   #     TaskDefinition: !Ref TaskDefinition
+
+  MySQLSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: MySQL Security Group
+      VpcId: !Ref VpcId
+
+  MySQLSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "rmd_mysql_admin"}'
+        GenerateStringKey: password
+        PasswordLength: 16
+        ExcludeCharacters: '"@/\'
+
+  RDSDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: 20
+      DBInstanceClass: db.t4g.micro # Cheaper than t3.micro, but also on free tier
+      Engine: MySQL
+      EngineVersion: 8.0
+      MultiAZ: False
+      PubliclyAccessible: True # Accessible from IASTATE wifi
+      MasterUsername: !Join [ '', [ '{{resolve:secretsmanager:', !Ref MySQLSecret, ':SecretString:username}}' ] ]
+      MasterUserPassword: !Join [ '', [ '{{resolve:secretsmanager:', !Ref MySQLSecret, ':SecretString:password}}' ] ]
+      VpcSecurityGroups:
+        - !Ref MySQLSecurityGroup
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot

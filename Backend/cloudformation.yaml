@@ -3,15 +3,58 @@ AWSTemplateFormatVersion: 2010-09-09
 Parameters:
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
-  VpcId:
-    Type: AWS::EC2::VPC::Id
 
 Resources:
-  # First deploy the ECR repository, manually upload the image to ECR,
   ECRRepository:
     Type: AWS::ECR::Repository
 
-  # ... then deploy everything else. 
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  GatewayToInternet:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+  
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn:
+      - InternetGateway
+      - GatewayToInternet
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: true
+
+  PublicSubnet2: # We need another subnet in another AZ for the RDS instance
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 1, !GetAZs ]
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: true
+
   ECSCluster:
     Type: AWS::ECS::Cluster
 
@@ -19,7 +62,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: ECS Security Group
-      VpcId: !Ref VpcId
+      VpcId: !Ref VPC
 
   EcsSecurityGroupHttpInbound:
     Type: AWS::EC2::SecurityGroupIngress
@@ -105,6 +148,7 @@ Resources:
       InstanceType: t3.micro
       IamInstanceProfile: !Ref EC2InstanceProfile
       KeyName: !Ref KeyName
+      SubnetId: !Ref PublicSubnet1
       UserData: !Base64 
           'Fn::Join':
             - ''
@@ -143,6 +187,7 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: ecs
   
+  # TODO This service can only be uncommented once the ECRRepository has an image
   # Service:
   #   Type: AWS::ECS::Service
   #   Properties:
@@ -150,13 +195,40 @@ Resources:
   #     DesiredCount: 1
   #     TaskDefinition: !Ref TaskDefinition
 
-  MySQLSecurityGroup:
+  RdsSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: MySQL Security Group
-      VpcId: !Ref VpcId
+      VpcId: !Ref VPC
+  
+  EcsToRdsSecurityGroupInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref RdsSecurityGroup
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      SourceSecurityGroupId: !Ref EcsSecurityGroup
 
-  MySQLSecret:
+  EcsToRdsSecurityGroupInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Description: Connect to RDS database from whitelisted network
+    Properties:
+      GroupId: !Ref RdsSecurityGroup
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      CidrIp: 24.15.5.235/32 # TODO change to paramater
+
+  RdsSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup 
+    Properties:
+      DBSubnetGroupDescription: MySQL Subnet Groups
+      SubnetIds:
+        - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
+  
+  RdsAdminCreds:
     Type: AWS::SecretsManager::Secret
     Properties:
       GenerateSecretString:
@@ -170,13 +242,13 @@ Resources:
     Properties:
       AllocatedStorage: 20
       DBInstanceClass: db.t4g.micro # Cheaper than t3.micro, but also on free tier
+      DBSubnetGroupName: !Ref RdsSubnetGroup
       Engine: MySQL
       EngineVersion: 8.0
       MultiAZ: False
-      PubliclyAccessible: True # Accessible from IASTATE wifi
-      MasterUsername: !Join [ '', [ '{{resolve:secretsmanager:', !Ref MySQLSecret, ':SecretString:username}}' ] ]
-      MasterUserPassword: !Join [ '', [ '{{resolve:secretsmanager:', !Ref MySQLSecret, ':SecretString:password}}' ] ]
-      VpcSecurityGroups:
-        - !Ref MySQLSecurityGroup
+      MasterUsername: !Join [ '', [ '{{resolve:secretsmanager:', !Ref RdsAdminCreds, ':SecretString:username}}' ] ]
+      MasterUserPassword: !Join [ '', [ '{{resolve:secretsmanager:', !Ref RdsAdminCreds, ':SecretString:password}}' ] ]
+      VPCSecurityGroups:
+        - !Ref RdsSecurityGroup
     DeletionPolicy: Snapshot
     UpdateReplacePolicy: Snapshot

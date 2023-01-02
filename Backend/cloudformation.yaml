@@ -3,6 +3,9 @@ AWSTemplateFormatVersion: 2010-09-09
 Parameters:
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
+  CidrAccess:
+    Description: CidrIp range (put /32 for single ip) for SSH and MySQL access.
+    Type: String
 
 Resources:
   ECRRepository:
@@ -53,8 +56,13 @@ Resources:
       SubnetId: !Ref PublicSubnet1
       RouteTableId: !Ref PublicRouteTable
 
+  PublicSubset2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
   # We need another subnet in another AZ for the RDS instance
-  # For future reference, I didn't bother to set up the route tables for this subnet
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -97,7 +105,7 @@ Resources:
       IpProtocol: tcp
       FromPort: 22
       ToPort: 22
-      CidrIp: 0.0.0.0/0
+      CidrIp: !Ref CidrAccess
 
   CloudwatchLogsGroup:
     Type: AWS::Logs::LogGroup
@@ -218,7 +226,7 @@ Resources:
       ToPort: 3306
       SourceSecurityGroupId: !Ref EcsSecurityGroup
 
-  EcsToRdsSecurityGroupInbound:
+  HomeToRdsSecurityGroupInbound:
     Type: AWS::EC2::SecurityGroupIngress
     Description: Connect to RDS database from whitelisted network
     Properties:
@@ -226,7 +234,7 @@ Resources:
       IpProtocol: tcp
       FromPort: 3306
       ToPort: 3306
-      CidrIp: 24.15.5.235/32 # TODO change to paramater
+      CidrIp: !Ref CidrAccess
 
   RdsSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup 
@@ -254,6 +262,7 @@ Resources:
       Engine: MySQL
       EngineVersion: 8.0
       MultiAZ: False
+      PubliclyAccessible: true # Accessible from whitelisted networks
       MasterUsername: !Join [ '', [ '{{resolve:secretsmanager:', !Ref RdsAdminCreds, ':SecretString:username}}' ] ]
       MasterUserPassword: !Join [ '', [ '{{resolve:secretsmanager:', !Ref RdsAdminCreds, ':SecretString:password}}' ] ]
       VPCSecurityGroups:

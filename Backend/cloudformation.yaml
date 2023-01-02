@@ -47,7 +47,15 @@ Resources:
       CidrBlock: 10.0.1.0/24
       MapPublicIpOnLaunch: true
 
-  PublicSubnet2: # We need another subnet in another AZ for the RDS instance
+  PublicSubset1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  # We need another subnet in another AZ for the RDS instance
+  # For future reference, I didn't bother to set up the route tables for this subnet
+  PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: !Select [ 1, !GetAZs ]

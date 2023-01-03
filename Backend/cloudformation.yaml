@@ -175,13 +175,38 @@ Resources:
               - |2
                 >> /etc/ecs/ecs.config
               - |
-                yum install -y aws-cfn-bootstrap
+                yum update -y
+                yum install -y aws-cfn-bootstrap mysql awscli jq
               - '/opt/aws/bin/cfn-signal -e $? '
               - '         --stack '
               - !Ref 'AWS::StackName'
               - '         --resource ECSAutoScalingGroup '
               - '         --region '
               - !Ref 'AWS::Region'
+              - |+
+
+              - !Sub 
+                - |
+                  ADMIN_SECRET=$(aws secretsmanager get-secret-value \
+                                                    --region ${AWS::Region} \
+                                                    --secret-id ${RdsAdminCreds} \ 
+                                                    --query SecretString \
+                                                    --output text)
+
+                  APP_SECRET=$(aws secretsmanager get-secret-value \
+                                                    --region ${AWS::Region} \ 
+                                                    --secret-id ${RmdAppCreds} \ 
+                                                    --query SecretString \
+                                                    --output text)
+
+                  mysql --host ${RdsEndpoint} \
+                        --user $(echo $ADMIN_SECRET | jq -r .username) \
+                        --password $(echo $ADMIN_SECRET | jq -r .password) \ 
+                        --execute "CREATE DATABASE rmd_db;" \
+                                  "CREATE USER '"$(echo $APP_SECRET | jq -r .username)'@'%' IDENTIFIED BY '"$(echo $APP_SECRET | jq -r .password)"';" \
+                                  "GRANT ALL PRIVILEGES ON rmd_db.* TO '"$(echo $APP_SECRET | jq -r .username)"'@'%';" \
+                                  "FLUSH PRIVILEGES;"
+                - RdsEndpoint: !GetAtt RDSDatabase.Endpoint.Address
               - |+
 
   TaskDefinition:
@@ -249,6 +274,15 @@ Resources:
     Properties:
       GenerateSecretString:
         SecretStringTemplate: '{"username": "rmd_mysql_admin"}'
+        GenerateStringKey: password
+        PasswordLength: 16
+        ExcludeCharacters: '"@/\'
+
+  RmdAppCreds:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "rmd_mysql_app"}'
         GenerateStringKey: password
         PasswordLength: 16
         ExcludeCharacters: '"@/\'

@@ -144,6 +144,7 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
+                  - secretsmanager:GetSecretValue
                 Resource: '*'
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
@@ -165,49 +166,41 @@ Resources:
       IamInstanceProfile: !Ref EC2InstanceProfile
       KeyName: !Ref KeyName
       SubnetId: !Ref PublicSubnet1
-      UserData: !Base64 
-          'Fn::Join':
-            - ''
-            - - |
-                #!/bin/bash -xe
-              - echo ECS_CLUSTER=
-              - !Ref ECSCluster
-              - |2
-                >> /etc/ecs/ecs.config
-              - |
-                yum update -y
-                yum install -y aws-cfn-bootstrap mysql awscli jq
-              - '/opt/aws/bin/cfn-signal -e $? '
-              - '         --stack '
-              - !Ref 'AWS::StackName'
-              - '         --resource ECSAutoScalingGroup '
-              - '         --region '
-              - !Ref 'AWS::Region'
-              - |+
+      UserData: 
+        Fn::Base64: 
+          !Sub
+            - |+
+              #!/bin/bash -xe
 
-              - !Sub 
-                - |
-                  ADMIN_SECRET=$(aws secretsmanager get-secret-value \
-                                                    --region ${AWS::Region} \
-                                                    --secret-id ${RdsAdminCreds} \ 
-                                                    --query SecretString \
-                                                    --output text)
+              yum update -y
+              yum install -y aws-cfn-bootstrap mysql awscli jq
 
-                  APP_SECRET=$(aws secretsmanager get-secret-value \
-                                                    --region ${AWS::Region} \ 
-                                                    --secret-id ${RmdAppCreds} \ 
-                                                    --query SecretString \
-                                                    --output text)
+              ADMIN_SECRET=$(aws secretsmanager get-secret-value \
+                                                --region ${AWS::Region} \
+                                                --secret-id ${RdsAdminCreds} \
+                                                --query SecretString \
+                                                --output text)
 
-                  mysql --host ${RdsEndpoint} \
-                        --user $(echo $ADMIN_SECRET | jq -r .username) \
-                        --password $(echo $ADMIN_SECRET | jq -r .password) \ 
-                        --execute "CREATE DATABASE rmd_db;" \
-                                  "CREATE USER '"$(echo $APP_SECRET | jq -r .username)'@'%' IDENTIFIED BY '"$(echo $APP_SECRET | jq -r .password)"';" \
-                                  "GRANT ALL PRIVILEGES ON rmd_db.* TO '"$(echo $APP_SECRET | jq -r .username)"'@'%';" \
-                                  "FLUSH PRIVILEGES;"
-                - RdsEndpoint: !GetAtt RDSDatabase.Endpoint.Address
-              - |+
+              APP_SECRET=$(aws secretsmanager get-secret-value \
+                                                --region ${AWS::Region} \
+                                                --secret-id ${RmdAppCreds} \
+                                                --query SecretString \
+                                                --output text)
+
+              mysql --host=${RdsEndpoint} \
+                    --user=$(jq -r .username <<< $ADMIN_SECRET) \
+                    --password=$(jq -r .password <<< $ADMIN_SECRET) \
+                    --execute="
+                        CREATE DATABASE rmd_db;
+                        CREATE USER '$(jq -r .username <<< $APP_SECRET)'@'%' IDENTIFIED BY '$(jq -r .password <<< $APP_SECRET)';
+                        GRANT ALL PRIVILEGES ON rmd_db.* TO '$(echo $APP_SECRET | jq -r .username)'@'%';
+                        FLUSH PRIVILEGES;
+                      "
+              
+              echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config
+
+              /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
+            - RdsEndpoint: !GetAtt RDSDatabase.Endpoint.Address
 
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition

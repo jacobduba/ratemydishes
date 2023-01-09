@@ -125,6 +125,7 @@ Resources:
             Principal:
               Service:
                 - ec2.amazonaws.com
+                - ecs-tasks.amazonaws.com
             Action:
               - sts:AssumeRole
       Path: /
@@ -175,6 +176,8 @@ Resources:
               yum update -y
               yum install -y aws-cfn-bootstrap mysql awscli jq
 
+              echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config
+
               ADMIN_SECRET=$(aws secretsmanager get-secret-value \
                                                 --region ${AWS::Region} \
                                                 --secret-id ${RdsAdminCreds} \
@@ -196,8 +199,6 @@ Resources:
                         GRANT ALL PRIVILEGES ON rmd_db.* TO '$(echo $APP_SECRET | jq -r .username)'@'%';
                         FLUSH PRIVILEGES;
                       "
-              
-              echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config
 
               /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
             - RdsEndpoint: !GetAtt RDSDatabase.Endpoint.Address
@@ -208,18 +209,31 @@ Resources:
       ContainerDefinitions:
         - Name: rmd-backend
           Image: !Join [ ":", [ !GetAtt ECRRepository.RepositoryUri, "latest" ] ]
-          Cpu: 1024
-          Memory: 512
           Essential: true
           PortMappings:
             - ContainerPort: 80
               HostPort: 80
+          Environment:
+            - Name: spring.datasource.url
+              Value: !Join [ '', [ 'jdbc:mysql://', !GetAtt RDSDatabase.Endpoint.Address, ':3306/rmd_db' ] ]
+            - Name: spring.datasource.username
+              Value: !Join [ '', [ '{{resolve:secretsmanager:', !Ref RmdAppCreds, ':SecretString:username}}' ] ]
+            - Name: spring.profiles.active
+              Value: local # For now, I want database to reset everytime I deploy.
+            # - Name: TIME_FETCH
+            #   Value: 1673457328
+          Secrets:
+            - Name: spring.datasource.password
+              ValueFrom: !Join [ '', [ !Ref RmdAppCreds, ':password::' ] ]
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-group: !Ref CloudwatchLogsGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: ecs
+      Cpu: 1024
+      Memory: 512
+      ExecutionRoleArn: !Ref EC2Role
   
   # TODO This service can only be uncommented once the ECRRepository has an image
   # Service:

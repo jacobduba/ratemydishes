@@ -6,10 +6,14 @@ Parameters:
   CidrAccess:
     Description: CidrIp range (put /32 for single ip) for SSH and MySQL access.
     Type: String
+  DomainName:
+    Type: String
+  SubdomainName:
+    Type: String
 
 Resources:
   ECRRepository:
-    Type: AWS::ECR::Repository
+    Type: AWS::ECR::Repository # TODO lifecycle policy only keep two images
 
   VPC:
     Type: AWS::EC2::VPC
@@ -211,7 +215,7 @@ Resources:
           Image: !Join [ ":", [ !GetAtt ECRRepository.RepositoryUri, "latest" ] ]
           Essential: true
           PortMappings:
-            - ContainerPort: 80
+            - ContainerPort: 8080
               HostPort: 80
           Environment:
             - Name: spring.datasource.url
@@ -282,8 +286,7 @@ Resources:
       GenerateSecretString:
         SecretStringTemplate: '{"username": "rmd_mysql_admin"}'
         GenerateStringKey: password
-        PasswordLength: 16
-        ExcludeCharacters: '"@/\'
+        ExcludePunctuation: true
 
   RmdAppCreds:
     Type: AWS::SecretsManager::Secret
@@ -291,8 +294,7 @@ Resources:
       GenerateSecretString:
         SecretStringTemplate: '{"username": "rmd_mysql_app"}'
         GenerateStringKey: password
-        PasswordLength: 16
-        ExcludeCharacters: '"@/\'
+        ExcludePunctuation: true
 
   RDSDatabase:
     Type: AWS::RDS::DBInstance
@@ -310,3 +312,14 @@ Resources:
         - !Ref RdsSecurityGroup
     DeletionPolicy: Snapshot
     UpdateReplacePolicy: Snapshot
+
+  DomainRecordA:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Sub "${DomainName}."
+      Name: !Sub "${SubdomainName}.${DomainName}"
+      Type: A
+      TTL: 900
+      ResourceRecords:
+        - !GetAtt EC2Instance.PublicIp
+        

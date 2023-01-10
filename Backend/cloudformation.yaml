@@ -322,4 +322,34 @@ Resources:
       TTL: 900
       ResourceRecords:
         - !GetAtt EC2Instance.PublicIp
-        
+
+  # ApiGateway for free SSL
+  ApiGateway:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      # DisableExecuteApiEndpoint: true
+      Name: !Sub "${AWS::StackName}-ApiGateway"
+      ProtocolType: HTTP
+    
+  ApiGatewayIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ApiGateway
+      IntegrationType: HTTP_PROXY
+      IntegrationMethod: ANY
+      IntegrationUri: !Join [ '', [ 'http://', !GetAtt EC2Instance.PublicIp, '/', ] ]
+      PayloadFormatVersion: 1.0
+
+  ApiGatewayRoute: 
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGateway
+      RouteKey: ANY /{proxy+}
+      Target: !Join [ '', [ 'integrations/', !Ref ApiGatewayIntegration ] ]
+  
+  ApiGatewayStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref ApiGateway
+      AutoDeploy: true
+      StageName: $default

@@ -8,7 +8,7 @@ Parameters:
     Type: String
   DomainName:
     Type: String
-  SubdomainName:
+  HostedZoneId:
     Type: String
 
 Resources:
@@ -313,16 +313,6 @@ Resources:
     DeletionPolicy: Snapshot
     UpdateReplacePolicy: Snapshot
 
-  DomainRecordA:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneName: !Sub "${DomainName}."
-      Name: !Sub "${SubdomainName}.${DomainName}"
-      Type: A
-      TTL: 900
-      ResourceRecords:
-        - !GetAtt EC2Instance.PublicIp
-
   # ApiGateway for free SSL
   ApiGateway:
     Type: AWS::ApiGatewayV2::Api
@@ -352,4 +342,29 @@ Resources:
     Properties:
       ApiId: !Ref ApiGateway
       AutoDeploy: true
-      StageName: $default
+      StageName: $default 
+  
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+      ValidationMethod: DNS
+
+  ApiGatewayDomainName:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: !Ref DomainName
+      DomainNameConfigurations:
+        - CertificateArn: !Ref Certificate
+          EndpointType: REGIONAL
+  
+  ApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    DependsOn: ApiGatewayStage
+    Properties:
+      ApiId: !Ref ApiGateway
+      DomainName: !Ref DomainName
+      Stage: $default 

@@ -313,6 +313,16 @@ Resources:
     DeletionPolicy: Snapshot
     UpdateReplacePolicy: Snapshot
 
+  DomainRecordA:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        HostedZoneId: !GetAtt ApiGatewayDomainName.RegionalHostedZoneId
+        DNSName: !GetAtt ApiGatewayDomainName.RegionalDomainName
+
   # ApiGateway for free SSL
   ApiGateway:
     Type: AWS::ApiGatewayV2::Api
@@ -327,7 +337,7 @@ Resources:
       ApiId: !Ref ApiGateway
       IntegrationType: HTTP_PROXY
       IntegrationMethod: ANY
-      IntegrationUri: !Join [ '', [ 'http://', !GetAtt EC2Instance.PublicIp, '/', ] ]
+      IntegrationUri: !Join [ '', [ 'http://', !GetAtt EC2Instance.PublicIp, '/{proxy}', ] ]
       PayloadFormatVersion: 1.0
 
   ApiGatewayRoute: 

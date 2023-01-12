@@ -1,0 +1,20 @@
+name: main
+run-name: Build, test and deploy
+on:
+  push:
+    paths:
+      - Backend/**
+    branches:
+      - main
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  deploy-stack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::520392043186:role/GHActionDeployer
+          aws-region: us-east-2

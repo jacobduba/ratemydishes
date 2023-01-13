@@ -10,6 +10,8 @@ Parameters:
     Type: String
   HostedZoneId:
     Type: String
+  ImageTag:
+    Type: String
 
 Resources:
   ECRRepository:
@@ -212,7 +214,7 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Name: rmd-backend
-          Image: !Join [ ":", [ !GetAtt ECRRepository.RepositoryUri, "latest" ] ]
+          Image: !Join [ ":", [ !GetAtt ECRRepository.RepositoryUri, !Ref ImageTag ] ]
           Essential: true
           PortMappings:
             - ContainerPort: 8080

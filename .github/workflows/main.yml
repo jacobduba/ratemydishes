@@ -41,9 +41,9 @@ jobs:
         run: |
           aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 520392043186.dkr.ecr.us-east-2.amazonaws.com
           docker build -t rmd-ecrrepository-2z1mbobxjhk2 .
-          docker tag rmd-ecrrepository-2z1mbobxjhk2:latest 520392043186.dkr.ecr.us-east-2.amazonaws.com/rmd-ecrrepository-2z1mbobxjhk2:${{ github.run_attempt }}
-          docker push 520392043186.dkr.ecr.us-east-2.amazonaws.com/rmd-ecrrepository-2z1mbobxjhk2:${{ github.run_attempt }}
+          docker tag rmd-ecrrepository-2z1mbobxjhk2:latest 520392043186.dkr.ecr.us-east-2.amazonaws.com/rmd-ecrrepository-2z1mbobxjhk2:${{ github.run_number }}
+          docker push 520392043186.dkr.ecr.us-east-2.amazonaws.com/rmd-ecrrepository-2z1mbobxjhk2:${{ github.run_number }}
       
       - name: Deploy to AWS
         run: |
-          aws cloudformation deploy --template-file cloudformation.yaml --stack-name rmd --capabilities CAPABILITY_NAMED_IAM --parameter-overrides "KeyName=jacob@xps" "CidrAccess=0.0.0.0/0" "DomainName=rmd.duba.sh" "HostedZoneId=Z03106041US4JX4MGA9TK" ImageTag=${{ github.run_attempt }} 
+          aws cloudformation deploy --template-file cloudformation.yaml --stack-name rmd --capabilities CAPABILITY_NAMED_IAM --parameter-overrides "KeyName=jacob@xps" "CidrAccess=0.0.0.0/0" "DomainName=rmd.duba.sh" "HostedZoneId=Z03106041US4JX4MGA9TK" ImageTag=${{ github.run_number }} 

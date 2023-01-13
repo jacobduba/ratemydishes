@@ -1,0 +1,380 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+  CidrAccess:
+    Description: CidrIp range (put /32 for single ip) for SSH and MySQL access.
+    Type: String
+  DomainName:
+    Type: String
+  HostedZoneId:
+    Type: String
+
+Resources:
+  ECRRepository:
+    Type: AWS::ECR::Repository # TODO lifecycle policy only keep two images
+
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  GatewayToInternet:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+  
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn:
+      - InternetGateway
+      - GatewayToInternet
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: true
+
+  PublicSubset1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubset2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
+  # We need another subnet in another AZ for the RDS instance
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 1, !GetAZs ]
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: true
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+
+  EcsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ECS Security Group
+      VpcId: !Ref VPC
+
+  EcsSecurityGroupHttpInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref EcsSecurityGroup
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      CidrIp: 0.0.0.0/0
+
+  EcsSecurityGroupHttpsInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref EcsSecurityGroup
+      IpProtocol: tcp
+      FromPort: 443
+      ToPort: 443
+      CidrIp: 0.0.0.0/0
+
+  EcsSecurityGroupSshInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref EcsSecurityGroup
+      IpProtocol: tcp
+      FromPort: 22
+      ToPort: 22
+      CidrIp: !Ref CidrAccess
+
+  CloudwatchLogsGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join
+        - '-'
+        - - EcsLogGroup
+          - !Ref AWS::StackName
+      RetentionInDays: 14
+
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: EC2RolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecs:CreateCluster
+                  - ecs:DeregisterContainerInstance
+                  - ecs:DiscoverPollEndpoint
+                  - ecs:Poll
+                  - ecs:RegisterContainerInstance
+                  - ecs:StartTelemetrySession
+                  - ecs:Submit*
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - secretsmanager:GetSecretValue
+                Resource: '*'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref EC2Role
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0360083982fcb66ad
+      SecurityGroupIds:
+        - !GetAtt EcsSecurityGroup.GroupId
+      InstanceType: t3.micro
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      KeyName: !Ref KeyName
+      SubnetId: !Ref PublicSubnet1
+      UserData: 
+        Fn::Base64: 
+          !Sub
+            - |+
+              #!/bin/bash -xe
+
+              yum update -y
+              yum install -y aws-cfn-bootstrap mysql awscli jq
+
+              echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config
+
+              ADMIN_SECRET=$(aws secretsmanager get-secret-value \
+                                                --region ${AWS::Region} \
+                                                --secret-id ${RdsAdminCreds} \
+                                                --query SecretString \
+                                                --output text)
+
+              APP_SECRET=$(aws secretsmanager get-secret-value \
+                                                --region ${AWS::Region} \
+                                                --secret-id ${RmdAppCreds} \
+                                                --query SecretString \
+                                                --output text)
+
+              mysql --host=${RdsEndpoint} \
+                    --user=$(jq -r .username <<< $ADMIN_SECRET) \
+                    --password=$(jq -r .password <<< $ADMIN_SECRET) \
+                    --execute="
+                        CREATE DATABASE rmd_db;
+                        CREATE USER '$(jq -r .username <<< $APP_SECRET)'@'%' IDENTIFIED BY '$(jq -r .password <<< $APP_SECRET)';
+                        GRANT ALL PRIVILEGES ON rmd_db.* TO '$(echo $APP_SECRET | jq -r .username)'@'%';
+                        FLUSH PRIVILEGES;
+                      "
+
+              /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
+            - RdsEndpoint: !GetAtt RDSDatabase.Endpoint.Address
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Name: rmd-backend
+          Image: !Join [ ":", [ !GetAtt ECRRepository.RepositoryUri, "latest" ] ]
+          Essential: true
+          PortMappings:
+            - ContainerPort: 8080
+              HostPort: 80
+          Environment:
+            - Name: spring.datasource.url
+              Value: !Join [ '', [ 'jdbc:mysql://', !GetAtt RDSDatabase.Endpoint.Address, ':3306/rmd_db' ] ]
+            - Name: spring.datasource.username
+              Value: !Join [ '', [ '{{resolve:secretsmanager:', !Ref RmdAppCreds, ':SecretString:username}}' ] ]
+            - Name: spring.profiles.active
+              Value: local # For now, I want database to reset everytime I deploy.
+            # - Name: TIME_FETCH
+            #   Value: 1673457328
+          Secrets:
+            - Name: spring.datasource.password
+              ValueFrom: !Join [ '', [ !Ref RmdAppCreds, ':password::' ] ]
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref CloudwatchLogsGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
+      Cpu: 1024
+      Memory: 512
+      ExecutionRoleArn: !Ref EC2Role
+  
+  # TODO This service can only be uncommented once the ECRRepository has an image
+  # Service:
+  #   Type: AWS::ECS::Service
+  #   Properties:
+  #     Cluster: !Ref ECSCluster
+  #     DesiredCount: 1
+  #     TaskDefinition: !Ref TaskDefinition
+
+  RdsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: MySQL Security Group
+      VpcId: !Ref VPC
+  
+  EcsToRdsSecurityGroupInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref RdsSecurityGroup
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      SourceSecurityGroupId: !Ref EcsSecurityGroup
+
+  HomeToRdsSecurityGroupInbound:
+    Type: AWS::EC2::SecurityGroupIngress
+    Description: Connect to RDS database from whitelisted network
+    Properties:
+      GroupId: !Ref RdsSecurityGroup
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      CidrIp: !Ref CidrAccess
+
+  RdsSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup 
+    Properties:
+      DBSubnetGroupDescription: MySQL Subnet Groups
+      SubnetIds:
+        - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
+  
+  RdsAdminCreds:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "rmd_mysql_admin"}'
+        GenerateStringKey: password
+        ExcludePunctuation: true
+
+  RmdAppCreds:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "rmd_mysql_app"}'
+        GenerateStringKey: password
+        ExcludePunctuation: true
+
+  RDSDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: 20
+      DBInstanceClass: db.t4g.micro # Cheaper than t3.micro, but also on free tier
+      DBSubnetGroupName: !Ref RdsSubnetGroup
+      Engine: MySQL
+      EngineVersion: 8.0
+      MultiAZ: False
+      PubliclyAccessible: true # Accessible from whitelisted networks
+      MasterUsername: !Join [ '', [ '{{resolve:secretsmanager:', !Ref RdsAdminCreds, ':SecretString:username}}' ] ]
+      MasterUserPassword: !Join [ '', [ '{{resolve:secretsmanager:', !Ref RdsAdminCreds, ':SecretString:password}}' ] ]
+      VPCSecurityGroups:
+        - !Ref RdsSecurityGroup
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+
+  DomainRecordA:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        HostedZoneId: !GetAtt ApiGatewayDomainName.RegionalHostedZoneId
+        DNSName: !GetAtt ApiGatewayDomainName.RegionalDomainName
+
+  # ApiGateway for free SSL
+  ApiGateway:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      # DisableExecuteApiEndpoint: true
+      Name: !Sub "${AWS::StackName}-ApiGateway"
+      ProtocolType: HTTP
+    
+  ApiGatewayIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ApiGateway
+      IntegrationType: HTTP_PROXY
+      IntegrationMethod: ANY
+      IntegrationUri: !Join [ '', [ 'http://', !GetAtt EC2Instance.PublicIp, '/{proxy}', ] ]
+      PayloadFormatVersion: 1.0
+
+  ApiGatewayRoute: 
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGateway
+      RouteKey: ANY /{proxy+}
+      Target: !Join [ '', [ 'integrations/', !Ref ApiGatewayIntegration ] ]
+  
+  ApiGatewayStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref ApiGateway
+      AutoDeploy: true
+      StageName: $default 
+  
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+      ValidationMethod: DNS
+
+  ApiGatewayDomainName:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: !Ref DomainName
+      DomainNameConfigurations:
+        - CertificateArn: !Ref Certificate
+          EndpointType: REGIONAL
+  
+  ApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    DependsOn: ApiGatewayStage
+    Properties:
+      ApiId: !Ref ApiGateway
+      DomainName: !Ref DomainName
+      Stage: $default 

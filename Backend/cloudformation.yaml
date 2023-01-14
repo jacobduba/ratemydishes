@@ -17,6 +17,28 @@ Resources:
   ECRRepository:
     Type: AWS::ECR::Repository # TODO lifecycle policy only keep two images
 
+  ECRLifecyclePolicy:
+    Type: AWS::ECR::LifecyclePolicy
+    Properties:
+      RepositoryName: !Ref ECRRepository
+      LifecyclePolicyText: |
+        {
+          "rules": [
+            {
+              "rulePriority": 1,
+              "description": "Keep only the most recent 5 images",
+              "selection": {
+                "tagStatus": "any",
+                "countType": "imageCountMoreThan",
+                "countNumber": 5
+              },
+              "action": {
+                "type": "expire"
+              }
+            }
+          ]
+        }
+  
   VPC:
     Type: AWS::EC2::VPC
     Properties:

@@ -256,6 +256,8 @@ Resources:
               awslogs-group: !Ref CloudwatchLogsGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: ecs
+      Cpu: 256 # With EC2 Instance type, this is minimum CPU allocated
+      Memory: 300 # The maximum amount of memory (in MiB) that the container can use
       ExecutionRoleArn: !Ref EC2Role
   
   Service:

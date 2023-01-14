@@ -256,8 +256,6 @@ Resources:
               awslogs-group: !Ref CloudwatchLogsGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: ecs
-      Cpu: 1024
-      Memory: 512
       ExecutionRoleArn: !Ref EC2Role
   
   Service:

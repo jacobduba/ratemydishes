@@ -10,7 +10,7 @@ Parameters:
     Type: String
   HostedZoneId:
     Type: String
-  ImageTag:
+  ImageTag: # When initially creating the stack, use any string. You will need to push the tag with that String manually to finish deployment. TODO: automate this using EC2 instance we spin up?
     Type: String
 
 Resources:
@@ -396,5 +396,5 @@ Resources:
     DependsOn: ApiGatewayStage
     Properties:
       ApiId: !Ref ApiGateway
-      DomainName: !Ref DomainName
+      DomainName: !Ref DomainRecordA
       Stage: $default 

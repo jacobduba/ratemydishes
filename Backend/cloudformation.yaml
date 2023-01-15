@@ -264,6 +264,9 @@ Resources:
     Type: AWS::ECS::Service
     Properties:
       Cluster: !Ref ECSCluster
+      DeploymentConfiguration: # Kill previous task before starting new one
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
       DesiredCount: 1
       TaskDefinition: !Ref TaskDefinition
 

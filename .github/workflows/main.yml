@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - Backend/**
+      - .github/workflows/**
     branches:
       - main
 
@@ -40,9 +41,9 @@ jobs:
       - name: Build and push Docker image
         run: |
           aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 520392043186.dkr.ecr.us-east-2.amazonaws.com
-          docker build -t rmd-ecrrepository-2z1mbobxjhk2 .
-          docker tag rmd-ecrrepository-2z1mbobxjhk2:latest 520392043186.dkr.ecr.us-east-2.amazonaws.com/rmd-ecrrepository-2z1mbobxjhk2:${{ github.run_number }}
-          docker push 520392043186.dkr.ecr.us-east-2.amazonaws.com/rmd-ecrrepository-2z1mbobxjhk2:${{ github.run_number }}
+          docker build -t rmd-ecrrepository-1z0wtutfnuo8 .
+          docker tag rmd-ecrrepository-1z0wtutfnuo8:latest 520392043186.dkr.ecr.us-east-2.amazonaws.com/rmd-ecrrepository-1z0wtutfnuo8:${{ github.run_number }}
+          docker push 520392043186.dkr.ecr.us-east-2.amazonaws.com/rmd-ecrrepository-1z0wtutfnuo8:${{ github.run_number }}
       
       - name: Deploy to AWS
         run: |

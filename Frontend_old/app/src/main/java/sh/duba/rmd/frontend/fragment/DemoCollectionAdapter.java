@@ -1,19 +1,13 @@
-package com.g1as6.ratemydishes.fragment;
+package sh.duba.rmd.frontend.fragment;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.g1as6.ratemydishes.R;
-
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class DemoCollectionAdapter extends FragmentStateAdapter {
     // Brug, this interface makes this so much harder

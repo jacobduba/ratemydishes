@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RestaurantList">
+    tools:context="sh.duba.rmd.frontend.RestaurantList">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#F4F4D4"
-        tools:context=".RestaurantList">
+        tools:context="sh.duba.rmd.frontend.RestaurantList">
 
         <TextView
             android:id="@+id/welcomeText4"

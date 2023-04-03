@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes.app;
+package sh.duba.rmd.frontend.app;
 
 public class AppVars {
     public static String userToken;

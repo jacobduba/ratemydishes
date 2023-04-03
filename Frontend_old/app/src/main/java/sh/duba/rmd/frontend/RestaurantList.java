@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes;
+package sh.duba.rmd.frontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,8 +15,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.g1as6.ratemydishes.app.AppController;
-import com.g1as6.ratemydishes.app.AppVars;
+import com.g1as6.ratemydishes.R;
+
+import sh.duba.rmd.frontend.app.AppController;
+import sh.duba.rmd.frontend.app.AppVars;
 
 import org.json.JSONArray;
 import org.json.JSONException;

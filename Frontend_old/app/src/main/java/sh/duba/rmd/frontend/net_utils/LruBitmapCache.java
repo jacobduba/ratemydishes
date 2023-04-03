@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes.net_utils;
+package sh.duba.rmd.frontend.net_utils;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import android.graphics.Bitmap;

@@ -1,27 +1,25 @@
-package com.g1as6.ratemydishes;
+package sh.duba.rmd.frontend;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.Switch;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.g1as6.ratemydishes.app.AppController;
-import com.g1as6.ratemydishes.app.AppVars;
+import com.g1as6.ratemydishes.R;
+
+import sh.duba.rmd.frontend.app.AppController;
+import sh.duba.rmd.frontend.app.AppVars;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.app.BundleCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;

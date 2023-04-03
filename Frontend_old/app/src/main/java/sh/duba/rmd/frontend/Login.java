@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes;
+package sh.duba.rmd.frontend;
 
 import static android.app.PendingIntent.getActivity;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,8 +20,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.g1as6.ratemydishes.app.AppController;
-import com.g1as6.ratemydishes.app.AppVars;
+import com.g1as6.ratemydishes.R;
+
+import sh.duba.rmd.frontend.app.AppController;
+import sh.duba.rmd.frontend.app.AppVars;
 
 import org.json.JSONException;
 import org.json.JSONObject;

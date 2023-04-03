@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes;
+package sh.duba.rmd.frontend;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.g1as6.ratemydishes.app.AppVars;
+import com.g1as6.ratemydishes.R;
+
+import sh.duba.rmd.frontend.app.AppVars;
 
 public class WelcomePage extends AppCompatActivity {
     ImageButton loginBtn;

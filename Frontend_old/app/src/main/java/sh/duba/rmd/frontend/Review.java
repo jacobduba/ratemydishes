@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes;
+package sh.duba.rmd.frontend;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,19 +12,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.g1as6.ratemydishes.app.AppController;
-import com.g1as6.ratemydishes.app.AppVars;
-import com.g1as6.ratemydishes.fragment.CustomAdapter;
-import com.g1as6.ratemydishes.fragment.DemoCollectionAdapter;
-import com.g1as6.ratemydishes.fragment.ReviewAdapter;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import sh.duba.rmd.frontend.app.AppVars;
+import sh.duba.rmd.frontend.fragment.ReviewAdapter;
+
+import com.g1as6.ratemydishes.R;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;

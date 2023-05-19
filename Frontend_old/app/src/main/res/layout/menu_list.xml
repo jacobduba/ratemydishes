@@ -17,7 +17,6 @@
             android:id="@+id/welcomeText4"
             android:layout_width="411dp"
             android:layout_height="88dp"
-            android:layout_marginBottom="643dp"
             android:background="#F44336"
             android:backgroundTint="#F44336"
             android:ems="10"
@@ -32,9 +31,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
             android:id="@+id/backToDining"

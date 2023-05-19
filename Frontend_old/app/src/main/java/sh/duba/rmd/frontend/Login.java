@@ -49,7 +49,7 @@ public class Login extends AppCompatActivity {
     EditText pswd;
     TextView lginStatus;
     String tag_json_obj = "json_obj_req";
-    String url = "https://rmd.duba.sh/user/login";
+    String url = AppVars.API_URL + "/user/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

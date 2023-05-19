@@ -42,9 +42,9 @@ public class Settings extends AppCompatActivity {
     Button acctDelete;
     EditText oldPassword;
     String tag_json_obj = "json_obj_req";
-    String url = "http://coms-309-006.class.las.iastate.edu:8080/user/delete";
-    String loginUrl = "http://coms-309-006.class.las.iastate.edu:8080/user/login";
-    String changePasswordUrl = "http://coms-309-006.class.las.iastate.edu:8080/user/changepw";
+    String url = AppVars.API_URL + "/user/delete";
+    String loginUrl = AppVars.API_URL + "/user/login";
+    String changePasswordUrl = AppVars.API_URL + "/user/changepw";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

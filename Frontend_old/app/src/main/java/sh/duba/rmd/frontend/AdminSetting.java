@@ -28,7 +28,7 @@ import org.json.JSONObject;
 public class AdminSetting extends AppCompatActivity {
 
     private ImageButton backToSettings;
-    private String url = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-location";
+    private String url = AppVars.API_URL + "/admin/toggle-location";
     private String urlTwo = "http://coms-309-006.class.las.iastate.edu:8080/admin/get-settings";
     private String urlThree = "http://coms-309-006.class.las.iastate.edu:8080/admin/toggle-category";
 

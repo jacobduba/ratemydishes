@@ -40,7 +40,7 @@ public class Registration extends AppCompatActivity {
     EditText pswdConf;
 
     String tag_json_obj = "json_obj_req";
-    String url = "http://coms-309-006.class.las.iastate.edu:8080/user/register";
+    String url = AppVars.API_URL + "/user/register";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

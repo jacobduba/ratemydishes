@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes.app;
+package sh.duba.rmd.frontend.app;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -6,7 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.g1as6.ratemydishes.net_utils.LruBitmapCache;
+import sh.duba.rmd.frontend.net_utils.LruBitmapCache;
 
 public class AppController extends Application {
 	public static final String TAG = AppController.class.getSimpleName();

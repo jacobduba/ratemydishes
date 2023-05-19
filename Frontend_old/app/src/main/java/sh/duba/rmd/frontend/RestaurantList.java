@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes;
+package sh.duba.rmd.frontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,8 +15,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.g1as6.ratemydishes.app.AppController;
-import com.g1as6.ratemydishes.app.AppVars;
+import com.g1as6.ratemydishes.R;
+
+import sh.duba.rmd.frontend.app.AppController;
+import sh.duba.rmd.frontend.app.AppVars;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,8 +27,8 @@ import org.json.JSONObject;
 public class RestaurantList extends AppCompatActivity {
 
     private ImageButton backToDining;
-    private String url = "http://coms-309-006.class.las.iastate.edu:8080/location/";
-    //private String url = "https://ce96178b-dd5e-4c1b-80e8-def480aa7eb4.mock.pstmn.io/location/";
+    private String url = AppVars.API_URL + "/location/";
+
     private Button lastButton;
     protected static AppVars.Restaurant loc;
 

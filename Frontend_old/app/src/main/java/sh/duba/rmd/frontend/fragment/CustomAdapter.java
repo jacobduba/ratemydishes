@@ -1,27 +1,22 @@
-package com.g1as6.ratemydishes.fragment;
+package sh.duba.rmd.frontend.fragment;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.g1as6.ratemydishes.MenuList;
 import com.g1as6.ratemydishes.R;
-import com.g1as6.ratemydishes.RestaurantList;
-import com.g1as6.ratemydishes.Review;
-import com.g1as6.ratemydishes.WelcomePage;
+
+import sh.duba.rmd.frontend.Review;
 
 import org.json.JSONArray;
 import org.json.JSONException;

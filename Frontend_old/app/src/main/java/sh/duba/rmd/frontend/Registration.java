@@ -1,4 +1,4 @@
-package com.g1as6.ratemydishes;
+package sh.duba.rmd.frontend;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,8 +16,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.g1as6.ratemydishes.app.AppController;
-import com.g1as6.ratemydishes.app.AppVars;
+import com.g1as6.ratemydishes.R;
+
+import sh.duba.rmd.frontend.app.AppController;
+import sh.duba.rmd.frontend.app.AppVars;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +40,7 @@ public class Registration extends AppCompatActivity {
     EditText pswdConf;
 
     String tag_json_obj = "json_obj_req";
-    String url = "http://coms-309-006.class.las.iastate.edu:8080/user/register";
+    String url = AppVars.API_URL + "/user/register";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

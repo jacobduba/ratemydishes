@@ -1,22 +1,22 @@
-package com.g1as6.ratemydishes;
+package sh.duba.rmd.frontend;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.adapter.FragmentViewHolder;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.g1as6.ratemydishes.app.AppController;
-import com.g1as6.ratemydishes.fragment.CustomAdapter;
-import com.g1as6.ratemydishes.fragment.DemoCollectionAdapter;
+import sh.duba.rmd.frontend.app.AppController;
+import sh.duba.rmd.frontend.app.AppVars;
+import sh.duba.rmd.frontend.fragment.DemoCollectionAdapter;
+
+import com.g1as6.ratemydishes.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -27,7 +27,7 @@ import org.json.JSONObject;
 public class MenuList extends AppCompatActivity {
 
     private ImageButton backToDining;
-    private String url = "http://coms-309-006.class.las.iastate.edu:8080/menu/get-menu/";
+    private String url = AppVars.API_URL + "/menu/get-menu/";
     private TabLayout tabs;
     private ViewPager2 viewPager;
 

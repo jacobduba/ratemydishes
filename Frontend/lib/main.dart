@@ -8,23 +8,19 @@ void main() {
 Color cardinal = const Color(0xC8102E);
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: cardinal,
-        brightness: Brightness.light
-      ),
+          useMaterial3: true,
+          colorSchemeSeed: cardinal,
+          brightness: Brightness.light),
       darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: cardinal,
-        brightness: Brightness.dark
-      ),
+          useMaterial3: true,
+          colorSchemeSeed: cardinal,
+          brightness: Brightness.dark),
       home: const MyHomePage(title: 'Rate My Dishes'),
     );
   }

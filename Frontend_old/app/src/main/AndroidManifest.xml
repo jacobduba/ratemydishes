@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.g1as6.ratemydishes">
+    xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.g1as6.ratemydishes.app.AppController"
+        android:name="sh.duba.rmd.frontend.app.AppController"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,14 +17,14 @@
         android:theme="@style/Theme.RateMyDishes"
         tools:targetApi="31">
         <activity
-            android:name=".RestaurantList"
+            android:name="sh.duba.rmd.frontend.RestaurantList"
             android:exported="false" />
         <activity
-            android:name=".WelcomePage"
+            android:name="sh.duba.rmd.frontend.WelcomePage"
             android:exported="false">
         </activity>
         <activity
-            android:name=".Login"
+            android:name="sh.duba.rmd.frontend.Login"
             android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -34,19 +33,19 @@
         </intent-filter>
         </activity>
         <activity
-            android:name=".Registration"
+            android:name="sh.duba.rmd.frontend.Registration"
             android:exported="false" />
         <activity
-            android:name=".Settings"
+            android:name="sh.duba.rmd.frontend.Settings"
             android:exported="false" />
         <activity
-            android:name=".AdminSetting"
+            android:name="sh.duba.rmd.frontend.AdminSetting"
             android:exported="false" />
         <activity
-            android:name=".MenuList"
+            android:name="sh.duba.rmd.frontend.MenuList"
             android:exported="false"/>
         <activity
-            android:name=".Review"
+            android:name="sh.duba.rmd.frontend.Review"
             android:exported="false"/>
     </application>
 
